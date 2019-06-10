@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <h1 align="center">
     <img alt="An Example .io Game" title="An Example .io Game" src="https://github.com/vzhou842/example-.io-game/blob/master/public/assets/icon.svg" width="140"> <br />
     An Example .io Game
@@ -34,3 +35,7 @@ $ npm install
 $ npm run build
 $ npm start
 ```
+=======
+# zombio
+Survival zombie game
+>>>>>>> 288e5cb63be0f08f67772500ff6093825a207bd5
