@@ -46,20 +46,29 @@ function render() {
 }
 
 function renderBackground(x, y) {
-  const backgroundX = MAP_SIZE / 2 - x + canvas.width / 2;
-  const backgroundY = MAP_SIZE / 2 - y + canvas.height / 2;
-  const backgroundGradient = context.createRadialGradient(
-    backgroundX,
-    backgroundY,
-    MAP_SIZE / 10,
-    backgroundX,
-    backgroundY,
-    MAP_SIZE / 2,
-  );
-  backgroundGradient.addColorStop(0, 'black');
-  backgroundGradient.addColorStop(1, 'gray');
-  context.fillStyle = backgroundGradient;
-  context.fillRect(0, 0, canvas.width, canvas.height);
+  // const backgroundX = MAP_SIZE / 2 - x + canvas.width / 2;
+  // const backgroundY = MAP_SIZE / 2 - y + canvas.height / 2;
+  // const bgRadialGradient = context.createRadialGradient(
+  //   backgroundX,
+  //   backgroundY,
+  //   MAP_SIZE / 10,
+  //   backgroundX,
+  //   backgroundY,
+  //   MAP_SIZE / 2,
+  // );
+  // bgRadialGradient.addColorStop(0, 'black');
+  // bgRadialGradient.addColorStop(1, 'gray');
+
+  context.fillStyle = 'black'
+  context.fillRect(0, 0, canvas.width, canvas.height)
+  context.fillStyle = 'green';
+  context.fillRect(canvas.width / 2 - x, canvas.height / 2 - y, MAP_SIZE, MAP_SIZE);
+  context.fillStyle = 'yellow';
+  context.fillRect(canvas.width / 2 - x, canvas.height / 2 - y, MAP_SIZE * 0.75, MAP_SIZE * 0.75);
+  context.fillStyle = 'violet';
+  context.fillRect(canvas.width / 2 - x, canvas.height / 2 - y, MAP_SIZE * 0.5, MAP_SIZE * 0.5);
+  context.fillStyle = 'red';
+  context.fillRect(canvas.width / 2 - x, canvas.height / 2 - y, MAP_SIZE * 0.25, MAP_SIZE * 0.25);
 }
 
 // Renders a ship at the given coordinates

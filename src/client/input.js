@@ -11,7 +11,7 @@ const values_keys = {
 }
 
 function onMouseInput(e) {
-  handleInput(e.clientX, e.clientY);
+  // handleInput(e.clientX, e.clientY);
 }
 
 function onTouchInput(e) {
