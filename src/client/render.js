@@ -59,7 +59,7 @@ function renderBackground(x, y) {
   // bgRadialGradient.addColorStop(0, 'black');
   // bgRadialGradient.addColorStop(1, 'gray');
 
-  context.fillStyle = 'black'
+  context.fillStyle = 'grey'
   context.fillRect(0, 0, canvas.width, canvas.height)
   context.fillStyle = 'green';
   context.fillRect(canvas.width / 2 - x, canvas.height / 2 - y, MAP_SIZE, MAP_SIZE);
@@ -80,7 +80,7 @@ function renderPlayer(me, player) {
   // Draw ship
   context.save();
   context.translate(canvasX, canvasY);
-  context.rotate(direction);
+  // context.rotate(direction);
   context.drawImage(
     getAsset('ship.svg'),
     -PLAYER_RADIUS,

@@ -8,6 +8,10 @@ class Object {
   }
 
   update(dt) {
+    if (this.direction === null) {
+      return
+    }
+    
     this.x += dt * this.speed * Math.sin(this.direction);
     this.y -= dt * this.speed * Math.cos(this.direction);
   }

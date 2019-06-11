@@ -26,7 +26,7 @@ class Player extends ObjectClass {
     this.fireCooldown -= dt;
     if (this.fireCooldown <= 0) {
       this.fireCooldown += Constants.PLAYER_FIRE_COOLDOWN;
-      return new Bullet(this.id, this.x, this.y, this.direction);
+      return new Bullet(this.id, this.x, this.y, this.direction || 0);
     }
 
     return null;

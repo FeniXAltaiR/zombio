@@ -24,15 +24,15 @@ function onKeyDownInput (e) {
   if (!findKey) {
     keys.push(e.key)
   }
-  getDirection()
+  setDirection()
 }
 
 function onKeyUpInput (e) {
   keys = keys.filter(key => key !== e.key)
-  getDirection()
+  setDirection()
 }
 
-function getDirection () {
+function setDirection () {
   let [x, y] = [0, 0]
 
   keys.forEach(key => {
@@ -42,7 +42,11 @@ function getDirection () {
   })
 
   const dir = Math.atan2(x, y)
-  updateDirection(dir)
+  if (!keys.length) {
+    updateDirection(null)
+  } else {
+    updateDirection(dir)
+  }
 }
 
 function onWheelInput(e) {
