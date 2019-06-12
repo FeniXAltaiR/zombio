@@ -79,7 +79,7 @@ function interpolateObject(object1, object2, ratio) {
 
   const interpolated = {};
   Object.keys(object1).forEach(key => {
-    if (key === 'direction') {
+    if (key === 'rotate') {
       interpolated[key] = interpolateDirection(object1[key], object2[key], ratio);
     } else {
       interpolated[key] = object1[key] + (object2[key] - object1[key]) * ratio;
