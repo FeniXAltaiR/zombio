@@ -69,6 +69,12 @@ function renderBackground(x, y) {
   context.fillRect(canvas.width / 2 - x, canvas.height / 2 - y, MAP_SIZE * 0.5, MAP_SIZE * 0.5);
   context.fillStyle = 'red';
   context.fillRect(canvas.width / 2 - x, canvas.height / 2 - y, MAP_SIZE * 0.25, MAP_SIZE * 0.25);
+  context.strokeStyle = 'rgba(0, 0, 0, .2)'
+  for (let i = 0; i < Constants.MAP_SIZE; i += 25) {
+    for (let k = 0; k < Constants.MAP_SIZE; k += 25) {
+      context.strokeRect(canvas.width / 2 - x + i, canvas.height / 2 - y + k, 25, 25)
+    }
+  }
 }
 
 // Renders a ship at the given coordinates

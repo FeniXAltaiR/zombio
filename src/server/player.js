@@ -21,8 +21,8 @@ class Player extends ObjectClass {
     this.score += dt * Constants.SCORE_PER_SECOND;
 
     // Make sure the player stays in bounds
-    this.x = Math.max(0, Math.min(Constants.MAP_SIZE, this.x));
-    this.y = Math.max(0, Math.min(Constants.MAP_SIZE, this.y));
+    this.x = Math.max(0 + Constants.PLAYER_RADIUS, Math.min(Constants.MAP_SIZE - Constants.PLAYER_RADIUS, this.x));
+    this.y = Math.max(0 + Constants.PLAYER_RADIUS, Math.min(Constants.MAP_SIZE - Constants.PLAYER_RADIUS, this.y));
 
     // Fire a bullet, if needed
     if (this.fireCooldown > 0) {
