@@ -3,12 +3,14 @@ const Bullet = require('./bullet');
 const Constants = require('../shared/constants');
 
 class Player extends ObjectClass {
-  constructor(id, username, x, y) {
+  constructor(id, username, x, y, rotate = Math.random() * 2 * Math.PI) {
     super(id, x, y, null, Constants.PLAYER_SPEED);
     this.username = username;
     this.hp = Constants.PLAYER_MAX_HP;
-    this.fireCooldown = 0;
+    this.fireCooldown = Constants.PLAYER_FIRE_COOLDOWN;
     this.score = 0;
+    this.rotate = rotate
+    this.bullet = null
   }
 
   // Returns a newly created bullet, or null.
@@ -23,10 +25,14 @@ class Player extends ObjectClass {
     this.y = Math.max(0, Math.min(Constants.MAP_SIZE, this.y));
 
     // Fire a bullet, if needed
-    this.fireCooldown -= dt;
-    if (this.fireCooldown <= 0) {
-      this.fireCooldown += Constants.PLAYER_FIRE_COOLDOWN;
-      return new Bullet(this.id, this.x, this.y, this.direction || 0);
+    if (this.fireCooldown > 0) {
+      this.fireCooldown -= dt
+    }
+
+    if (this.bullet) {
+      const newBullet = this.bullet
+      this.bullet = null
+      return newBullet
     }
 
     return null;
@@ -40,11 +46,23 @@ class Player extends ObjectClass {
     this.score += Constants.SCORE_BULLET_HIT;
   }
 
+  changeRotate(rotate) {
+    this.rotate = rotate
+  }
+
+  createBullet() {
+    if (this.fireCooldown <= 0) {
+      this.fireCooldown = Constants.PLAYER_FIRE_COOLDOWN
+      this.bullet = new Bullet(this.id, this.x, this.y, this.rotate)
+    }
+  }
+
   serializeForUpdate() {
     return {
       ...(super.serializeForUpdate()),
       direction: this.direction,
       hp: this.hp,
+      rotate: this.rotate
     };
   }
 }

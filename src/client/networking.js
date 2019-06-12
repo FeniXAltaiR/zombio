@@ -36,3 +36,11 @@ export const play = username => {
 export const updateDirection = throttle(20, dir => {
   socket.emit(Constants.MSG_TYPES.INPUT, dir);
 });
+
+export const changeRotate = throttle(20, rotate => {
+  socket.emit(Constants.MSG_TYPES.ROTATE, rotate)
+})
+
+export const createBullet = () => {
+  socket.emit(Constants.MSG_TYPES.CLICK)
+}

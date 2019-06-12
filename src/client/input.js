@@ -1,6 +1,6 @@
 // Learn more about this file at:
 // https://victorzhou.com/blog/build-an-io-game-part-1/#6-client-input-%EF%B8%8F
-import { updateDirection } from './networking';
+import { updateDirection, changeRotate, createBullet } from './networking';
 
 let keys = []
 const values_keys = {
@@ -11,12 +11,18 @@ const values_keys = {
 }
 
 function onMouseInput(e) {
-  // handleInput(e.clientX, e.clientY);
+  const [x, y] = [e.clientX, e.clientY]
+  const rotate = Math.atan2(x - window.innerWidth / 2, window.innerHeight / 2 - y)
+  changeRotate(rotate)
 }
 
 function onClickInput(e) {
   e.preventDefault()
-  // handleInput(e.clientX, e.clientY);
+  createBullet()
+}
+
+function onDragStartInput(e) {
+  console.log('dragstart')
 }
 
 function onTouchInput(e) {
@@ -70,8 +76,9 @@ function handleInput(x, y) {
 }
 
 export function startCapturingInput() {
-  // window.addEventListener('mousemove', onMouseInput);
+  window.addEventListener('mousemove', onMouseInput);
   window.addEventListener('click', onClickInput);
+  window.addEventListener('dragstart', onDragStartInput);
   window.addEventListener('touchstart', onTouchInput);
   window.addEventListener('touchmove', onTouchInput);
   window.addEventListener('wheel', onWheelInput);
@@ -80,8 +87,9 @@ export function startCapturingInput() {
 }
 
 export function stopCapturingInput() {
-  // window.removeEventListener('mousemove', onMouseInput);
+  window.removeEventListener('mousemove', onMouseInput);
   window.removeEventListener('click', onClickInput);
+  window.removeEventListener('dragstart', onDragStartInput);
   window.removeEventListener('touchstart', onTouchInput);
   window.removeEventListener('touchmove', onTouchInput);
   window.removeEventListener('wheel', onWheelInput);

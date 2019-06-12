@@ -3,8 +3,8 @@ const ObjectClass = require('./object');
 const Constants = require('../shared/constants');
 
 class Bullet extends ObjectClass {
-  constructor(parentID, x, y, dir) {
-    super(shortid(), x, y, dir, Constants.BULLET_SPEED);
+  constructor(parentID, x, y, rotate) {
+    super(shortid(), x, y, rotate, Constants.BULLET_SPEED);
     this.parentID = parentID;
   }
 

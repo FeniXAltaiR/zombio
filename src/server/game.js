@@ -42,6 +42,18 @@ class Game {
     }
   }
 
+  changeRotate(socket, rotate) {
+    if (this.players[socket.id]) {
+      this.players[socket.id].changeRotate(rotate)
+    }
+  }
+
+  createBullet(socket) {
+    if (this.players[socket.id]) {
+      this.players[socket.id].createBullet()
+    }
+  }
+
   update() {
     // Calculate time elapsed
     const now = Date.now();

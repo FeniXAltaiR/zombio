@@ -73,14 +73,14 @@ function renderBackground(x, y) {
 
 // Renders a ship at the given coordinates
 function renderPlayer(me, player) {
-  const { x, y, direction } = player;
+  const { x, y, direction, rotate } = player;
   const canvasX = canvas.width / 2 + x - me.x;
   const canvasY = canvas.height / 2 + y - me.y;
 
   // Draw ship
   context.save();
   context.translate(canvasX, canvasY);
-  // context.rotate(direction);
+  context.rotate(rotate)
   context.drawImage(
     getAsset('ship.svg'),
     -PLAYER_RADIUS,

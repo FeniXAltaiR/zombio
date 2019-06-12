@@ -34,6 +34,8 @@ io.on('connection', socket => {
 
   socket.on(Constants.MSG_TYPES.JOIN_GAME, joinGame);
   socket.on(Constants.MSG_TYPES.INPUT, handleInput);
+  socket.on(Constants.MSG_TYPES.ROTATE, rotateInput);
+  socket.on(Constants.MSG_TYPES.CLICK, createBullet);
   socket.on('disconnect', onDisconnect);
 });
 
@@ -50,4 +52,12 @@ function handleInput(dir) {
 
 function onDisconnect() {
   game.removePlayer(this);
+}
+
+function rotateInput(rotate) {
+  game.changeRotate(this, rotate)
+}
+
+function createBullet() {
+  game.createBullet(this)
 }
