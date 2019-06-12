@@ -14,16 +14,27 @@ function onMouseInput(e) {
   // handleInput(e.clientX, e.clientY);
 }
 
+function onClickInput(e) {
+  e.preventDefault()
+  // handleInput(e.clientX, e.clientY);
+}
+
 function onTouchInput(e) {
   const touch = e.touches[0];
   handleInput(touch.clientX, touch.clientY);
 }
 
 function onKeyDownInput (e) {
+  if (!['w', 'a', 's', 'd', 'F5'].includes(e.key)) {
+    e.preventDefault()
+    return
+  }
+
   const findKey = keys.find(key => key === e.key)
   if (!findKey) {
     keys.push(e.key)
   }
+
   setDirection()
 }
 
@@ -60,7 +71,7 @@ function handleInput(x, y) {
 
 export function startCapturingInput() {
   // window.addEventListener('mousemove', onMouseInput);
-  window.addEventListener('click', onMouseInput);
+  window.addEventListener('click', onClickInput);
   window.addEventListener('touchstart', onTouchInput);
   window.addEventListener('touchmove', onTouchInput);
   window.addEventListener('wheel', onWheelInput);
@@ -70,7 +81,7 @@ export function startCapturingInput() {
 
 export function stopCapturingInput() {
   // window.removeEventListener('mousemove', onMouseInput);
-  window.removeEventListener('click', onMouseInput);
+  window.removeEventListener('click', onClickInput);
   window.removeEventListener('touchstart', onTouchInput);
   window.removeEventListener('touchmove', onTouchInput);
   window.removeEventListener('wheel', onWheelInput);
