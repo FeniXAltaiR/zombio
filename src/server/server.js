@@ -11,6 +11,22 @@ const webpackConfig = require('../../webpack.dev.js');
 const app = express();
 app.use(express.static('public'));
 
+// Server channels
+let id_server = 'game'
+app.get('/', (req, res, next) => {
+  const id = req.query.server
+
+  if (id) {
+    id_server = id
+  }
+
+  if (!games[id_server]) {
+    games[id_server] = new Game()
+  }
+
+  next()
+})
+
 if (process.env.NODE_ENV === 'development') {
   // Setup Webpack for development
   const compiler = webpack(webpackConfig);
@@ -40,24 +56,24 @@ io.on('connection', socket => {
 });
 
 // Setup the Game
-const game = new Game();
+const games = {}
 
 function joinGame(username) {
-  game.addPlayer(this, username);
+  games[id_server].addPlayer(this, username);
 }
 
 function handleInput(dir) {
-  game.handleInput(this, dir);
+  games[id_server].handleInput(this, dir);
 }
 
 function onDisconnect() {
-  game.removePlayer(this);
+  games[id_server].removePlayer(this);
 }
 
 function rotateInput(rotate) {
-  game.changeRotate(this, rotate)
+  games[id_server].changeRotate(this, rotate)
 }
 
 function createBullet() {
-  game.createBullet(this)
+  games[id_server].createBullet(this)
 }
