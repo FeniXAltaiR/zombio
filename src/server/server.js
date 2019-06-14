@@ -5,6 +5,7 @@ const socketio = require('socket.io');
 
 const Constants = require('../shared/constants');
 const Game = require('./game');
+const shortid = require('shortid');
 const webpackConfig = require('../../webpack.dev.js');
 
 // Setup an Express server
@@ -12,17 +13,36 @@ const app = express();
 app.use(express.static('public'));
 
 // Server channels
-let id_server = 'game'
+let id_server = null
 app.get('/', (req, res, next) => {
-  const id = req.query.server
+  // const id = req.query.server
+  const servers = Object.keys(games)
+  let exist_id_server = null
 
-  if (id) {
-    id_server = id
+  function getOnlinePlayers(game) {
+    return games[game].getOnlinePlayers() < 3
   }
 
-  if (!games[id_server]) {
-    games[id_server] = new Game()
+  if (servers.length) {
+    exist_id_server = servers.find(game => getOnlinePlayers(game))
   }
+
+  if (exist_id_server) {
+    id_server = exist_id_server
+  } else {
+    id_server = shortid()
+    games[id_server] = new Game(id_server)
+  }
+
+  console.log('id_server', id_server)
+
+  // if (id) {
+  //   id_server = id
+  // }
+
+  // if (!games[id_server]) {
+  //   games[id_server] = new Game()
+  // }
 
   next()
 })

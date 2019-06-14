@@ -3,7 +3,8 @@ const Player = require('./player');
 const applyCollisions = require('./collisions');
 
 class Game {
-  constructor() {
+  constructor(id) {
+    this.id = id
     this.sockets = {};
     this.players = {};
     this.bullets = [];
@@ -52,6 +53,10 @@ class Game {
     if (this.players[socket.id]) {
       this.players[socket.id].createBullet()
     }
+  }
+
+  getOnlinePlayers() {
+    return Object.keys(this.players).length
   }
 
   update() {
