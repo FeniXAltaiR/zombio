@@ -2,32 +2,38 @@
 // https://victorzhou.com/blog/build-an-io-game-part-1/#6-client-input-%EF%B8%8F
 import { updateDirection, changeRotate, createBullet } from './networking';
 
+function getDirection(x, y) {
+  return Math.atan2(x - window.innerWidth / 2, window.innerHeight / 2 - y)
+}
+
+function onMouseMoveInput(e) {
+  const [x, y] = [e.clientX, e.clientY]
+  const rotate = getDirection(x, y)
+  changeRotate(rotate)
+}
+
+let creatingBullets = null
+function onMouseDownInput(e) {
+  createBullet()
+  creatingBullets = setInterval(createBullet, 20)
+}
+
+function onMouseUpInput(e) {
+  clearInterval(creatingBullets)
+}
+
+function onTouchInput(e) {
+  const touch = e.touches[0];
+  const dir = getDirection(touch.clientX, touch.clientY);
+  updateDirection(dir)
+}
+
 let keys = []
 const values_keys = {
   w: [0, 1],
   a: [-1, 0],
   s: [0, -1],
   d: [1, 0]
-}
-
-function onMouseInput(e) {
-  const [x, y] = [e.clientX, e.clientY]
-  const rotate = Math.atan2(x - window.innerWidth / 2, window.innerHeight / 2 - y)
-  changeRotate(rotate)
-}
-
-function onClickInput(e) {
-  e.preventDefault()
-  createBullet()
-}
-
-function onDragStartInput(e) {
-  console.log('dragstart')
-}
-
-function onTouchInput(e) {
-  const touch = e.touches[0];
-  handleInput(touch.clientX, touch.clientY);
 }
 
 function onKeyDownInput (e) {
@@ -70,29 +76,29 @@ function onWheelInput(e) {
   e.preventDefault()
 }
 
-function handleInput(x, y) {
-  const dir = Math.atan2(x - window.innerWidth / 2, window.innerHeight / 2 - y);
-  updateDirection(dir);
-}
-
 export function startCapturingInput() {
-  window.addEventListener('mousemove', onMouseInput);
-  window.addEventListener('click', onClickInput);
-  window.addEventListener('dragstart', onDragStartInput);
+  // Mouse events
+  window.addEventListener('mousemove', onMouseMoveInput);
+  window.addEventListener('mousedown', onMouseDownInput);
+  window.addEventListener('mouseup', onMouseUpInput);
+  window.addEventListener('wheel', onWheelInput);
+  // Touch events
   window.addEventListener('touchstart', onTouchInput);
   window.addEventListener('touchmove', onTouchInput);
-  window.addEventListener('wheel', onWheelInput);
+  // Keyboard events
   window.addEventListener('keydown', onKeyDownInput);
   window.addEventListener('keyup', onKeyUpInput);
 }
 
 export function stopCapturingInput() {
-  window.removeEventListener('mousemove', onMouseInput);
-  window.removeEventListener('click', onClickInput);
-  window.removeEventListener('dragstart', onDragStartInput);
+  window.removeEventListener('mousemove', onMouseMoveInput);
+  window.removeEventListener('mousedown', onMouseDownInput);
+  window.removeEventListener('mouseup', onMouseUpInput);
+  window.removeEventListener('wheel', onWheelInput);
+  // Touch events
   window.removeEventListener('touchstart', onTouchInput);
   window.removeEventListener('touchmove', onTouchInput);
-  window.removeEventListener('wheel', onWheelInput);
+    // Keyboard events
   window.removeEventListener('keydown', onKeyDownInput);
   window.removeEventListener('keyup', onKeyUpInput);
 }
