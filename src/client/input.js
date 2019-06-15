@@ -30,32 +30,32 @@ function onTouchInput(e) {
 
 let keys = []
 const values_keys = {
-  w: [0, 1],
-  a: [-1, 0],
-  s: [0, -1],
-  d: [1, 0]
+  87: [0, 1],
+  65: [-1, 0],
+  83: [0, -1],
+  68: [1, 0]
 }
 
 function onKeyDownInput (e) {
-  if (e.key === 'F5') {
+  if (e.keyCode === 116) {
     return
   }
 
-  if (!['w', 'a', 's', 'd'].includes(e.key)) {
+  if (![65, 68, 83, 87].includes(e.keyCode)) {
     e.preventDefault()
     return
   }
 
-  const findKey = keys.find(key => key === e.key)
+  const findKey = keys.find(key => key === e.keyCode)
   if (!findKey) {
-    keys.push(e.key)
+    keys.push(e.keyCode)
   }
 
   setDirection()
 }
 
 function onKeyUpInput (e) {
-  keys = keys.filter(key => key !== e.key)
+  keys = keys.filter(key => key !== e.keyCode)
   setDirection()
 }
 
