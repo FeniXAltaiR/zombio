@@ -37,7 +37,11 @@ const values_keys = {
 }
 
 function onKeyDownInput (e) {
-  if (!['w', 'a', 's', 'd', 'F5'].includes(e.key)) {
+  if (e.key === 'F5') {
+    return
+  }
+
+  if (!['w', 'a', 's', 'd'].includes(e.key)) {
     e.preventDefault()
     return
   }
@@ -91,6 +95,7 @@ export function startCapturingInput() {
 }
 
 export function stopCapturingInput() {
+  // Mouse events
   window.removeEventListener('mousemove', onMouseMoveInput);
   window.removeEventListener('mousedown', onMouseDownInput);
   window.removeEventListener('mouseup', onMouseUpInput);
@@ -98,7 +103,7 @@ export function stopCapturingInput() {
   // Touch events
   window.removeEventListener('touchstart', onTouchInput);
   window.removeEventListener('touchmove', onTouchInput);
-    // Keyboard events
+  // Keyboard events
   window.removeEventListener('keydown', onKeyDownInput);
   window.removeEventListener('keyup', onKeyUpInput);
 }

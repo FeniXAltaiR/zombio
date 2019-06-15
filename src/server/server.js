@@ -13,37 +13,35 @@ const app = express();
 app.use(express.static('public'));
 
 // Server channels
-let id_server = null
+let id_channel = null
 app.get('/', (req, res, next) => {
-  // const id = req.query.server
+  const id = req.query.server
   const servers = Object.keys(games)
-  let exist_id_server = null
+  let exist_id_channel = null
 
   function getOnlinePlayers(game) {
     return games[game].getOnlinePlayers() < 3
   }
 
   if (servers.length) {
-    exist_id_server = servers.find(game => getOnlinePlayers(game))
+    exist_id_channel = servers.find(game => getOnlinePlayers(game))
   }
 
-  if (exist_id_server) {
-    id_server = exist_id_server
+  if (id) {
+    const findServer = servers.find(game => game === id)
+    if (findServer) {
+      exist_id_channel = findServer
+    }
+  }
+
+  if (exist_id_channel) {
+    id_channel = exist_id_channel
   } else {
-    id_server = shortid()
-    games[id_server] = new Game(id_server)
+    id_channel = shortid()
+    games[id_channel] = new Game(id_channel)
   }
 
-  console.log('id_server', id_server)
-
-  // if (id) {
-  //   id_server = id
-  // }
-
-  // if (!games[id_server]) {
-  //   games[id_server] = new Game()
-  // }
-
+  console.log('id_channel', id_channel)
   next()
 })
 
@@ -79,21 +77,21 @@ io.on('connection', socket => {
 const games = {}
 
 function joinGame(username) {
-  games[id_server].addPlayer(this, username);
+  games[id_channel].addPlayer(this, username);
 }
 
 function handleInput(dir) {
-  games[id_server].handleInput(this, dir);
+  games[id_channel].handleInput(this, dir);
 }
 
 function onDisconnect() {
-  games[id_server].removePlayer(this);
+  games[id_channel].removePlayer(this);
 }
 
 function rotateInput(rotate) {
-  games[id_server].changeRotate(this, rotate)
+  games[id_channel].changeRotate(this, rotate)
 }
 
 function createBullet() {
-  games[id_server].createBullet(this)
+  games[id_channel].createBullet(this)
 }
