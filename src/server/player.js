@@ -7,10 +7,39 @@ class Player extends ObjectClass {
     super(id, x, y, null, Constants.PLAYER_SPEED);
     this.username = username;
     this.hp = Constants.PLAYER_MAX_HP;
-    this.fireCooldown = Constants.PLAYER_FIRE_COOLDOWN;
     this.score = 0;
     this.rotate = rotate
     this.bullet = null
+    this.options = {
+      weapons: {
+        pistol: {
+          fire_cooldown: 0.25,
+          radius: 5,
+          speed: 500,
+          damage: 5
+        },
+        rifle: {
+          fire_cooldown: 0.1,
+          radius: 7,
+          speed: 600,
+          damage: 7
+        },
+        shotgun: {
+          fire_cooldown: 0.5,
+          radius: 15,
+          speed: 400,
+          damage: 20
+        },
+        machinegun: {
+          fire_cooldown: 0.05,
+          radius: 3,
+          speed: 800,
+          damage: 5
+        }
+      }
+    }
+    this.weapon = null
+    this.fireCooldown = 0
   }
 
   // Returns a newly created bullet, or null.
@@ -19,6 +48,9 @@ class Player extends ObjectClass {
 
     // Update score
     this.score += dt * Constants.SCORE_PER_SECOND;
+
+    // Update weapon
+    this.updateWeapon()
 
     // Make sure the player stays in bounds
     this.x = Math.max(0 + Constants.PLAYER_RADIUS, Math.min(Constants.MAP_SIZE - Constants.PLAYER_RADIUS, this.x));
@@ -38,8 +70,37 @@ class Player extends ObjectClass {
     return null;
   }
 
+  updateWeapon () {
+    const score = this.score
+    const weapons = this.options.weapons
+    if (score > 75) {
+      this.weapon = weapons.machinegun
+      // this.fireCooldown = this.weapon.fire_cooldown
+    } else if (score > 50) {
+      this.weapon = weapons.shotgun
+      // this.fireCooldown = this.weapon.fire_cooldown
+    } else if (score > 25) {
+      this.weapon = weapons.rifle
+      // this.fireCooldown = this.weapon.fire_cooldown
+    } else {
+      this.weapon = weapons.pistol
+      // this.fireCooldown = this.weapon.fire_cooldown
+    }
+  }
+
+  createBullet() {
+    if (this.fireCooldown <= 0) {
+      const radius = this.weapon.radius
+      const speed = this.weapon.speed
+
+      // this.fireCooldown = Constants.PLAYER_FIRE_COOLDOWN
+      this.fireCooldown = this.weapon.fire_cooldown
+      this.bullet = new Bullet(this.id, this.x, this.y, this.rotate, radius, speed)
+    }
+  }
+
   takeBulletDamage() {
-    this.hp -= Constants.BULLET_DAMAGE;
+    this.hp -= this.weapon.damage;
   }
 
   onDealtDamage() {
@@ -48,13 +109,6 @@ class Player extends ObjectClass {
 
   changeRotate(rotate) {
     this.rotate = rotate
-  }
-
-  createBullet() {
-    if (this.fireCooldown <= 0) {
-      this.fireCooldown = Constants.PLAYER_FIRE_COOLDOWN
-      this.bullet = new Bullet(this.id, this.x, this.y, this.rotate)
-    }
   }
 
   serializeForUpdate() {

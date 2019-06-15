@@ -41,7 +41,7 @@ app.get('/', (req, res, next) => {
     games[id_channel] = new Game(id_channel)
   }
 
-  console.log('id_channel', id_channel)
+  // console.log('id_channel', id_channel)
   next()
 })
 
