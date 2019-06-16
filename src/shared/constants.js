@@ -10,7 +10,7 @@ module.exports = Object.freeze({
 
   ZOMBIE_RADIUS: 20,
   ZOMBIE_MAX_HP: 50,
-  ZOMBIE_SPEED: 150,
+  ZOMBIE_SPEED: 100,
   ZOMBIE_DAMAGE: 20,
 
   SCORE_BULLET_HIT: 20,
