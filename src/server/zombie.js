@@ -5,10 +5,11 @@ const Constants = require('../shared/constants')
 const {ZOMBIE_SPEED, ZOMBIE_RADIUS, ZOMBIE_DAMAGE, ZOMBIE_MAX_HP} = Constants
 
 class Zombie extends ObjectClass {
-  constructor(x, y) {
+  constructor(x, y, rotate = Math.random() * 2 * Math.PI) {
     super(shortid(), x, y, null, ZOMBIE_SPEED)
     this.hp = ZOMBIE_MAX_HP
     this.damage = ZOMBIE_DAMAGE
+    this.rotate = rotate
   }
 
   update(dt) {
@@ -27,7 +28,8 @@ class Zombie extends ObjectClass {
     return {
       ...(super.serializeForUpdate()),
       direction: this.direction,
-      hp: this.hp
+      hp: this.hp,
+      rotate: this.rotate
     }
   }
 }

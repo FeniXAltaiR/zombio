@@ -19,8 +19,8 @@ class Game {
   }
 
   createZombies() {
-    for (let i = 0; i < 100; i++) {
-      const [x, y] = [i * Constants.ZOMBIE_RADIUS * 2, i * Constants.ZOMBIE_RADIUS * 2]
+    for (let i = 0; i < Constants.MAP_SIZE / 50; i++) {
+      const [x, y] = [Math.random() * Constants.MAP_SIZE, Math.random() * Constants.MAP_SIZE]
       const zombie = new Zombie(x, y)
       this.zombies.push(zombie)
     }
@@ -97,6 +97,11 @@ class Game {
       }
     });
 
+    // Update each zombie
+    this.zombies.forEach(zombie => {
+      zombie.update(dt)
+    })
+
     // Apply collisions, give players score for hitting bullets
     const destroyedBulletsPlayers = applyCollisionsPlayers(Object.values(this.players), this.bullets);
     destroyedBulletsPlayers.forEach(b => {
@@ -114,10 +119,6 @@ class Game {
       }
     });
     this.bullets = this.bullets.filter(bullet => !destroyedBulletsZombies.includes(bullet))
-
-    this.zombies.forEach(zombie => {
-      zombie.update(dt)
-    })
 
     // Check if any players are dead
     Object.keys(this.sockets).forEach(playerID => {

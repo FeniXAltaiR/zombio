@@ -115,14 +115,21 @@ function renderBullet(me, bullet) {
 }
 
 function renderZombie(me, zombie) {
-  const {x, y, direction, hp} = zombie
+  const {x, y, direction, hp, rotate} = zombie
+  const canvasX = canvas.width / 2 + x - me.x;
+  const canvasY = canvas.height / 2 + y - me.y;
+
+  context.save()
+  context.translate(canvasX, canvasY);
+  context.rotate(rotate)
   context.drawImage(
     getAsset('zombie.svg'),
-    canvas.width / 2 + x - me.x - ZOMBIE_RADIUS,
-    canvas.height / 2 + y - me.y - ZOMBIE_RADIUS,
+    -ZOMBIE_RADIUS,
+    -ZOMBIE_RADIUS,
     ZOMBIE_RADIUS * 2,
     ZOMBIE_RADIUS * 2,
   )
+  context.restore()
 }
 
 function renderMainMenu() {
