@@ -75,16 +75,12 @@ class Player extends ObjectClass {
     const weapons = this.options.weapons
     if (score > 75) {
       this.weapon = weapons.machinegun
-      // this.fireCooldown = this.weapon.fire_cooldown
     } else if (score > 50) {
       this.weapon = weapons.shotgun
-      // this.fireCooldown = this.weapon.fire_cooldown
     } else if (score > 25) {
       this.weapon = weapons.rifle
-      // this.fireCooldown = this.weapon.fire_cooldown
     } else {
       this.weapon = weapons.pistol
-      // this.fireCooldown = this.weapon.fire_cooldown
     }
   }
 
@@ -99,8 +95,8 @@ class Player extends ObjectClass {
     }
   }
 
-  takeBulletDamage() {
-    this.hp -= this.weapon.damage;
+  takeBulletDamage(bullet) {
+    this.hp -= bullet.damage
   }
 
   onDealtDamage() {

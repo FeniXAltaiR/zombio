@@ -1,16 +1,29 @@
 const Constants = require('../shared/constants');
 const Player = require('./player');
-const applyCollisions = require('./collisions');
+const Zombie = require('./zombie');
+const Collisions = require('./collisions');
+
+const {applyCollisionsPlayers, applyCollisionsZombies} = Collisions
 
 class Game {
   constructor(id) {
     this.id = id
-    this.sockets = {};
-    this.players = {};
-    this.bullets = [];
-    this.lastUpdateTime = Date.now();
-    this.shouldSendUpdate = false;
-    setInterval(this.update.bind(this), 1000 / 60);
+    this.sockets = {}
+    this.players = {}
+    this.bullets = []
+    this.zombies = []
+    this.lastUpdateTime = Date.now()
+    this.shouldSendUpdate = false
+    setInterval(this.update.bind(this), 1000 / 60)
+    this.createZombies()
+  }
+
+  createZombies() {
+    for (let i = 0; i < 100; i++) {
+      const [x, y] = [i * Constants.ZOMBIE_RADIUS * 2, i * Constants.ZOMBIE_RADIUS * 2]
+      const zombie = new Zombie(x, y)
+      this.zombies.push(zombie)
+    }
   }
 
   addPlayer(socket, username) {
@@ -85,13 +98,26 @@ class Game {
     });
 
     // Apply collisions, give players score for hitting bullets
-    const destroyedBullets = applyCollisions(Object.values(this.players), this.bullets);
-    destroyedBullets.forEach(b => {
+    const destroyedBulletsPlayers = applyCollisionsPlayers(Object.values(this.players), this.bullets);
+    destroyedBulletsPlayers.forEach(b => {
       if (this.players[b.parentID]) {
         this.players[b.parentID].onDealtDamage();
       }
     });
-    this.bullets = this.bullets.filter(bullet => !destroyedBullets.includes(bullet));
+    this.bullets = this.bullets.filter(bullet => !destroyedBulletsPlayers.includes(bullet));
+
+    // Apply collisions zombies
+    const destroyedBulletsZombies = applyCollisionsZombies(Object.values(this.zombies), this.bullets)
+    destroyedBulletsZombies.forEach(b => {
+      if (this.players[b.parentID]) {
+        this.players[b.parentID].onDealtDamage()
+      }
+    });
+    this.bullets = this.bullets.filter(bullet => !destroyedBulletsZombies.includes(bullet))
+
+    this.zombies.forEach(zombie => {
+      zombie.update(dt)
+    })
 
     // Check if any players are dead
     Object.keys(this.sockets).forEach(playerID => {
@@ -131,12 +157,16 @@ class Game {
     const nearbyBullets = this.bullets.filter(
       b => b.distanceTo(player) <= Constants.MAP_SIZE / 2,
     );
+    const nearbyZombies = this.zombies.filter(
+      z => z.distanceTo(player) <= Constants.MAP_SIZE / 2,
+    );
 
     return {
       t: Date.now(),
       me: player.serializeForUpdate(),
       others: nearbyPlayers.map(p => p.serializeForUpdate()),
       bullets: nearbyBullets.map(b => b.serializeForUpdate()),
+      zombies: nearbyZombies.map(z => z.serializeForUpdate()),
       leaderboard,
     };
   }

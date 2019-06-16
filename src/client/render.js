@@ -6,7 +6,7 @@ import { getCurrentState } from './state';
 
 const Constants = require('../shared/constants');
 
-const { PLAYER_RADIUS, PLAYER_MAX_HP, BULLET_RADIUS, MAP_SIZE } = Constants;
+const { PLAYER_RADIUS, PLAYER_MAX_HP, BULLET_RADIUS, MAP_SIZE, ZOMBIE_RADIUS } = Constants;
 
 // Get the canvas graphics context
 const canvas = document.getElementById('game-canvas');
@@ -24,7 +24,7 @@ function setCanvasDimensions() {
 window.addEventListener('resize', debounce(40, setCanvasDimensions));
 
 function render() {
-  const { me, others, bullets } = getCurrentState();
+  const { me, others, bullets, zombies } = getCurrentState();
   if (!me) {
     return;
   }
@@ -43,22 +43,12 @@ function render() {
   // Draw all players
   renderPlayer(me, me);
   others.forEach(renderPlayer.bind(null, me));
+
+  // Draw all zombies
+  zombies.forEach(renderZombie.bind(null, me))
 }
 
 function renderBackground(x, y) {
-  // const backgroundX = MAP_SIZE / 2 - x + canvas.width / 2;
-  // const backgroundY = MAP_SIZE / 2 - y + canvas.height / 2;
-  // const bgRadialGradient = context.createRadialGradient(
-  //   backgroundX,
-  //   backgroundY,
-  //   MAP_SIZE / 10,
-  //   backgroundX,
-  //   backgroundY,
-  //   MAP_SIZE / 2,
-  // );
-  // bgRadialGradient.addColorStop(0, 'black');
-  // bgRadialGradient.addColorStop(1, 'gray');
-
   context.fillStyle = 'grey'
   context.fillRect(0, 0, canvas.width, canvas.height)
   context.fillStyle = 'green';
@@ -122,6 +112,17 @@ function renderBullet(me, bullet) {
     radius * 2,
     radius * 2,
   );
+}
+
+function renderZombie(me, zombie) {
+  const {x, y, direction, hp} = zombie
+  context.drawImage(
+    getAsset('zombie.svg'),
+    canvas.width / 2 + x - me.x - ZOMBIE_RADIUS,
+    canvas.height / 2 + y - me.y - ZOMBIE_RADIUS,
+    ZOMBIE_RADIUS * 2,
+    ZOMBIE_RADIUS * 2,
+  )
 }
 
 function renderMainMenu() {

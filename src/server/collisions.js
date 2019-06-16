@@ -1,7 +1,7 @@
 const Constants = require('../shared/constants');
 
 // Returns an array of bullets to be destroyed.
-function applyCollisions(players, bullets) {
+function applyCollisionsPlayers(players, bullets) {
   const destroyedBullets = [];
   for (let i = 0; i < bullets.length; i++) {
     // Look for a player (who didn't create the bullet) to collide each bullet with.
@@ -14,12 +14,34 @@ function applyCollisions(players, bullets) {
         player.distanceTo(bullet) <= Constants.PLAYER_RADIUS + bullet.radius
       ) {
         destroyedBullets.push(bullet);
-        player.takeBulletDamage();
-        break;
+        player.takeBulletDamage(bullet);
+        break
       }
     }
   }
   return destroyedBullets;
 }
 
-module.exports = applyCollisions;
+function applyCollisionsZombies(zombies, bullets) {
+  const destroyedBullets = [];
+  for (let i = 0; i < bullets.length; i++) {
+    for (let j = 0; j < zombies.length; j++) {
+      const bullet = bullets[i];
+      const zombie = zombies[j];
+      if (
+        bullet.parentID !== zombie.id &&
+        zombie.distanceTo(bullet) <= Constants.ZOMBIE_RADIUS + bullet.radius
+      ) {
+        destroyedBullets.push(bullet);
+        zombie.takeBulletDamage(bullet);
+        break
+      }
+    }
+  }
+  return destroyedBullets;
+}
+
+module.exports = {
+  applyCollisionsPlayers,
+  applyCollisionsZombies
+}
