@@ -153,13 +153,13 @@ class Game {
 
   createUpdate(player, leaderboard) {
     const nearbyPlayers = Object.values(this.players).filter(
-      p => p !== player && p.distanceTo(player) <= Constants.MAP_SIZE / 2,
+      p => p !== player && p.distanceTo(player) <= 1500
     );
     const nearbyBullets = this.bullets.filter(
-      b => b.distanceTo(player) <= Constants.MAP_SIZE / 2,
+      b => b.distanceTo(player) <= 1500
     );
     const nearbyZombies = this.zombies.filter(
-      z => z.distanceTo(player) <= Constants.MAP_SIZE / 2,
+      z => z.distanceTo(player) <= 1500
     );
 
     return {

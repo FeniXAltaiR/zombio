@@ -10,6 +10,8 @@ class Zombie extends ObjectClass {
     this.hp = ZOMBIE_MAX_HP
     this.damage = ZOMBIE_DAMAGE
     this.rotate = rotate
+    // active or passive behavior
+    this.mode = 'passive'
   }
 
   update(dt) {
@@ -22,6 +24,10 @@ class Zombie extends ObjectClass {
 
   takeBulletDamage(bullet) {
     this.hp -= bullet.damage
+  }
+
+  changeMode(mode) {
+    this.mode = mode
   }
 
   serializeForUpdate() {
