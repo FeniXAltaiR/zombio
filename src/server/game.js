@@ -99,6 +99,14 @@ class Game {
 
     // Update each zombie
     this.zombies.forEach(zombie => {
+      Object.keys(this.sockets).forEach(socket => {
+        const player = this.players[socket]
+        if (zombie.distanceTo(player) < 500) {
+          // const dir = Math.atan2(x - window.innerWidth / 2, window.innerHeight / 2 - y)
+          const dir = Math.atan2(player.x - zombie.x, zombie.y - player.y)
+          zombie.setDirection(dir)
+        }
+      })
       zombie.update(dt)
     })
 
