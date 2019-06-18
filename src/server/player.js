@@ -16,25 +16,29 @@ class Player extends ObjectClass {
           fire_cooldown: 0.25,
           radius: 5,
           speed: 500,
-          damage: 5
+          damage: 5,
+          distance: 250
         },
         rifle: {
           fire_cooldown: 0.1,
           radius: 7,
           speed: 600,
-          damage: 7
+          damage: 7,
+          distance: 400
         },
         shotgun: {
           fire_cooldown: 0.5,
           radius: 15,
           speed: 400,
-          damage: 20
+          damage: 20,
+          distance: 200
         },
         machinegun: {
           fire_cooldown: 0.05,
           radius: 3,
           speed: 800,
-          damage: 5
+          damage: 5,
+          distance: 500
         }
       }
     }
@@ -86,11 +90,11 @@ class Player extends ObjectClass {
 
   createBullet() {
     if (this.fireCooldown <= 0) {
-      const {radius, speed, damage} = this.weapon
+      const {radius, speed, damage, distance} = this.weapon
 
       // this.fireCooldown = Constants.PLAYER_FIRE_COOLDOWN
       this.fireCooldown = this.weapon.fire_cooldown
-      this.bullet = new Bullet(this.id, this.x, this.y, this.rotate, radius, speed, damage)
+      this.bullet = new Bullet(this.id, this.x, this.y, this.rotate, radius, speed, damage, distance)
     }
   }
 
