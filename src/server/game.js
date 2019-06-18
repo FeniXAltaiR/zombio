@@ -3,7 +3,7 @@ const Player = require('./player');
 const Zombie = require('./zombie');
 const Collisions = require('./collisions');
 
-const {applyCollisionsPlayers, applyCollisionsZombies} = Collisions
+const {applyCollisionsPlayers, applyCollisionsZombies, applyCollisionsPlayersAndZombies} = Collisions
 
 class Game {
   constructor(id) {
@@ -120,13 +120,15 @@ class Game {
     this.bullets = this.bullets.filter(bullet => !destroyedBulletsPlayers.includes(bullet));
 
     // Apply collisions zombies
-    const destroyedBulletsZombies = applyCollisionsZombies(Object.values(this.zombies), this.bullets)
+    const destroyedBulletsZombies = applyCollisionsZombies(this.zombies, this.bullets)
     destroyedBulletsZombies.forEach(b => {
       if (this.players[b.parentID]) {
         this.players[b.parentID].onDealtDamage()
       }
     });
     this.bullets = this.bullets.filter(bullet => !destroyedBulletsZombies.includes(bullet))
+
+    const playersDamagedByZombies = applyCollisionsPlayersAndZombies(Object.values(this.players), this.zombies)
 
     // Check if any players are dead
     Object.keys(this.sockets).forEach(playerID => {

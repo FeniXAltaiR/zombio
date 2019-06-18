@@ -40,6 +40,30 @@ function applyCollisionsZombies(zombies, bullets) {
   return destroyedBullets;
 }
 
+function applyCollisionsPlayersAndZombies(players, zombies) {
+  const damagedPlayers = [];
+  for (let i = 0; i < players.length; i++) {
+    let full_damage = 0
+    for (let j = 0; j < zombies.length; j++) {
+      const player = players[j]
+      const zombie = zombies[i]
+      if (
+        player.distanceTo(zombie) <= Constants.PLAYER_RADIUS + Constants.ZOMBIE_RADIUS
+      ) {
+        full_damage += zombie.damage
+        break
+      }
+    }
+    if (full_damage > 0) {
+      damagedPlayers.push({
+        id: player.id,
+        damage: full_damage
+      });
+    }
+  }
+  return destroyedBullets;
+}
+
 module.exports = {
   applyCollisionsPlayers,
   applyCollisionsZombies
