@@ -29,7 +29,6 @@ function applyCollisionsZombies(zombies, bullets) {
       const bullet = bullets[i];
       const zombie = zombies[j];
       if (
-        bullet.parentID !== zombie.id &&
         zombie.distanceTo(bullet) <= Constants.ZOMBIE_RADIUS + bullet.radius
       ) {
         destroyedBullets.push(bullet);

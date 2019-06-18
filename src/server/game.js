@@ -138,6 +138,15 @@ class Game {
       }
     });
 
+    // Check if any zombies are destroyed
+    const destroyedZombies = []
+    this.zombies.forEach(zombie => {
+      if (zombie.hp <= 0) {
+        destroyedZombies.push(zombie)
+      }
+    })
+    this.zombies = this.zombies.filter(zombie => !destroyedZombies.includes(zombie))
+
     // Send a game update to each player every other time
     if (this.shouldSendUpdate) {
       const leaderboard = this.getLeaderboard();

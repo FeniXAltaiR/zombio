@@ -86,12 +86,11 @@ class Player extends ObjectClass {
 
   createBullet() {
     if (this.fireCooldown <= 0) {
-      const radius = this.weapon.radius
-      const speed = this.weapon.speed
+      const {radius, speed, damage} = this.weapon
 
       // this.fireCooldown = Constants.PLAYER_FIRE_COOLDOWN
       this.fireCooldown = this.weapon.fire_cooldown
-      this.bullet = new Bullet(this.id, this.x, this.y, this.rotate, radius, speed)
+      this.bullet = new Bullet(this.id, this.x, this.y, this.rotate, radius, speed, damage)
     }
   }
 
