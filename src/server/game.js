@@ -129,6 +129,10 @@ class Game {
     this.bullets = this.bullets.filter(bullet => !destroyedBulletsZombies.includes(bullet))
 
     const playersDamagedByZombies = applyCollisionsPlayersAndZombies(Object.values(this.players), this.zombies)
+    playersDamagedByZombies.forEach(player => {
+      const {id, damage} = player
+      this.players[id].takeDamage(damage)
+    })
 
     // Check if any players are dead
     Object.keys(this.sockets).forEach(playerID => {

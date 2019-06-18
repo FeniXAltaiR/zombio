@@ -98,6 +98,10 @@ class Player extends ObjectClass {
     this.hp -= bullet.damage
   }
 
+  takeDamage(damage) {
+    this.hp -= damage
+  }
+
   onDealtDamage() {
     this.score += Constants.SCORE_BULLET_HIT;
   }

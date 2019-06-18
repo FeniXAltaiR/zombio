@@ -43,17 +43,20 @@ function applyCollisionsZombies(zombies, bullets) {
 function applyCollisionsPlayersAndZombies(players, zombies) {
   const damagedPlayers = [];
   for (let i = 0; i < players.length; i++) {
+    const player = players[i]
     let full_damage = 0
+
     for (let j = 0; j < zombies.length; j++) {
-      const player = players[j]
-      const zombie = zombies[i]
+      const zombie = zombies[j]
       if (
-        player.distanceTo(zombie) <= Constants.PLAYER_RADIUS + Constants.ZOMBIE_RADIUS
+        player.distanceTo(zombie) <= Constants.PLAYER_RADIUS + Constants.ZOMBIE_RADIUS &&
+        zombie.bite
       ) {
         full_damage += zombie.damage
-        break
+        zombie.cooldownBite()
       }
     }
+
     if (full_damage > 0) {
       damagedPlayers.push({
         id: player.id,
@@ -61,10 +64,11 @@ function applyCollisionsPlayersAndZombies(players, zombies) {
       });
     }
   }
-  return destroyedBullets;
+  return damagedPlayers;
 }
 
 module.exports = {
   applyCollisionsPlayers,
-  applyCollisionsZombies
+  applyCollisionsZombies,
+  applyCollisionsPlayersAndZombies
 }

@@ -12,6 +12,7 @@ class Zombie extends ObjectClass {
     this.rotate = rotate
     // active or passive behavior
     this.mode = 'passive'
+    this.bite = true
   }
 
   update(dt) {
@@ -28,6 +29,13 @@ class Zombie extends ObjectClass {
 
   changeMode(mode) {
     this.mode = mode
+  }
+
+  cooldownBite() {
+    this.bite = false
+    setTimeout(() => {
+      this.bite = true
+    }, 1000)
   }
 
   setDirection(dir) {
