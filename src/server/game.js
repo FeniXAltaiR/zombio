@@ -114,9 +114,20 @@ class Game {
       Object.keys(this.sockets).forEach(socket => {
         const player = this.players[socket]
         if (zombie.distanceTo(player) < 500) {
-          // const dir = Math.atan2(x - window.innerWidth / 2, window.innerHeight / 2 - y)
+          zombie.setMode('active')
+        } else {
+          zombie.setMode('passive')
+        }
+
+        if (zombie.mode === 'active') {
           const dir = Math.atan2(player.x - zombie.x, zombie.y - player.y)
           zombie.setDirection(dir)
+        }
+
+        if (zombie.mode === 'passive' && zombie.changingDirection) {
+          const dir = Math.atan2(Math.random() * 2 - 1, Math.random() * 2 - 1)
+          zombie.setDirection(dir)
+          zombie.resetChangingDirection()
         }
       })
       zombie.update(dt)
