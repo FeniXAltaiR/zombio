@@ -49,7 +49,7 @@ function applyCollisionsPlayersAndZombies(players, zombies) {
     for (let j = 0; j < zombies.length; j++) {
       const zombie = zombies[j]
       if (
-        player.distanceTo(zombie) <= Constants.PLAYER_RADIUS + Constants.ZOMBIE_RADIUS &&
+        player.distanceTo(zombie) <= Constants.PLAYER_RADIUS &&
         zombie.bite
       ) {
         full_damage += zombie.damage

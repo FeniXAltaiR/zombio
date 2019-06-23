@@ -16,13 +16,25 @@ class Game {
     this.shouldSendUpdate = false
     setInterval(this.update.bind(this), 1000 / 60)
     this.createZombies()
+    setInterval(this.respawnZombies.bind(this), 1000)
+  }
+
+  createZombie () {
+    const [x, y] = [Math.random() * Constants.MAP_SIZE, Math.random() * Constants.MAP_SIZE]
+    const zombie = new Zombie(x, y)
+    this.zombies.push(zombie)
   }
 
   createZombies() {
-    for (let i = 0; i < Constants.MAP_SIZE / 50; i++) {
-      const [x, y] = [Math.random() * Constants.MAP_SIZE, Math.random() * Constants.MAP_SIZE]
-      const zombie = new Zombie(x, y)
-      this.zombies.push(zombie)
+    for (let i = this.zombies.length; i < Constants.ZOMBIE_MAX_AMOUNT; i++) {
+      this.createZombie()
+    }
+  }
+
+  respawnZombies() {
+    const amountZombies = this.zombies.length
+    for (let i = 1; i < (Constants.ZOMBIE_MAX_AMOUNT / amountZombies) ** 2; i++) {
+      this.createZombie()
     }
   }
 

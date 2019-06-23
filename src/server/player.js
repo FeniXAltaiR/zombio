@@ -13,14 +13,14 @@ class Player extends ObjectClass {
     this.options = {
       weapons: {
         pistol: {
-          fire_cooldown: 0.25,
+          fire_cooldown: 0.45,
           radius: 5,
           speed: 500,
           damage: 5,
           distance: 250
         },
         rifle: {
-          fire_cooldown: 0.1,
+          fire_cooldown: 0.25,
           radius: 7,
           speed: 600,
           damage: 7,
@@ -34,7 +34,7 @@ class Player extends ObjectClass {
           distance: 200
         },
         machinegun: {
-          fire_cooldown: 0.05,
+          fire_cooldown: 0.2,
           radius: 3,
           speed: 800,
           damage: 5,
@@ -89,6 +89,10 @@ class Player extends ObjectClass {
   }
 
   createBullet() {
+    if (!this.weapon) {
+      return
+    }
+
     if (this.fireCooldown <= 0) {
       const {radius, speed, damage, distance} = this.weapon
 
