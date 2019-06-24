@@ -106,4 +106,6 @@ export function stopCapturingInput() {
   // Keyboard events
   window.removeEventListener('keydown', onKeyDownInput);
   window.removeEventListener('keyup', onKeyUpInput);
+  
+  onMouseUpInput()
 }

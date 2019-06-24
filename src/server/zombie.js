@@ -20,7 +20,7 @@ class Zombie extends ObjectClass {
           speed: 50
         },
         active: {
-          speed: 175
+          speed: 215
         }
       }
     }

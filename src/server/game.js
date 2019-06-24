@@ -179,11 +179,11 @@ class Game {
     })
     this.zombies = this.zombies.filter(zombie => !destroyedZombies.includes(zombie))
 
+    // Check collisions between zombies
     this.zombies.forEach(zombieA => {
       this.zombies.forEach(zombieB => {
         if (zombieA.distanceTo(zombieB) < Constants.ZOMBIE_RADIUS * 2 && zombieA.distanceTo(zombieB) !== 0) {
           const dir = Math.atan2(zombieA.x - zombieB.x, zombieB.y - zombieA.y)
-          // console.log(dir)
           zombieA.setDirection(dir)
           zombieB.setDirection(-dir)
           zombieA.update(dt)
