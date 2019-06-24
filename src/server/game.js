@@ -16,7 +16,7 @@ class Game {
     this.shouldSendUpdate = false
     setInterval(this.update.bind(this), 1000 / 60)
     this.createZombies()
-    setInterval(this.respawnZombies.bind(this), 1000)
+    // setInterval(this.respawnZombies.bind(this), 1000)
   }
 
   createZombie () {
@@ -26,13 +26,14 @@ class Game {
   }
 
   createZombies() {
-    for (let i = this.zombies.length; i < Constants.ZOMBIE_MAX_AMOUNT; i++) {
+    for (let i = this.zombies.length; i < Constants.ZOMBIE_MAX_AMOUNT / 4; i++) {
       this.createZombie()
     }
   }
 
   respawnZombies() {
     const amountZombies = this.zombies.length
+    // console.log(amountZombies)
     for (let i = 1; i < (Constants.ZOMBIE_MAX_AMOUNT / amountZombies) ** 2; i++) {
       this.createZombie()
     }
@@ -122,11 +123,13 @@ class Game {
         if (zombie.mode === 'active') {
           const dir = Math.atan2(player.x - zombie.x, zombie.y - player.y)
           zombie.setDirection(dir)
+          zombie.changeRotate(dir)
         }
 
         if (zombie.mode === 'passive' && zombie.changingDirection) {
           const dir = Math.atan2(Math.random() * 2 - 1, Math.random() * 2 - 1)
           zombie.setDirection(dir)
+          zombie.changeRotate(dir)
           zombie.resetChangingDirection()
         }
       })
@@ -175,6 +178,19 @@ class Game {
       }
     })
     this.zombies = this.zombies.filter(zombie => !destroyedZombies.includes(zombie))
+
+    this.zombies.forEach(zombieA => {
+      this.zombies.forEach(zombieB => {
+        if (zombieA.distanceTo(zombieB) < Constants.ZOMBIE_RADIUS * 2 && zombieA.distanceTo(zombieB) !== 0) {
+          const dir = Math.atan2(zombieA.x - zombieB.x, zombieB.y - zombieA.y)
+          // console.log(dir)
+          zombieA.setDirection(dir)
+          zombieB.setDirection(-dir)
+          zombieA.update(dt)
+          zombieB.update(dt)
+        }
+      })
+    })
 
     // Send a game update to each player every other time
     if (this.shouldSendUpdate) {

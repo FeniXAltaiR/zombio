@@ -57,9 +57,8 @@ class Zombie extends ObjectClass {
     }, 1000)
   }
 
-  setDirection(dir) {
-    super.setDirection(dir)
-    this.rotate = dir
+  changeRotate(rotate) {
+    this.rotate = rotate
   }
 
   serializeForUpdate() {
