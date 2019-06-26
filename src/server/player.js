@@ -127,6 +127,16 @@ class Player extends ObjectClass {
     this.score += xp
   }
 
+  takeBuff (options) {
+    Object.keys(options).forEach(option => {
+      this[option] += options[option]
+    })
+
+    if (this.hp > 100) {
+      this.hp = 100
+    }
+  }
+
   changeRotate(rotate) {
     this.rotate = rotate
   }

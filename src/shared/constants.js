@@ -13,6 +13,9 @@ module.exports = Object.freeze({
 
   SCORE_BULLET_HIT: 5,
 
+  THING_AMOUNT: 250,
+  THING_RADIUS: 15,
+
   MAP_SIZE: 10000,
   MSG_TYPES: {
     JOIN_GAME: 'join_game',

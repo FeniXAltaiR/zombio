@@ -6,7 +6,7 @@ import { getCurrentState } from './state';
 
 const Constants = require('../shared/constants');
 
-const { PLAYER_RADIUS, PLAYER_MAX_HP, BULLET_RADIUS, MAP_SIZE, ZOMBIE_RADIUS } = Constants;
+const { PLAYER_RADIUS, PLAYER_MAX_HP, BULLET_RADIUS, MAP_SIZE, ZOMBIE_RADIUS, THING_RADIUS } = Constants;
 
 // Get the canvas graphics context
 const canvas = document.getElementById('game-canvas');
@@ -24,7 +24,7 @@ function setCanvasDimensions() {
 window.addEventListener('resize', debounce(40, setCanvasDimensions));
 
 function render() {
-  const { me, others, bullets, zombies } = getCurrentState();
+  const { me, others, bullets, zombies, things } = getCurrentState();
   if (!me) {
     return;
   }
@@ -46,6 +46,9 @@ function render() {
 
   // Draw all zombies
   zombies.forEach(renderZombie.bind(null, me))
+
+  // Draw all things
+  things.forEach(renderThing.bind(null, me))
 }
 
 function renderBackground(x, y) {
@@ -128,6 +131,23 @@ function renderZombie(me, zombie) {
     -ZOMBIE_RADIUS,
     ZOMBIE_RADIUS * 2,
     ZOMBIE_RADIUS * 2,
+  )
+  context.restore()
+}
+
+function renderThing(me, thing) {
+  const {x, y} = thing
+  const canvasX = canvas.width / 2 + x - me.x
+  const canvasY = canvas.height / 2 + y - me.y
+
+  context.save()
+  context.translate(canvasX, canvasY)
+  context.drawImage(
+    getAsset('medkit.svg'),
+    -THING_RADIUS,
+    -THING_RADIUS,
+    THING_RADIUS * 2,
+    THING_RADIUS * 2,
   )
   context.restore()
 }

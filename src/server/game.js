@@ -1,9 +1,15 @@
 const Constants = require('../shared/constants');
 const Player = require('./player');
 const Zombie = require('./zombie');
+const Thing = require('./thing');
 const Collisions = require('./collisions');
 
-const {applyCollisionsPlayers, applyCollisionsZombies, applyCollisionsPlayersAndZombies} = Collisions
+const {
+  applyCollisionsPlayers,
+  applyCollisionsZombies,
+  applyCollisionsPlayersAndZombies,
+  applyCollisionsPlayersAndThings
+} = Collisions
 
 class Game {
   constructor(id) {
@@ -12,10 +18,12 @@ class Game {
     this.players = {}
     this.bullets = []
     this.zombies = []
+    this.things = []
     this.lastUpdateTime = Date.now()
     this.shouldSendUpdate = false
     setInterval(this.update.bind(this), 1000 / 60)
     this.createZombies()
+    this.createThings()
     // setInterval(this.respawnZombies.bind(this), 1000)
     this.options = {
       xp_levels: [0, 100, 250, 500, 750, Infinity]
@@ -39,6 +47,14 @@ class Game {
     // console.log(amountZombies)
     for (let i = 1; i < (Constants.ZOMBIE_MAX_AMOUNT / amountZombies) ** 2; i++) {
       this.createZombie()
+    }
+  }
+
+  createThings () {
+    for (let i = 0; i < Constants.THING_AMOUNT; i++) {
+      const [x, y] = [Math.random() * Constants.MAP_SIZE, Math.random() * Constants.MAP_SIZE]
+      const thing = new Thing(x, y, {hp: 100})
+      this.things.push(thing)
     }
   }
 
@@ -179,6 +195,12 @@ class Game {
     const destroyedZombies = []
     this.zombies.forEach(zombie => {
       if (zombie.hp <= 0) {
+        const rand = Math.random()
+        if (rand > 0.5) {
+          const {x, y} = zombie
+          const thing = new Thing(x, y, {hp: 100})
+          this.things.push(thing)
+        }
         destroyedZombies.push(zombie)
       }
     })
@@ -196,6 +218,10 @@ class Game {
         }
       })
     })
+
+    // Apply collisions between players and things
+    const takedThings = applyCollisionsPlayersAndThings(Object.values(this.players), this.things)
+    this.things = this.things.filter(thing => !takedThings.includes(thing))
 
     // Send a game update to each player every other time
     if (this.shouldSendUpdate) {
@@ -228,6 +254,9 @@ class Game {
     const nearbyZombies = this.zombies.filter(
       z => z.distanceTo(player) <= 1500
     );
+    const nearbyThings = this.things.filter(
+      t => t.distanceTo(player) <= 1500
+    );
 
     return {
       t: Date.now(),
@@ -235,6 +264,7 @@ class Game {
       others: nearbyPlayers.map(p => p.serializeForUpdate()),
       bullets: nearbyBullets.map(b => b.serializeForUpdate()),
       zombies: nearbyZombies.map(z => z.serializeForUpdate()),
+      things: nearbyThings.map(t => t.serializeForUpdate()),
       leaderboard,
     };
   }

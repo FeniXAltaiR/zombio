@@ -71,8 +71,25 @@ function applyCollisionsPlayersAndZombies(players, zombies) {
   return damagedPlayers;
 }
 
+function applyCollisionsPlayersAndThings(players, things) {
+  const takedThings = []
+  for (let i = 0; i < players.length; i++) {
+    const player = players[i]
+
+    for (let j = 0; j < things.length; j++) {
+      const thing = things[j]
+      if (player.distanceTo(thing) <= Constants.PLAYER_RADIUS + Constants.THING_RADIUS) {
+        player.takeBuff(thing.options)
+        takedThings.push(thing)
+      }
+    }
+  }
+  return takedThings
+}
+
 module.exports = {
   applyCollisionsPlayers,
   applyCollisionsZombies,
-  applyCollisionsPlayersAndZombies
+  applyCollisionsPlayersAndZombies,
+  applyCollisionsPlayersAndThings
 }
