@@ -5,9 +5,10 @@ const Constants = require('../shared/constants')
 const {ZOMBIE_RADIUS, ZOMBIE_DAMAGE, ZOMBIE_MAX_HP} = Constants
 
 class Zombie extends ObjectClass {
-  constructor(x, y, rotate = Math.random() * 2 * Math.PI) {
+  constructor(x, y, xp, rotate = Math.random() * 2 * Math.PI) {
     super(shortid(), x, y, rotate, 50)
     this.hp = ZOMBIE_MAX_HP
+    this.xp = xp
     this.damage = ZOMBIE_DAMAGE
     this.rotate = rotate
     // active or passive behavior

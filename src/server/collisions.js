@@ -22,7 +22,7 @@ function applyCollisionsPlayers(players, bullets) {
   return destroyedBullets;
 }
 
-function applyCollisionsZombies(zombies, bullets) {
+function applyCollisionsZombies(zombies, bullets, players) {
   const destroyedBullets = [];
   for (let i = 0; i < bullets.length; i++) {
     for (let j = 0; j < zombies.length; j++) {
@@ -33,6 +33,10 @@ function applyCollisionsZombies(zombies, bullets) {
       ) {
         destroyedBullets.push(bullet);
         zombie.takeBulletDamage(bullet);
+        if (zombie.hp <= 0) {
+          const xp = zombie.xp
+          players[bullet.parentID].onKilledZombie(xp)
+        }
         break
       }
     }

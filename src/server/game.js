@@ -17,11 +17,14 @@ class Game {
     setInterval(this.update.bind(this), 1000 / 60)
     this.createZombies()
     // setInterval(this.respawnZombies.bind(this), 1000)
+    this.options = {
+      xp_levels: [0, 100, 250, 500, 750, Infinity]
+    }
   }
 
   createZombie () {
     const [x, y] = [Math.random() * Constants.MAP_SIZE, Math.random() * Constants.MAP_SIZE]
-    const zombie = new Zombie(x, y)
+    const zombie = new Zombie(x, y, 250)
     this.zombies.push(zombie)
   }
 
@@ -146,7 +149,7 @@ class Game {
     this.bullets = this.bullets.filter(bullet => !destroyedBulletsPlayers.includes(bullet));
 
     // Apply collisions zombies
-    const destroyedBulletsZombies = applyCollisionsZombies(this.zombies, this.bullets)
+    const destroyedBulletsZombies = applyCollisionsZombies(this.zombies, this.bullets, this.players)
     destroyedBulletsZombies.forEach(b => {
       if (this.players[b.parentID]) {
         this.players[b.parentID].onDealtDamage()
@@ -168,6 +171,8 @@ class Game {
         socket.emit(Constants.MSG_TYPES.GAME_OVER);
         this.removePlayer(socket);
       }
+
+      player.updateLevel(this.options.xp_levels)
     });
 
     // Check if any zombies are destroyed
@@ -210,7 +215,7 @@ class Game {
     return Object.values(this.players)
       .sort((p1, p2) => p2.score - p1.score)
       .slice(0, 5)
-      .map(p => ({ username: p.username, score: Math.round(p.score) }));
+      .map(p => ({ username: p.username, score: Math.round(p.score), level: p.level }));
   }
 
   createUpdate(player, leaderboard) {

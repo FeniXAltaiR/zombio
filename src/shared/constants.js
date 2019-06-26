@@ -11,8 +11,7 @@ module.exports = Object.freeze({
   ZOMBIE_DAMAGE: 20,
   ZOMBIE_MAX_AMOUNT: 1000,
 
-  SCORE_BULLET_HIT: 20,
-  SCORE_PER_SECOND: 1,
+  SCORE_BULLET_HIT: 5,
 
   MAP_SIZE: 10000,
   MSG_TYPES: {

@@ -44,14 +44,12 @@ class Player extends ObjectClass {
     }
     this.weapon = null
     this.fireCooldown = 0
+    this.level = 1
   }
 
   // Returns a newly created bullet, or null.
   update(dt) {
     super.update(dt);
-
-    // Update score
-    this.score += dt * Constants.SCORE_PER_SECOND;
 
     // Update weapon
     this.updateWeapon()
@@ -88,6 +86,17 @@ class Player extends ObjectClass {
     }
   }
 
+  updateLevel (list) {
+    let level
+    list.find((xp, index) => {
+      if (this.score < xp) {
+        level = index
+        return true
+      }
+    })
+    this.level = level
+  }
+
   createBullet() {
     if (!this.weapon) {
       return
@@ -112,6 +121,10 @@ class Player extends ObjectClass {
 
   onDealtDamage() {
     this.score += Constants.SCORE_BULLET_HIT;
+  }
+
+  onKilledZombie(xp) {
+    this.score += xp
   }
 
   changeRotate(rotate) {
