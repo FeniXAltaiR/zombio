@@ -23,6 +23,7 @@ module.exports = Object.freeze({
     INPUT: 'input',
     ROTATE: 'rotate',
     CLICK: 'click',
+    LEVEL_UP: 'levelup',
     GAME_OVER: 'dead',
   },
 });

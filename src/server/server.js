@@ -70,6 +70,7 @@ io.on('connection', socket => {
   socket.on(Constants.MSG_TYPES.INPUT, handleInput);
   socket.on(Constants.MSG_TYPES.ROTATE, rotateInput);
   socket.on(Constants.MSG_TYPES.CLICK, createBullet);
+  socket.on(Constants.MSG_TYPES.LEVEL_UP, levelUp);
   socket.on('disconnect', onDisconnect);
 });
 
@@ -94,4 +95,8 @@ function rotateInput(rotate) {
 
 function createBullet() {
   games[id_channel].createBullet(this)
+}
+
+function levelUp(code) {
+  games[id_channel].levelUp(this, code)
 }

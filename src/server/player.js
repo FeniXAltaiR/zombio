@@ -45,6 +45,7 @@ class Player extends ObjectClass {
     this.weapon = null
     this.fireCooldown = 0
     this.level = 1
+    this.skill_points = 1
   }
 
   // Returns a newly created bullet, or null.
@@ -72,7 +73,7 @@ class Player extends ObjectClass {
     return null;
   }
 
-  updateWeapon () {
+  updateWeapon() {
     const score = this.score
     const weapons = this.options.weapons
     if (score > 75) {
@@ -86,7 +87,7 @@ class Player extends ObjectClass {
     }
   }
 
-  updateLevel (list) {
+  updateLevel(list) {
     let level
     list.find((xp, index) => {
       if (this.score < xp) {
@@ -127,13 +128,24 @@ class Player extends ObjectClass {
     this.score += xp
   }
 
-  takeBuff (options) {
+  takeBuff(options) {
     Object.keys(options).forEach(option => {
       this[option] += options[option]
     })
 
     if (this.hp > 100) {
       this.hp = 100
+    }
+  }
+
+  leftSkillPoints() {
+    return this.level - this.skill_points
+  }
+
+  levelUp(code) {
+    if (this.leftSkillPoints() > 0) {
+      this.speed += 50
+      this.skill_points += 1
     }
   }
 
@@ -146,7 +158,8 @@ class Player extends ObjectClass {
       ...(super.serializeForUpdate()),
       direction: this.direction,
       hp: this.hp,
-      rotate: this.rotate
+      rotate: this.rotate,
+      skill_points: this.leftSkillPoints()
     };
   }
 }

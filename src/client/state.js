@@ -22,7 +22,7 @@ export function processGameUpdate(update) {
   }
   gameUpdates.push(update);
 
-  updateLeaderboard(update.leaderboard);
+  updateLeaderboard(update.leaderboard, update.me);
 
   // Keep only one game update before the current server time
   const base = getBaseUpdate();
@@ -81,6 +81,10 @@ function interpolateObject(object1, object2, ratio) {
 
   const interpolated = {};
   Object.keys(object1).forEach(key => {
+    if (key === 'skill_points') {
+      return
+    }
+
     if (key === 'rotate') {
       interpolated[key] = interpolateDirection(object1[key], object2[key], ratio);
     } else {

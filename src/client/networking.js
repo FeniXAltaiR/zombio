@@ -44,3 +44,7 @@ export const changeRotate = throttle(20, rotate => {
 export const createBullet = () => {
   socket.emit(Constants.MSG_TYPES.CLICK)
 }
+
+export const levelUp = code => {
+  socket.emit(Constants.MSG_TYPES.LEVEL_UP)
+}

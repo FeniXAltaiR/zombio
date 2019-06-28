@@ -1,6 +1,6 @@
 // Learn more about this file at:
 // https://victorzhou.com/blog/build-an-io-game-part-1/#6-client-input-%EF%B8%8F
-import { updateDirection, changeRotate, createBullet } from './networking';
+import { updateDirection, changeRotate, createBullet, levelUp } from './networking';
 
 function getDirection(x, y) {
   return Math.atan2(x - window.innerWidth / 2, window.innerHeight / 2 - y)
@@ -38,6 +38,11 @@ const values_keys = {
 
 function onKeyDownInput (e) {
   if (e.keyCode === 116) {
+    return
+  }
+
+  if ([49, 50, 51, 52, 53, 54, 55, 56].includes(e.keyCode)) {
+    levelUp(e.keyCode)
     return
   }
 
@@ -106,6 +111,6 @@ export function stopCapturingInput() {
   // Keyboard events
   window.removeEventListener('keydown', onKeyDownInput);
   window.removeEventListener('keyup', onKeyUpInput);
-  
+
   onMouseUpInput()
 }

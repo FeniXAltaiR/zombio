@@ -100,6 +100,12 @@ class Game {
     }
   }
 
+  levelUp(socket, code) {
+    if (this.players[socket.id]) {
+      this.players[socket.id].levelUp(code)
+    }
+  }
+
   getOnlinePlayers() {
     return Object.keys(this.players).length
   }
