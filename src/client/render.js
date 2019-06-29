@@ -10,7 +10,7 @@ const { PLAYER_RADIUS, PLAYER_MAX_HP, BULLET_RADIUS, MAP_SIZE, ZOMBIE_RADIUS, TH
 
 // Get the canvas graphics context
 const canvas = document.getElementById('game-canvas');
-const context = canvas.getContext('2d');
+const context = canvas.getContext('2d', {alpha: false});
 setCanvasDimensions();
 
 function setCanvasDimensions() {
@@ -56,16 +56,23 @@ function renderBackground(x, y) {
   context.fillRect(0, 0, canvas.width, canvas.height)
   context.fillStyle = 'green';
   context.fillRect(canvas.width / 2 - x, canvas.height / 2 - y, MAP_SIZE, MAP_SIZE);
-  context.fillStyle = 'yellow';
+  context.fillStyle = '#DDB221';
   context.fillRect(canvas.width / 2 - x, canvas.height / 2 - y, MAP_SIZE * 0.75, MAP_SIZE * 0.75);
-  context.fillStyle = 'violet';
+  context.fillStyle = '#9147B7';
   context.fillRect(canvas.width / 2 - x, canvas.height / 2 - y, MAP_SIZE * 0.5, MAP_SIZE * 0.5);
-  context.fillStyle = 'red';
+  context.fillStyle = '#9A4430';
   context.fillRect(canvas.width / 2 - x, canvas.height / 2 - y, MAP_SIZE * 0.25, MAP_SIZE * 0.25);
   context.strokeStyle = 'rgba(0, 0, 0, .2)'
-  for (let i = 0; i < Constants.MAP_SIZE; i += 50) {
-    for (let k = 0; k < Constants.MAP_SIZE; k += 50) {
-      context.strokeRect(canvas.width / 2 - x + i, canvas.height / 2 - y + k, 50, 50)
+  for (let i = 0; i < MAP_SIZE; i += 50) {
+    for (let k = 0; k < MAP_SIZE; k += 50) {
+      if (
+        x - i < (canvas.width / 2 + 100) &&
+        x - i > -(canvas.width / 2 + 100) &&
+        y - k < (canvas.height / 2 + 100) &&
+        y - k > -(canvas.height / 2 + 100)
+      ) {
+        context.strokeRect(canvas.width / 2 - x + i, canvas.height / 2 - y + k, 50, 50)
+      }
     }
   }
 }
