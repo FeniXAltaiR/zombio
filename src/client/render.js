@@ -128,12 +128,13 @@ function renderZombie(me, zombie) {
   const {x, y, direction, hp, rotate} = zombie
   const canvasX = canvas.width / 2 + x - me.x;
   const canvasY = canvas.height / 2 + y - me.y;
+  const icon = zombie.icon.replace('NaN', '')
 
   context.save()
   context.translate(canvasX, canvasY);
   context.rotate(rotate)
   context.drawImage(
-    getAsset('zombie.svg'),
+    getAsset(icon),
     -ZOMBIE_RADIUS,
     -ZOMBIE_RADIUS,
     ZOMBIE_RADIUS * 2,

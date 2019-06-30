@@ -111,17 +111,18 @@ class Player extends ObjectClass {
   updateWeapon() {
     const score = this.score
     const weapons = this.options.weapons
-    if (score > 100) {
-      this.weapon = weapons.uzi
-    } else if (score > 75) {
-      this.weapon = weapons.machinegun
-    } else if (score > 50) {
-      this.weapon = weapons.shotgun
-    } else if (score > 25) {
-      this.weapon = weapons.rifle
-    } else {
-      this.weapon = weapons.pistol
-    }
+    this.weapon = weapons.auto_shotgun
+    // if (score > 100) {
+    //   this.weapon = weapons.uzi
+    // } else if (score > 75) {
+    //   this.weapon = weapons.machinegun
+    // } else if (score > 50) {
+    //   this.weapon = weapons.shotgun
+    // } else if (score > 25) {
+    //   this.weapon = weapons.rifle
+    // } else {
+    //   this.weapon = weapons.pistol
+    // }
   }
 
   updateLevel(list) {

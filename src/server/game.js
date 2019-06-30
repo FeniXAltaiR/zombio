@@ -30,24 +30,61 @@ class Game {
     }
   }
 
-  createZombie () {
-    const [x, y] = [Math.random() * Constants.MAP_SIZE, Math.random() * Constants.MAP_SIZE]
-    const zombie = new Zombie(x, y, 250)
+  createZombie (x, y, type) {
+    // const [x, y] = [Math.random() * Constants.MAP_SIZE, Math.random() * Constants.MAP_SIZE]
+    const zombie = new Zombie(x, y, type)
     this.zombies.push(zombie)
   }
 
   createZombies() {
-    for (let i = this.zombies.length; i < Constants.ZOMBIE_MAX_AMOUNT / 4; i++) {
-      this.createZombie()
+    for (let i = 0; i < Constants.ZOMBIE_EASY_MAX_AMOUNT / 4; i++) {
+      const [x, y] = this.respawnCoords(1, 0.75, 0.25)
+      this.createZombie(x, y, 'easy')
+    }
+    for (let i = 0; i < Constants.ZOMBIE_NORMAL_MAX_AMOUNT / 4; i++) {
+      const [x, y] = this.respawnCoords(0.75, 0.5, 0.25)
+      this.createZombie(x, y, 'normal')
+    }
+    for (let i = 0; i < Constants.ZOMBIE_HARD_MAX_AMOUNT / 4; i++) {
+      const [x, y] = this.respawnCoords(0.5, 0.25, 0.25)
+      this.createZombie(x, y, 'hard')
     }
   }
 
   respawnZombies() {
-    const amountZombies = this.zombies.length
-    // console.log(amountZombies)
-    for (let i = 1; i < (Constants.ZOMBIE_MAX_AMOUNT / amountZombies) ** 2; i++) {
-      this.createZombie()
+    const amountZombiesEasy = this.zombies.filter(zombie => zombie.type.name === 'easy')
+    for (let i = 1; i < (Constants.ZOMBIE_EASY_MAX_AMOUNT / amountZombiesEasy) ** 2; i++) {
+      const [x, y] = this.respawnCoords(1, 0.75, 0.25)
+      this.createZombie(x, y, 'easy')
     }
+
+    const amountZombiesNormal = this.zombies.filter(zombie => zombie.type.name === 'normal')
+    for (let i = 1; i < (Constants.ZOMBIE_NORMAL_MAX_AMOUNT / amountZombiesNormal) ** 2; i++) {
+      const [x, y] = this.respawnCoords(0.75, 0.5, 0.25)
+      this.createZombie(x, y, 'normal')
+    }
+
+    const amountZombiesHard = this.zombies.filter(zombie => zombie.type.name === 'hard')
+    for (let i = 1; i < (Constants.ZOMBIE_HARD_MAX_AMOUNT / amountZombiesHard) ** 2; i++) {
+      const [x, y] = this.respawnCoords(0.5, 0.25, 0.25)
+      this.createZombie(x, y, 'hard')
+    }
+  }
+
+  respawnCoords (diff1, diff2, diff) {
+    const rand = Math.random()
+    let x
+    let y
+
+    if (rand < 0.5) {
+      x = Constants.MAP_SIZE * (Math.random() * diff1)
+      y = Constants.MAP_SIZE * (diff2 + Math.random() * diff)
+    } else {
+      x = Constants.MAP_SIZE * (diff2 + Math.random() * diff)
+      y = Constants.MAP_SIZE * (Math.random() * diff1)
+    }
+
+    return [x, y]
   }
 
   createThings () {
@@ -61,18 +98,7 @@ class Game {
   addPlayer(socket, username) {
     this.sockets[socket.id] = socket;
 
-    // Generate a position to start this player at.
-    const rand = Math.random()
-    let x
-    let y
-
-    if (rand < 0.5) {
-      x = Constants.MAP_SIZE * Math.random()
-      y = Constants.MAP_SIZE * (0.75 + Math.random() * 0.25)
-    } else {
-      x = Constants.MAP_SIZE * (0.75 + Math.random() * 0.25)
-      y = Constants.MAP_SIZE * Math.random()
-    }
+    const [x, y] = this.respawnCoords(1, 0.75, 0.25)
     
     this.players[socket.id] = new Player(socket.id, username, x, y);
   }
@@ -141,7 +167,7 @@ class Game {
     this.zombies.forEach(zombie => {
       Object.keys(this.sockets).forEach(socket => {
         const player = this.players[socket]
-        if (zombie.distanceTo(player) < 500) {
+        if (zombie.distanceTo(player) < zombie.agressiveDistance) {
           zombie.setMode('active')
         } else {
           zombie.setMode('passive')
@@ -204,7 +230,7 @@ class Game {
     this.zombies.forEach(zombie => {
       if (zombie.hp <= 0) {
         const rand = Math.random()
-        if (rand > 0.5) {
+        if (rand > 0.95) {
           const {x, y} = zombie
           const thing = new Thing(x, y, {hp: 100})
           this.things.push(thing)

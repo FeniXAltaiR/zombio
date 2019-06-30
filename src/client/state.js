@@ -81,8 +81,8 @@ function interpolateObject(object1, object2, ratio) {
 
   const interpolated = {};
   Object.keys(object1).forEach(key => {
-    if (key === 'skill_points') {
-      return
+    if (['skill_points', 'icon'].includes(key)) {
+      interpolated[key] = object1[key]
     }
 
     if (key === 'rotate') {
