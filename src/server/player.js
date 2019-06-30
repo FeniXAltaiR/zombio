@@ -9,36 +9,71 @@ class Player extends ObjectClass {
     this.hp = Constants.PLAYER_MAX_HP;
     this.score = 0;
     this.rotate = rotate
-    this.bullet = null
+    this.bullets = []
     this.options = {
       weapons: {
         pistol: {
+          name: 'pistol',
           fire_cooldown: 0.45,
           radius: 5,
           speed: 500,
           damage: 5,
-          distance: 250
+          distance: 400,
+          noise: 0.3
         },
-        rifle: {
-          fire_cooldown: 0.25,
-          radius: 7,
-          speed: 600,
-          damage: 7,
-          distance: 400
-        },
-        shotgun: {
-          fire_cooldown: 0.5,
-          radius: 15,
-          speed: 400,
-          damage: 20,
-          distance: 200
-        },
-        machinegun: {
-          fire_cooldown: 0.2,
+        uzi: {
+          name: 'uzi',
+          fire_cooldown: 0.75,
           radius: 3,
           speed: 800,
+          damage: 10,
+          distance: 500,
+          noise: 0.4
+        },
+        machinegun: {
+          name: 'machinegun',
+          fire_cooldown: 0.2,
+          radius: 5,
+          speed: 800,
           damage: 5,
-          distance: 500
+          distance: 600,
+          noise: 0.3
+        },
+        shotgun: {
+          name: 'shotgun',
+          fire_cooldown: 0.5,
+          radius: 7,
+          speed: 400,
+          damage: 20,
+          distance: 200,
+          noise: 0
+        },
+        auto_shotgun: {
+          name: 'auto_shotgun',
+          fire_cooldown: 0.8,
+          radius: 7,
+          speed: 400,
+          damage: 20,
+          distance: 350,
+          noise: 0
+        },
+        rifle: {
+          name: 'rifle',
+          fire_cooldown: 0.35,
+          radius: 5,
+          speed: 600,
+          damage: 7,
+          distance: 400,
+          noise: 0.2
+        },
+        sniper_rifle: {
+          name: 'sniper_rifle',
+          fire_cooldown: 1,
+          radius: 5,
+          speed: 1000,
+          damage: 50,
+          distance: 1000,
+          noise: 0
         }
       }
     }
@@ -64,10 +99,10 @@ class Player extends ObjectClass {
       this.fireCooldown -= dt
     }
 
-    if (this.bullet) {
-      const newBullet = this.bullet
-      this.bullet = null
-      return newBullet
+    if (this.bullets.length) {
+      const newBullets = this.bullets
+      this.bullets = []
+      return newBullets
     }
 
     return null;
@@ -76,7 +111,9 @@ class Player extends ObjectClass {
   updateWeapon() {
     const score = this.score
     const weapons = this.options.weapons
-    if (score > 75) {
+    if (score > 100) {
+      this.weapon = weapons.uzi
+    } else if (score > 75) {
       this.weapon = weapons.machinegun
     } else if (score > 50) {
       this.weapon = weapons.shotgun
@@ -104,11 +141,34 @@ class Player extends ObjectClass {
     }
 
     if (this.fireCooldown <= 0) {
-      const {radius, speed, damage, distance} = this.weapon
+      const {radius, speed, damage, distance, noise} = this.weapon
 
-      // this.fireCooldown = Constants.PLAYER_FIRE_COOLDOWN
       this.fireCooldown = this.weapon.fire_cooldown
-      this.bullet = new Bullet(this.id, this.x, this.y, this.rotate, radius, speed, damage, distance)
+      if (this.weapon.name === 'auto_shotgun') {
+        this.bullets.push(
+          new Bullet(this.id, this.x, this.y, this.rotate - 0.2, radius, speed, damage, distance),
+          new Bullet(this.id, this.x, this.y, this.rotate - 0.1, radius, speed, damage, distance),
+          new Bullet(this.id, this.x, this.y, this.rotate, radius, speed, damage, distance),
+          new Bullet(this.id, this.x, this.y, this.rotate + 0.1, radius, speed, damage, distance),
+          new Bullet(this.id, this.x, this.y, this.rotate + 0.2, radius, speed, damage, distance)
+        )
+      } else if (this.weapon.name === 'shotgun') {
+        this.bullets.push(
+          new Bullet(this.id, this.x, this.y, this.rotate - 0.15, radius, speed, damage, distance),
+          new Bullet(this.id, this.x, this.y, this.rotate, radius, speed, damage, distance),
+          new Bullet(this.id, this.x, this.y, this.rotate + 0.15, radius, speed, damage, distance)
+        )
+      } else if (this.weapon.name === 'uzi') {
+        for (let i = 0; i < 3; i++) {
+          const rotate = this.rotate + ((Math.random() - 0.5) * noise)
+          setTimeout(() => {
+            this.bullets.push(new Bullet(this.id, this.x, this.y, rotate, radius, speed, damage, distance))
+          }, i * 100)
+        }
+      } else {
+        const rotate = this.rotate + ((Math.random() - 0.5) * noise)
+        this.bullets.push(new Bullet(this.id, this.x, this.y, rotate, radius, speed, damage, distance))
+      }
     }
   }
 

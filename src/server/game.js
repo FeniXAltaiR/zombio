@@ -128,10 +128,12 @@ class Game {
 
     // Update each player
     Object.keys(this.sockets).forEach(playerID => {
-      const player = this.players[playerID];
-      const newBullet = player.update(dt);
-      if (newBullet) {
-        this.bullets.push(newBullet);
+      const player = this.players[playerID]
+      const newBullets = player.update(dt)
+      if (newBullets) {
+        newBullets.forEach(newBullet => {
+          this.bullets.push(newBullet)
+        })
       }
     });
 
