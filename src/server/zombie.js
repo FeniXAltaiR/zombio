@@ -128,6 +128,7 @@ class Zombie extends ObjectClass {
       ...(super.serializeForUpdate()),
       direction: this.direction,
       hp: this.hp,
+      max_hp: this.type.hp,
       rotate: this.rotate,
       icon: `zombie_${this.type.name}.svg`
     }

@@ -125,7 +125,7 @@ function renderBullet(me, bullet) {
 }
 
 function renderZombie(me, zombie) {
-  const {x, y, direction, hp, rotate} = zombie
+  const {x, y, direction, hp, max_hp, rotate} = zombie
   const canvasX = canvas.width / 2 + x - me.x;
   const canvasY = canvas.height / 2 + y - me.y;
   const icon = zombie.icon.replace('NaN', '')
@@ -141,6 +141,22 @@ function renderZombie(me, zombie) {
     ZOMBIE_RADIUS * 2,
   )
   context.restore()
+
+  // Draw health bar
+  context.fillStyle = 'white';
+  context.fillRect(
+    canvasX - ZOMBIE_RADIUS,
+    canvasY + ZOMBIE_RADIUS + 8,
+    ZOMBIE_RADIUS * 2,
+    2,
+  );
+  context.fillStyle = 'red';
+  context.fillRect(
+    canvasX - ZOMBIE_RADIUS + ZOMBIE_RADIUS * 2 * zombie.hp / zombie.max_hp,
+    canvasY + ZOMBIE_RADIUS + 8,
+    ZOMBIE_RADIUS * 2 * (1 - zombie.hp / zombie.max_hp),
+    2,
+  );
 }
 
 function renderThing(me, thing) {
