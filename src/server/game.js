@@ -38,50 +38,50 @@ class Game {
 
   createZombies() {
     for (let i = 0; i < Constants.ZOMBIE_EASY_MAX_AMOUNT / 4; i++) {
-      const [x, y] = this.respawnCoords(1, 0.75, 0.25)
+      const [x, y] = this.respawnCoords(1, 0.75)
       this.createZombie(x, y, 'easy')
     }
     for (let i = 0; i < Constants.ZOMBIE_NORMAL_MAX_AMOUNT / 4; i++) {
-      const [x, y] = this.respawnCoords(0.75, 0.5, 0.25)
+      const [x, y] = this.respawnCoords(0.75, 0.5)
       this.createZombie(x, y, 'normal')
     }
     for (let i = 0; i < Constants.ZOMBIE_HARD_MAX_AMOUNT / 4; i++) {
-      const [x, y] = this.respawnCoords(0.5, 0.25, 0.25)
+      const [x, y] = this.respawnCoords(0.5, 0.25)
       this.createZombie(x, y, 'hard')
     }
   }
 
   respawnZombies() {
     const amountZombiesEasy = this.zombies.filter(zombie => zombie.type.name === 'easy')
-    for (let i = 1; i < (Constants.ZOMBIE_EASY_MAX_AMOUNT / amountZombiesEasy) ** 2; i++) {
-      const [x, y] = this.respawnCoords(1, 0.75, 0.25)
+    for (let i = 1; i < (Constants.ZOMBIE_EASY_MAX_AMOUNT / amountZombiesEasy.length) ** 2; i++) {
+      const [x, y] = this.respawnCoords(1, 0.75)
       this.createZombie(x, y, 'easy')
     }
 
     const amountZombiesNormal = this.zombies.filter(zombie => zombie.type.name === 'normal')
-    for (let i = 1; i < (Constants.ZOMBIE_NORMAL_MAX_AMOUNT / amountZombiesNormal) ** 2; i++) {
-      const [x, y] = this.respawnCoords(0.75, 0.5, 0.25)
+    for (let i = 1; i < (Constants.ZOMBIE_NORMAL_MAX_AMOUNT / amountZombiesNormal.length) ** 2; i++) {
+      const [x, y] = this.respawnCoords(0.75, 0.5)
       this.createZombie(x, y, 'normal')
     }
 
     const amountZombiesHard = this.zombies.filter(zombie => zombie.type.name === 'hard')
-    for (let i = 1; i < (Constants.ZOMBIE_HARD_MAX_AMOUNT / amountZombiesHard) ** 2; i++) {
-      const [x, y] = this.respawnCoords(0.5, 0.25, 0.25)
+    for (let i = 1; i < (Constants.ZOMBIE_HARD_MAX_AMOUNT / amountZombiesHard.length) ** 2; i++) {
+      const [x, y] = this.respawnCoords(0.5, 0.25)
       this.createZombie(x, y, 'hard')
     }
   }
 
-  respawnCoords (diff1, diff2, diff) {
+  respawnCoords (boundsA, boundsB) {
     const rand = Math.random()
     let x
     let y
 
     if (rand < 0.5) {
-      x = Constants.MAP_SIZE * (Math.random() * diff1)
-      y = Constants.MAP_SIZE * (diff2 + Math.random() * diff)
+      x = Constants.MAP_SIZE * (Math.random() * boundsA)
+      y = Constants.MAP_SIZE * (boundsB + Math.random() * 0.25)
     } else {
-      x = Constants.MAP_SIZE * (diff2 + Math.random() * diff)
-      y = Constants.MAP_SIZE * (Math.random() * diff1)
+      x = Constants.MAP_SIZE * (boundsB + Math.random() * 0.25)
+      y = Constants.MAP_SIZE * (Math.random() * boundsA)
     }
 
     return [x, y]
@@ -98,7 +98,7 @@ class Game {
   addPlayer(socket, username) {
     this.sockets[socket.id] = socket;
 
-    const [x, y] = this.respawnCoords(1, 0.75, 0.25)
+    const [x, y] = this.respawnCoords(1, 0.75)
     
     this.players[socket.id] = new Player(socket.id, username, x, y);
   }
