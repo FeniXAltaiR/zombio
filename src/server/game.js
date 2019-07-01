@@ -26,7 +26,7 @@ class Game {
     this.createThings()
     // setInterval(this.respawnZombies.bind(this), 1000)
     this.options = {
-      xp_levels: [0, 100, 250, 500, 750, Infinity]
+      xp_levels: [0, 1000, 2500, 5000, 7500, 1000000]
     }
   }
 
@@ -275,7 +275,7 @@ class Game {
     return Object.values(this.players)
       .sort((p1, p2) => p2.score - p1.score)
       .slice(0, 5)
-      .map(p => ({ username: p.username, score: Math.round(p.score), level: p.level }));
+      .map(p => ({ username: p.username, score: Math.round(p.score), level: p.experience.level }));
   }
 
   createUpdate(player, leaderboard) {

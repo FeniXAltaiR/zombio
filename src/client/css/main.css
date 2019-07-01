@@ -109,6 +109,29 @@ button:focus {
   text-align: center;
 }
 
+.experience {
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  padding: 0px;
+}
+
+.experience .experience__current {
+  /*background-image: linear-gradient(to right, red 0%, red 25%, green 25%, green);*/
+  border: 1px solid black;
+  border-radius: 15px;
+  width: 350px;
+  display: flex;
+  justify-content: center;
+}
+
+.experience p {
+  font-weight: bold;
+  color: #cccccc;
+  margin-bottom: 0;
+}
+
 @media screen and (max-width: 640px) {
   h1 {
     font-size: 2rem;

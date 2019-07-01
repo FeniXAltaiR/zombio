@@ -6,6 +6,7 @@ import { startCapturingInput, stopCapturingInput } from './input';
 import { downloadAssets } from './assets';
 import { initState } from './state';
 import { setLeaderboardHidden } from './leaderboard';
+import { setExperienceHidden } from './experience';
 
 // I'm using Bootstrap here for convenience, but I wouldn't recommend actually doing this for a real
 // site. It's heavy and will slow down your site - either only use a subset of Bootstrap, or just
@@ -31,6 +32,7 @@ Promise.all([
     startCapturingInput();
     startRendering();
     setLeaderboardHidden(false);
+    setExperienceHidden(false)
   };
 }).catch(console.error);
 
@@ -39,4 +41,5 @@ function onGameOver() {
   stopRendering();
   playMenu.classList.remove('hidden');
   setLeaderboardHidden(true);
+  setExperienceHidden(true)
 }

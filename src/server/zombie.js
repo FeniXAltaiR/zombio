@@ -46,7 +46,8 @@ class Zombie extends ObjectClass {
     this.agressiveDistance = 500
     this.type = options.types[type]
     this.changingDirection = true
-    this.bite = true
+    this.bite = false
+    this.cooldownBite()
   }
 
   update(dt) {

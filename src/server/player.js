@@ -79,8 +79,12 @@ class Player extends ObjectClass {
     }
     this.weapon = null
     this.fireCooldown = 0
-    this.level = 1
-    this.skill_points = 1
+    this.experience = {
+      level: 1,
+      nextLevel: 0,
+      skill_points: 1,
+      currentScore: 0
+    }
   }
 
   // Returns a newly created bullet, or null.
@@ -126,14 +130,18 @@ class Player extends ObjectClass {
   }
 
   updateLevel(list) {
-    let level
+    let level, nextLevel, score
     list.find((xp, index) => {
       if (this.score < xp) {
         level = index
+        nextLevel = list[index]
+        score = this.score - list[index - 1]
         return true
       }
     })
-    this.level = level
+    this.experience.level = level
+    this.experience.nextLevel = nextLevel
+    this.experience.currentScore = score
   }
 
   createBullet() {
@@ -200,13 +208,13 @@ class Player extends ObjectClass {
   }
 
   leftSkillPoints() {
-    return this.level - this.skill_points
+    return this.experience.level - this.experience.skill_points
   }
 
   levelUp(code) {
     if (this.leftSkillPoints() > 0) {
       this.speed += 50
-      this.skill_points += 1
+      this.experience.skill_points += 1
     }
   }
 
@@ -220,7 +228,8 @@ class Player extends ObjectClass {
       direction: this.direction,
       hp: this.hp,
       rotate: this.rotate,
-      skill_points: this.leftSkillPoints()
+      skill_points: this.leftSkillPoints(),
+      experience: this.experience
     };
   }
 }
