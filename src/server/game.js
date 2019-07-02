@@ -32,12 +32,13 @@ class Game {
     this.shouldSendUpdate = false
     setInterval(this.update.bind(this), 1000 / 60)
     this.createZombies()
-    this.createThings()
     // setInterval(this.respawnZombies.bind(this), 1000)
     this.options = {
       // xp_levels: [0, 1000, 2500, 5000, 7500, 1000000]
-      xp_levels: createXpList()
+      xp_levels: createXpList(),
+      things: ['hp', 'speed', 'accuracy']
     }
+    this.createThings()
   }
 
   createZombie (x, y, type) {
@@ -99,8 +100,10 @@ class Game {
 
   createThings () {
     for (let i = 0; i < Constants.THING_AMOUNT; i++) {
+      const rand = Math.floor(Math.random() * this.options.things.length)
+      const name = this.options.things[rand]
       const [x, y] = [Math.random() * Constants.MAP_SIZE, Math.random() * Constants.MAP_SIZE]
-      const thing = new Thing(x, y, {hp: 100})
+      const thing = new Thing(x, y, {name, icon: `thing_${name}.svg`})
       this.things.push(thing)
     }
   }
@@ -242,7 +245,7 @@ class Game {
         const rand = Math.random()
         if (rand > 0.95) {
           const {x, y} = zombie
-          const thing = new Thing(x, y, {hp: 100})
+          const thing = new Thing(x, y, {name: 'hp', icon: `thing_hp.svg`})
           this.things.push(thing)
         }
         destroyedZombies.push(zombie)

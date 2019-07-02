@@ -4,8 +4,10 @@ const ASSET_NAMES = [
   'zombie_easy.svg',
   'zombie_normal.svg',
   'zombie_hard.svg',
-  'medkit.svg',
-  'grass.svg'
+  'grass.svg',
+  'thing_hp.svg',
+  'thing_speed.svg',
+  'thing_accuracy.svg'
 ];
 
 const assets = {};

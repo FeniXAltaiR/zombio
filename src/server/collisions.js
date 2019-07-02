@@ -79,7 +79,7 @@ function applyCollisionsPlayersAndThings(players, things) {
     for (let j = 0; j < things.length; j++) {
       const thing = things[j]
       if (player.distanceTo(thing) <= Constants.PLAYER_RADIUS + Constants.THING_RADIUS) {
-        player.takeBuff(thing.options)
+        player.takeBuff(thing.options.name)
         takedThings.push(thing)
       }
     }

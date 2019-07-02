@@ -6,6 +6,13 @@ class Thing extends ObjectClass {
     super(shortid(), x, y, null, 0)
     this.options = options
   }
+
+  serializeForUpdate() {
+    return {
+      ...super.serializeForUpdate(),
+      icon: this.options.icon
+    }
+  }
 }
 
 module.exports = Thing

@@ -43,6 +43,40 @@ class Player extends ObjectClass {
         hp: 1,
         accuracy: 1
       },
+      buffs: {
+        hp: (() => {
+          const {hp} = this.options.passive_skills
+          this.hp += 100
+
+          if (this.hp > this.options.parameters.hp * hp) {
+            this.hp = this.options.parameters.hp * hp
+          }
+        }),
+        speed: (() => {
+          this.options.passive_skills.speed += 1
+          this.updateSpeed()
+
+          setTimeout(() => {
+            this.options.passive_skills.speed -= 1
+            this.updateSpeed()
+          }, 5000)
+        }),
+        accuracy: (() => {
+          const {accuracy} = this.options.passive_skills
+          let diff = 0.5
+
+          if (accuracy - diff < 0) {
+            diff = accuracy
+            this.options.passive_skills.accuracy -= diff
+          } else {
+            this.options.passive_skills.accuracy -= diff
+          }
+
+          setTimeout(() => {
+            this.options.passive_skills.accuracy += diff
+          }, 5000)
+        })
+      },
       weapons: {
         pistol: {
           name: 'pistol',
@@ -221,19 +255,17 @@ class Player extends ObjectClass {
     this.score += xp
   }
 
-  takeBuff(buffs) {
-    const {speed, hp} = this.options.passive_skills
-    Object.keys(buffs).forEach(buff => {
-      this[buff] += buffs[buff]
-    })
-
-    if (this.hp > this.options.parameters.hp * hp) {
-      this.hp = this.options.parameters.hp * hp
-    }
+  takeBuff(name) {
+    const buff = this.options.buffs[name]
+    buff()
   }
 
   leftSkillPoints() {
     return this.experience.level - this.experience.skill_points
+  }
+
+  updateSpeed() {
+    this.speed = this.options.passive_skills.speed * this.options.parameters.speed
   }
 
   levelUp(code) {
@@ -244,7 +276,7 @@ class Player extends ObjectClass {
       }),
       '50': (() => {
         this.options.passive_skills.speed += 0.25
-        this.speed = this.options.passive_skills.speed * this.options.parameters.speed
+        this.updateSpeed()
         this.options.used_skill_points.speed.value += 1
       }),
       '51': (() => {

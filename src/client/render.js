@@ -162,14 +162,14 @@ function renderZombie(me, zombie) {
 }
 
 function renderThing(me, thing) {
-  const {x, y} = thing
+  const {x, y, icon} = thing
   const canvasX = canvas.width / 2 + x - me.x
   const canvasY = canvas.height / 2 + y - me.y
 
   context.save()
   context.translate(canvasX, canvasY)
   context.drawImage(
-    getAsset('medkit.svg'),
+    getAsset(icon),
     -THING_RADIUS,
     -THING_RADIUS,
     THING_RADIUS * 2,
