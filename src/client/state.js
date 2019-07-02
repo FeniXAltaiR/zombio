@@ -2,6 +2,7 @@
 // https://victorzhou.com/blog/build-an-io-game-part-1/#7-client-state
 import { updateLeaderboard } from './leaderboard';
 import { udpateExpBar } from './experience';
+import { updatePassiveSkillsBar } from './passive-skills';
 
 // The "current" state will always be RENDER_DELAY ms behind server time.
 // This makes gameplay smoother and lag less noticeable.
@@ -25,6 +26,7 @@ export function processGameUpdate(update) {
 
   updateLeaderboard(update.leaderboard, update.me);
   udpateExpBar(update.me)
+  updatePassiveSkillsBar(update.me)
 
   // Keep only one game update before the current server time
   const base = getBaseUpdate();
@@ -85,13 +87,9 @@ function interpolateObject(object1, object2, ratio) {
   Object.keys(object1).forEach(key => {
     if (typeof key === 'object') {
       interpolated[key] = object1[key]
-    }
-
-    if (['skill_points', 'icon'].includes(key)) {
+    } else if (['skill_points', 'icon', 'passive_skills', 'parameters', 'used_skill_points'].includes(key)) {
       interpolated[key] = object1[key]
-    }
-
-    if (key === 'rotate') {
+    } else if (key === 'rotate') {
       interpolated[key] = interpolateDirection(object1[key], object2[key], ratio);
     } else {
       interpolated[key] = object1[key] + (object2[key] - object1[key]) * ratio;

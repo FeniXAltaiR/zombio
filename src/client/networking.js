@@ -46,5 +46,5 @@ export const createBullet = () => {
 }
 
 export const levelUp = code => {
-  socket.emit(Constants.MSG_TYPES.LEVEL_UP)
+  socket.emit(Constants.MSG_TYPES.LEVEL_UP, code)
 }

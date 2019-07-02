@@ -1,16 +1,48 @@
 const ObjectClass = require('./object');
 const Bullet = require('./bullet');
 const Constants = require('../shared/constants');
+// const options_player = require('./options-player')
 
 class Player extends ObjectClass {
   constructor(id, username, x, y, rotate = Math.random() * 2 * Math.PI) {
-    super(id, x, y, null, Constants.PLAYER_SPEED);
+    super(id, x, y, null, 200);
     this.username = username;
-    this.hp = Constants.PLAYER_MAX_HP;
-    this.score = 0;
+    this.hp = 100;
+    this.score = 15000;
     this.rotate = rotate
     this.bullets = []
+    this.weapon = null
+    this.fireCooldown = 0
+    this.experience = {
+      level: 1,
+      nextLevel: 0,
+      skill_points: 1,
+      currentScore: 0
+    }
     this.options = {
+      parameters: {
+        hp: 100,
+        speed: 200
+      },
+      used_skill_points: {
+        hp: {
+          value: 0,
+          color: 'red',
+        },
+        speed: {
+          value: 0,
+          color: 'violet',
+        },
+        accuracy: {
+          value: 0,
+          color: 'blue',
+        }
+      },
+      passive_skills: {
+        speed: 1,
+        hp: 1,
+        accuracy: 1
+      },
       weapons: {
         pistol: {
           name: 'pistol',
@@ -35,9 +67,9 @@ class Player extends ObjectClass {
           fire_cooldown: 0.2,
           radius: 5,
           speed: 800,
-          damage: 5,
+          damage: 15,
           distance: 600,
-          noise: 0.3
+          noise: 0.5
         },
         shotgun: {
           name: 'shotgun',
@@ -77,14 +109,6 @@ class Player extends ObjectClass {
         }
       }
     }
-    this.weapon = null
-    this.fireCooldown = 0
-    this.experience = {
-      level: 1,
-      nextLevel: 0,
-      skill_points: 1,
-      currentScore: 0
-    }
   }
 
   // Returns a newly created bullet, or null.
@@ -115,7 +139,7 @@ class Player extends ObjectClass {
   updateWeapon() {
     const score = this.score
     const weapons = this.options.weapons
-    this.weapon = weapons.auto_shotgun
+    this.weapon = weapons.machinegun
     // if (score > 100) {
     //   this.weapon = weapons.uzi
     // } else if (score > 75) {
@@ -169,13 +193,13 @@ class Player extends ObjectClass {
         )
       } else if (this.weapon.name === 'uzi') {
         for (let i = 0; i < 3; i++) {
-          const rotate = this.rotate + ((Math.random() - 0.5) * noise)
+          const rotate = this.rotate + ((Math.random() - 0.5) * (noise * this.options.passive_skills.accuracy))
           setTimeout(() => {
             this.bullets.push(new Bullet(this.id, this.x, this.y, rotate, radius, speed, damage, distance))
           }, i * 100)
         }
       } else {
-        const rotate = this.rotate + ((Math.random() - 0.5) * noise)
+        const rotate = this.rotate + ((Math.random() - 0.5) * (noise * this.options.passive_skills.accuracy))
         this.bullets.push(new Bullet(this.id, this.x, this.y, rotate, radius, speed, damage, distance))
       }
     }
@@ -197,13 +221,14 @@ class Player extends ObjectClass {
     this.score += xp
   }
 
-  takeBuff(options) {
-    Object.keys(options).forEach(option => {
-      this[option] += options[option]
+  takeBuff(buffs) {
+    const {speed, hp} = this.options.passive_skills
+    Object.keys(buffs).forEach(buff => {
+      this[buff] += buffs[buff]
     })
 
-    if (this.hp > 100) {
-      this.hp = 100
+    if (this.hp > this.options.parameters.hp * hp) {
+      this.hp = this.options.parameters.hp * hp
     }
   }
 
@@ -212,8 +237,28 @@ class Player extends ObjectClass {
   }
 
   levelUp(code) {
-    if (this.leftSkillPoints() > 0) {
-      this.speed += 50
+    const codes = {
+      '49': (() => {
+        this.options.passive_skills.hp += 0.5
+        this.options.used_skill_points.hp.value += 1
+      }),
+      '50': (() => {
+        this.options.passive_skills.speed += 0.25
+        this.speed = this.options.passive_skills.speed * this.options.parameters.speed
+        this.options.used_skill_points.speed.value += 1
+      }),
+      '51': (() => {
+        this.options.passive_skills.accuracy -= 0.25
+        this.options.used_skill_points.accuracy.value += 1
+      }),
+      // '52': (() => this.speed += 50),
+      // '53': (() => this.speed += 50),
+      // '54': (() => this.speed += 50),
+      // '55': (() => this.speed += 50)
+    }
+
+    if (this.leftSkillPoints() > 0 && codes[code]) {
+      codes[code]()
       this.experience.skill_points += 1
     }
   }
@@ -229,7 +274,10 @@ class Player extends ObjectClass {
       hp: this.hp,
       rotate: this.rotate,
       skill_points: this.leftSkillPoints(),
-      experience: this.experience
+      experience: this.experience,
+      passive_skills: this.options.passive_skills,
+      parameters: this.options.parameters,
+      used_skill_points: this.options.used_skill_points
     };
   }
 }

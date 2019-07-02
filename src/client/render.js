@@ -3,10 +3,11 @@
 import { debounce } from 'throttle-debounce';
 import { getAsset } from './assets';
 import { getCurrentState } from './state';
+import { setPassiveSkillsBar } from './passive-skills'
 
 const Constants = require('../shared/constants');
 
-const { PLAYER_RADIUS, PLAYER_MAX_HP, BULLET_RADIUS, MAP_SIZE, ZOMBIE_RADIUS, THING_RADIUS } = Constants;
+const { PLAYER_RADIUS, BULLET_RADIUS, MAP_SIZE, ZOMBIE_RADIUS, THING_RADIUS } = Constants;
 
 // Get the canvas graphics context
 const canvas = document.getElementById('game-canvas');
@@ -105,10 +106,11 @@ function renderPlayer(me, player) {
     2,
   );
   context.fillStyle = 'red';
+
   context.fillRect(
-    canvasX - PLAYER_RADIUS + PLAYER_RADIUS * 2 * player.hp / PLAYER_MAX_HP,
+    canvasX - PLAYER_RADIUS + PLAYER_RADIUS * 2 * player.hp / (player.passive_skills.hp * player.parameters.hp),
     canvasY + PLAYER_RADIUS + 8,
-    PLAYER_RADIUS * 2 * (1 - player.hp / PLAYER_MAX_HP),
+    PLAYER_RADIUS * 2 * (1 - player.hp / (player.passive_skills.hp * player.parameters.hp)),
     2,
   );
 }

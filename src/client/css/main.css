@@ -118,7 +118,6 @@ button:focus {
 }
 
 .experience .experience__current {
-  /*background-image: linear-gradient(to right, red 0%, red 25%, green 25%, green);*/
   border: 1px solid black;
   border-radius: 15px;
   width: 350px;
@@ -130,6 +129,43 @@ button:focus {
   font-weight: bold;
   color: #cccccc;
   margin-bottom: 0;
+}
+
+.passive-skills {
+  position: fixed;
+  width: 100px;
+  left: 10px;
+}
+
+.passive-skills__skill {
+  display: flex;
+  margin-top: 5px;
+}
+
+.passive-skills__skill span {
+  min-width: 30px;
+  border: 1px solid gray;
+}
+
+.passive-skills__skill--red {
+  background: red;
+}
+
+.passive-skills__skill--violet {
+  background: violet
+}
+
+.passive-skills__skill--blue {
+  background: blue
+}
+
+.passive-skills__skill--gray {
+  background: #ccc
+}
+
+.passive-skills p {
+  margin-bottom: 0;
+  min-width: 80px
 }
 
 @media screen and (max-width: 640px) {
