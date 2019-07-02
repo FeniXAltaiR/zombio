@@ -18,6 +18,20 @@ import './css/main.css';
 const playMenu = document.getElementById('play-menu');
 const playButton = document.getElementById('play-button');
 const usernameInput = document.getElementById('username-input');
+const skins = document.querySelector('button[data-name=skins]')
+const chooseSkin = document.querySelector('.skins')
+const agreeSkinBtn = document.querySelector('.skins__btn')
+
+const getSkinValue = () => {
+  const radios = document.querySelectorAll('.skins input[type=radio]')
+  let value
+  radios.forEach(radio => {
+    if (radio.checked) {
+      value = radio.value
+    }
+  })
+  return value
+}
 
 Promise.all([
   connect(onGameOver),
@@ -27,7 +41,10 @@ Promise.all([
   usernameInput.focus();
   playButton.onclick = () => {
     // Play!
-    play(usernameInput.value);
+    play({
+      username: usernameInput.value,
+      icon: getSkinValue()
+    });
     playMenu.classList.add('hidden');
     initState();
     startCapturingInput();
@@ -36,6 +53,14 @@ Promise.all([
     setExperienceHidden(false)
     setPassiveSkillsBar(false)
   };
+
+  skins.onclick = () => {
+    chooseSkin.classList.remove('hidden')
+  }
+
+  agreeSkinBtn.onclick = () => {
+    chooseSkin.classList.add('hidden')
+  }
 }).catch(console.error);
 
 function onGameOver() {

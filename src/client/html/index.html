@@ -20,24 +20,31 @@
 <body>
   <canvas id="game-canvas"></canvas>
   <div id="play-menu" class="hidden">
-    <h1>An example .io game</h1>
-    <p>
-      Stay alive and shoot other players.
-      <br />
-      Use your mouse to move.
-    </p>
-    <hr />
-    <p>
-      <!-- <br /> -->
-      Read the tutorial: <a href="https://victorzhou.com/blog/build-an-io-game-part-1/" target="_blank">How to Build an .io Game</a>.
-      <br />
-      See the source code on <a href="https://github.com/vzhou842/example-.io-game" target="_blank">Github</a>.
-      <br />
-      Created by <a href="https://victorzhou.com">Victor Zhou</a>.
-    </p>
-    <hr />
+    <h1>Zombio</h1>
     <input type="text" id="username-input" placeholder="Username" />
-    <button id="play-button">PLAY</button>
+    <div class="play-menu__controls">
+      <button data-name="skins">SKINS</button>
+      <button id="play-button">PLAY</button>
+    </div>
+  </div>
+  <div class="skins hidden">
+    <div class="skins__controls">
+      <div class="skins__radio">
+        <label>
+          <p>man 1</p>
+          <input type="radio" name="skins" value="man1" checked>
+        </label>
+        <label>
+          <p>man 2</p>
+          <input type="radio" name="skins" value="man2">
+        </label>
+        <label>
+          <p>man 3</p>
+          <input type="radio" name="skins" value="man3">
+        </label>
+      </div>
+      <button class="skins__btn">Agree</button>
+    </div>
   </div>
   <div id="leaderboard" class="hidden">
     <table>
@@ -72,6 +79,8 @@
       <span class="passive-skills__skill--red"></span>
       <span class="passive-skills__skill--red"></span>
       <span class="passive-skills__skill--red"></span>
+      <span class="passive-skills__skill--red"></span>
+      <span class="passive-skills__skill--red"></span>
     </div>
     <div class="passive-skills__skill" data-name="speed">
       <p>Speed</p>
@@ -80,9 +89,13 @@
       <span class="passive-skills__skill--violet"></span>
       <span class="passive-skills__skill--violet"></span>
       <span class="passive-skills__skill--violet"></span>
+      <span class="passive-skills__skill--violet"></span>
+      <span class="passive-skills__skill--violet"></span>
     </div>
     <div class="passive-skills__skill" data-name="accuracy">
       <p>Accuracy</p>
+      <span class="passive-skills__skill--blue"></span>
+      <span class="passive-skills__skill--blue"></span>
       <span class="passive-skills__skill--blue"></span>
       <span class="passive-skills__skill--blue"></span>
       <span class="passive-skills__skill--blue"></span>

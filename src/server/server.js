@@ -77,8 +77,8 @@ io.on('connection', socket => {
 // Setup the Game
 const games = {}
 
-function joinGame(username) {
-  games[id_channel].addPlayer(this, username);
+function joinGame(options) {
+  games[id_channel].addPlayer(this, options);
 }
 
 function handleInput(dir) {

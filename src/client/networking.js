@@ -29,8 +29,8 @@ export const connect = onGameOver => (
   })
 );
 
-export const play = username => {
-  socket.emit(Constants.MSG_TYPES.JOIN_GAME, username);
+export const play = options => {
+  socket.emit(Constants.MSG_TYPES.JOIN_GAME, options);
 };
 
 export const updateDirection = throttle(20, dir => {

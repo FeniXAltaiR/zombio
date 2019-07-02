@@ -7,7 +7,10 @@ const ASSET_NAMES = [
   'grass.svg',
   'thing_hp.svg',
   'thing_speed.svg',
-  'thing_accuracy.svg'
+  'thing_accuracy.svg',
+  'player_man1.svg',
+  'player_man2.svg',
+  'player_man3.svg'
 ];
 
 const assets = {};

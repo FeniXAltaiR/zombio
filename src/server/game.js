@@ -108,12 +108,13 @@ class Game {
     }
   }
 
-  addPlayer(socket, username) {
+  addPlayer(socket, options) {
     this.sockets[socket.id] = socket;
 
     const [x, y] = this.respawnCoords(1, 0.75)
+    const {username, icon} = options
     
-    this.players[socket.id] = new Player(socket.id, username, x, y);
+    this.players[socket.id] = new Player(socket.id, username, x, y, icon);
   }
 
   removePlayer(socket) {

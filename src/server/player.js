@@ -4,9 +4,10 @@ const Constants = require('../shared/constants');
 // const options_player = require('./options-player')
 
 class Player extends ObjectClass {
-  constructor(id, username, x, y, rotate = Math.random() * 2 * Math.PI) {
+  constructor(id, username, x, y, icon, rotate = Math.random() * 2 * Math.PI) {
     super(id, x, y, null, 200);
     this.username = username;
+    this.icon = icon
     this.hp = 100;
     this.score = 0;
     this.rotate = rotate
@@ -309,7 +310,8 @@ class Player extends ObjectClass {
       experience: this.experience,
       passive_skills: this.options.passive_skills,
       parameters: this.options.parameters,
-      used_skill_points: this.options.used_skill_points
+      used_skill_points: this.options.used_skill_points,
+      icon: `player_${this.icon}.svg`
     };
   }
 }
