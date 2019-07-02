@@ -11,6 +11,15 @@ const {
   applyCollisionsPlayersAndThings
 } = Collisions
 
+const createXpList = () => {
+  const list = []
+  for (let i = 0; i < 10; i++) {
+    list.push(i * 500)
+  }
+  list.push(1000000)
+  return list
+}
+
 class Game {
   constructor(id) {
     this.id = id
@@ -26,7 +35,8 @@ class Game {
     this.createThings()
     // setInterval(this.respawnZombies.bind(this), 1000)
     this.options = {
-      xp_levels: [0, 1000, 2500, 5000, 7500, 1000000]
+      // xp_levels: [0, 1000, 2500, 5000, 7500, 1000000]
+      xp_levels: createXpList()
     }
   }
 

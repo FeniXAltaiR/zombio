@@ -8,7 +8,7 @@ class Player extends ObjectClass {
     super(id, x, y, null, 200);
     this.username = username;
     this.hp = 100;
-    this.score = 15000;
+    this.score = 0;
     this.rotate = rotate
     this.bullets = []
     this.weapon = null
