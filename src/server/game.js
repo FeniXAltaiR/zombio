@@ -53,19 +53,19 @@ class Game {
 
   respawnZombies() {
     const amountZombiesEasy = this.zombies.filter(zombie => zombie.type.name === 'easy')
-    for (let i = 1; i < (Constants.ZOMBIE_EASY_MAX_AMOUNT / amountZombiesEasy.length) ** 2; i++) {
+    for (let i = 1; i < (Constants.ZOMBIE_EASY_MAX_AMOUNT / (amountZombiesEasy.length + 1)) ** 2; i++) {
       const [x, y] = this.respawnCoords(1, 0.75)
       this.createZombie(x, y, 'easy')
     }
 
     const amountZombiesNormal = this.zombies.filter(zombie => zombie.type.name === 'normal')
-    for (let i = 1; i < (Constants.ZOMBIE_NORMAL_MAX_AMOUNT / amountZombiesNormal.length) ** 2; i++) {
+    for (let i = 1; i < (Constants.ZOMBIE_NORMAL_MAX_AMOUNT / (amountZombiesNormal.length + 1)) ** 2; i++) {
       const [x, y] = this.respawnCoords(0.75, 0.5)
       this.createZombie(x, y, 'normal')
     }
 
     const amountZombiesHard = this.zombies.filter(zombie => zombie.type.name === 'hard')
-    for (let i = 1; i < (Constants.ZOMBIE_HARD_MAX_AMOUNT / amountZombiesHard.length) ** 2; i++) {
+    for (let i = 1; i < (Constants.ZOMBIE_HARD_MAX_AMOUNT / (amountZombiesHard.length + 1)) ** 2; i++) {
       const [x, y] = this.respawnCoords(0.5, 0.25)
       this.createZombie(x, y, 'hard')
     }
