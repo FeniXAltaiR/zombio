@@ -37,8 +37,7 @@ class Player extends ObjectClass {
       },
       buffs: {
         hp: (() => {
-          this.hp += 100
-          this.updateHp()
+          this.updateHp(100)
         }),
         speed: (() => {
           this.options.passive_skills.speed += 1
@@ -131,6 +130,12 @@ class Player extends ObjectClass {
         }
       }
     }
+    this.statistic = {
+      amount_bullets: 0,
+      amount_things: 0,
+      amount_zombies: 0,
+      amount_recovery_hp: 0
+    }
     this.username = username;
     this.icon = icon
     this.hp = this.options.parameters.hp;
@@ -201,8 +206,7 @@ class Player extends ObjectClass {
 
     const zones = {
       green: (dt => {
-        this.hp += dt
-        this.updateHp()
+        this.updateHp(dt)
       }),
       yellow: (dt => {
         this.options.zones_effects.speed = -0.25
@@ -280,12 +284,14 @@ class Player extends ObjectClass {
           new Bullet(this.id, this.x, this.y, this.rotate + 0.1, radius, speed, damage, distance),
           new Bullet(this.id, this.x, this.y, this.rotate + 0.2, radius, speed, damage, distance)
         )
+        this.updateStatistic('amount_bullets', 5)
       } else if (this.weapon.name === 'shotgun') {
         this.bullets.push(
           new Bullet(this.id, this.x, this.y, this.rotate - 0.15, radius, speed, damage, distance),
           new Bullet(this.id, this.x, this.y, this.rotate, radius, speed, damage, distance),
           new Bullet(this.id, this.x, this.y, this.rotate + 0.15, radius, speed, damage, distance)
         )
+        this.updateStatistic('amount_bullets', 3)
       } else if (this.weapon.name === 'uzi') {
         for (let i = 0; i < 3; i++) {
           const rotate = this.rotate + ((Math.random() - 0.5) * (noise * this.options.passive_skills.accuracy))
@@ -293,21 +299,29 @@ class Player extends ObjectClass {
             this.bullets.push(new Bullet(this.id, this.x, this.y, rotate, radius, speed, damage, distance))
           }, i * 100)
         }
+        this.updateStatistic('amount_bullets', 3)
       } else {
         const rotate = this.rotate + ((Math.random() - 0.5) * (noise * this.options.passive_skills.accuracy))
         this.bullets.push(new Bullet(this.id, this.x, this.y, rotate, radius, speed, damage, distance))
+        this.updateStatistic('amount_bullets', 1)
       }
     }
   }
 
+  updateStatistic(property, value) {
+    this.statistic[property] += value
+  }
+
   takeBulletDamage(bullet) {
     const {defense} = this.options.passive_skills
-    this.hp -= bullet.damage * (defense - this.options.zones_effects.defense)
+    const value = bullet.damage * (defense - this.options.zones_effects.defense)
+    this.hp -= value
   }
 
   takeDamage(damage) {
     const {defense} = this.options.passive_skills
-    this.hp -= damage * (defense - this.options.zones_effects.defense)
+    const value = damage * (defense - this.options.zones_effects.defense)
+    this.hp -= value
   }
 
   onDealtDamage() {
@@ -316,11 +330,13 @@ class Player extends ObjectClass {
 
   onKilledZombie(xp) {
     this.score += xp
+    this.updateStatistic('amount_zombies', 1)
   }
 
   takeBuff(name) {
     const buff = this.options.buffs[name]
     buff()
+    this.updateStatistic('amount_things', 1)
   }
 
   leftSkillPoints() {
@@ -331,10 +347,14 @@ class Player extends ObjectClass {
     this.speed = this.options.parameters.speed * (this.options.passive_skills.speed + this.options.zones_effects.speed)
   }
 
-  updateHp() {
+  updateHp(value) {
     const {hp} = this.options.passive_skills
-    if (this.hp > this.options.parameters.hp * hp) {
+    if (this.hp + value > this.options.parameters.hp * hp) {
       this.hp = this.options.parameters.hp * hp
+      this.updateStatistic('amount_recovery_hp', this.options.parameters.hp * hp - this.hp)
+    } else {
+      this.hp += value
+      this.updateStatistic('amount_recovery_hp', value)
     }
   }
 

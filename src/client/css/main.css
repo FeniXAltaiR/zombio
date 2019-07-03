@@ -78,6 +78,16 @@ button:focus {
   display: flex;
 }
 
+.play-menu__statistic {
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flex;
+  display: -o-flex;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
 #leaderboard {
   position: fixed;
   top: 10px;

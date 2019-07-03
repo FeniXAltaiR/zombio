@@ -33,6 +33,16 @@ const getSkinValue = () => {
   return value
 }
 
+const showStatistic = statistic => {
+  const stat = document.querySelector('.play-menu__statistic')
+  stat.innerHMTL = ''
+  Object.keys(statistic).forEach(option => {
+    const p = document.createElement('p')
+    p.innerHTML = `${option}: ${Math.round(statistic[option])}`
+    stat.appendChild(p)
+  })
+}
+
 Promise.all([
   connect(onGameOver),
   downloadAssets(),
@@ -63,11 +73,12 @@ Promise.all([
   }
 }).catch(console.error);
 
-function onGameOver() {
+function onGameOver(statistic) {
   stopCapturingInput();
   stopRendering();
   playMenu.classList.remove('hidden');
   setLeaderboardHidden(true);
   setExperienceHidden(true)
   setPassiveSkillsBar(true)
+  showStatistic(statistic)
 }
