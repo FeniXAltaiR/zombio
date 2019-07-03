@@ -5,21 +5,7 @@ const Constants = require('../shared/constants');
 
 class Player extends ObjectClass {
   constructor(id, username, x, y, icon, rotate = Math.random() * 2 * Math.PI) {
-    super(id, x, y, null, 200);
-    this.username = username;
-    this.icon = icon
-    this.hp = 100;
-    this.score = 0;
-    this.rotate = rotate
-    this.bullets = []
-    this.weapon = null
-    this.fireCooldown = 0
-    this.experience = {
-      level: 1,
-      nextLevel: 0,
-      skill_points: 1,
-      currentScore: 0
-    }
+    super(id, x, y, null, Constants.PLAYER_SPEED);
     this.options = {
       parameters: {
         hp: 100,
@@ -42,16 +28,17 @@ class Player extends ObjectClass {
       passive_skills: {
         speed: 1,
         hp: 1,
-        accuracy: 1
+        accuracy: 1,
+        defense: 1
+      },
+      zones_effects: {
+        speed: 0.5,
+        defense: 0.5
       },
       buffs: {
         hp: (() => {
-          const {hp} = this.options.passive_skills
           this.hp += 100
-
-          if (this.hp > this.options.parameters.hp * hp) {
-            this.hp = this.options.parameters.hp * hp
-          }
+          this.updateHp()
         }),
         speed: (() => {
           this.options.passive_skills.speed += 1
@@ -144,6 +131,20 @@ class Player extends ObjectClass {
         }
       }
     }
+    this.username = username;
+    this.icon = icon
+    this.hp = this.options.parameters.hp;
+    this.score = 0;
+    this.rotate = rotate
+    this.bullets = []
+    this.weapon = null
+    this.fireCooldown = 0
+    this.experience = {
+      level: 1,
+      nextLevel: 0,
+      skill_points: 1,
+      currentScore: 0
+    }
   }
 
   // Returns a newly created bullet, or null.
@@ -157,6 +158,9 @@ class Player extends ObjectClass {
     this.x = Math.max(0 + Constants.PLAYER_RADIUS, Math.min(Constants.MAP_SIZE - Constants.PLAYER_RADIUS, this.x));
     this.y = Math.max(0 + Constants.PLAYER_RADIUS, Math.min(Constants.MAP_SIZE - Constants.PLAYER_RADIUS, this.y));
 
+    // Check player, where he is
+    this.checkZonePlayer(dt)
+
     // Fire a bullet, if needed
     if (this.fireCooldown > 0) {
       this.fireCooldown -= dt
@@ -169,6 +173,62 @@ class Player extends ObjectClass {
     }
 
     return null;
+  }
+
+  checkZonePlayer (dt) {
+    const getZoneBounds = (boundsA, boundsB) => {
+      if (
+        this.x > 0 &&
+        this.x < Constants.MAP_SIZE * boundsA &&
+        this.y > Constants.MAP_SIZE * boundsB &&
+        this.y < Constants.MAP_SIZE * boundsA ||
+        this.y > 0 &&
+        this.y < Constants.MAP_SIZE * boundsA &&
+        this.x > Constants.MAP_SIZE * boundsB &&
+        this.x < Constants.MAP_SIZE * boundsA
+      ) {
+        return true
+      }
+      return false
+    }
+
+    const resetZonesEffects = () => {
+      const effects = this.options.zones_effects
+      this.updateSpeed()
+      effects.speed = 0
+      effects.defense = 0
+    }
+
+    const zones = {
+      green: (dt => {
+        this.hp += dt
+        this.updateHp()
+      }),
+      yellow: (dt => {
+        this.options.zones_effects.speed = -0.25
+      }),
+      violet: (dt => {
+        this.options.zones_effects.defense = -0.25
+      }),
+      red: (dt => {
+        this.hp -= dt
+      })
+    }
+
+    resetZonesEffects()
+
+    if (getZoneBounds(1, 0.75)) {
+      zones.green(dt)
+    }
+    else if (getZoneBounds(0.75, 0.5)) {
+      zones.yellow(dt)
+    }
+    else if (getZoneBounds(0.5, 0.25)) {
+      zones.violet(dt)
+    }
+    else if (getZoneBounds(0.25, 0)) {
+      zones.red(dt)
+    }
   }
 
   updateWeapon() {
@@ -241,11 +301,13 @@ class Player extends ObjectClass {
   }
 
   takeBulletDamage(bullet) {
-    this.hp -= bullet.damage
+    const {defense} = this.options.passive_skills
+    this.hp -= bullet.damage * (defense - this.options.zones_effects.defense)
   }
 
   takeDamage(damage) {
-    this.hp -= damage
+    const {defense} = this.options.passive_skills
+    this.hp -= damage * (defense - this.options.zones_effects.defense)
   }
 
   onDealtDamage() {
@@ -266,7 +328,14 @@ class Player extends ObjectClass {
   }
 
   updateSpeed() {
-    this.speed = this.options.passive_skills.speed * this.options.parameters.speed
+    this.speed = this.options.parameters.speed * (this.options.passive_skills.speed + this.options.zones_effects.speed)
+  }
+
+  updateHp() {
+    const {hp} = this.options.passive_skills
+    if (this.hp > this.options.parameters.hp * hp) {
+      this.hp = this.options.parameters.hp * hp
+    }
   }
 
   levelUp(code) {

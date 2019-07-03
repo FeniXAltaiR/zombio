@@ -35,7 +35,9 @@ function applyCollisionsZombies(zombies, bullets, players) {
         zombie.takeBulletDamage(bullet);
         if (zombie.hp <= 0) {
           const xp = zombie.type.xp
-          players[bullet.parentID].onKilledZombie(xp)
+          if (players[bullet.parentID]) {
+            players[bullet.parentID].onKilledZombie(xp)
+          }
         }
         break
       }
