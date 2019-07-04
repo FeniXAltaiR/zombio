@@ -35,7 +35,7 @@ const getSkinValue = () => {
 
 const showStatistic = statistic => {
   const stat = document.querySelector('.play-menu__statistic')
-  stat.innerHMTL = ''
+  stat.innerHTML = ''
   Object.keys(statistic).forEach(option => {
     const p = document.createElement('p')
     p.innerHTML = `${option}: ${Math.round(statistic[option])}`

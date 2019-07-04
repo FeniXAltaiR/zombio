@@ -8,6 +8,7 @@ const ASSET_NAMES = [
   'thing_hp.svg',
   'thing_speed.svg',
   'thing_accuracy.svg',
+  'thing_portal.svg',
   'player_man1.svg',
   'player_man2.svg',
   'player_man3.svg'

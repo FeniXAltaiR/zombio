@@ -36,7 +36,7 @@ class Game {
     this.options = {
       // xp_levels: [0, 1000, 2500, 5000, 7500, 1000000]
       xp_levels: createXpList(),
-      things: ['hp', 'speed', 'accuracy']
+      things: ['hp', 'speed', 'accuracy', 'portal']
     }
     this.createThings()
   }

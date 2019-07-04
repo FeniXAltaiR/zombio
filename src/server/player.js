@@ -62,6 +62,10 @@ class Player extends ObjectClass {
           setTimeout(() => {
             this.options.passive_skills.accuracy += diff
           }, 5000)
+        }),
+        portal: (() => {
+          this.x = Constants.MAP_SIZE * Math.random()
+          this.y = Constants.MAP_SIZE * Math.random()
         })
       },
       weapons: {
