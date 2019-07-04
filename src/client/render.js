@@ -185,16 +185,18 @@ function renderMainMenu() {
   renderBackground(x, y);
 }
 
-let renderInterval = setInterval(renderMainMenu, 1000 / 60);
+let renderInterval = stopRendering()
 
 // Replaces main menu rendering with game rendering.
 export function startRendering() {
-  clearInterval(renderInterval);
-  renderInterval = setInterval(render, 1000 / 60);
+  window.cancelAnimationFrame(renderInterval)
+  renderInterval = window.requestAnimationFrame(startRendering)
+  render()
 }
 
 // Replaces game rendering with main menu rendering.
 export function stopRendering() {
-  clearInterval(renderInterval);
-  renderInterval = setInterval(renderMainMenu, 1000 / 60);
+  window.cancelAnimationFrame(renderInterval)
+  renderInterval = window.requestAnimationFrame(stopRendering)
+  renderMainMenu()
 }
