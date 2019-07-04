@@ -45,11 +45,11 @@ function render() {
   renderPlayer(me, me);
   others.forEach(renderPlayer.bind(null, me));
 
-  // Draw all zombies
-  zombies.forEach(renderZombie.bind(null, me))
-
   // Draw all things
   things.forEach(renderThing.bind(null, me))
+
+  // Draw all zombies
+  zombies.forEach(renderZombie.bind(null, me))
 }
 
 function renderBackground(x, y) {
@@ -63,6 +63,7 @@ function renderBackground(x, y) {
   context.fillRect(canvas.width / 2 - x, canvas.height / 2 - y, MAP_SIZE * 0.5, MAP_SIZE * 0.5);
   context.fillStyle = '#9A4430';
   context.fillRect(canvas.width / 2 - x, canvas.height / 2 - y, MAP_SIZE * 0.25, MAP_SIZE * 0.25);
+
   context.strokeStyle = 'rgba(0, 0, 0, .2)'
   for (let i = 0; i < MAP_SIZE; i += 50) {
     for (let k = 0; k < MAP_SIZE; k += 50) {
@@ -84,7 +85,7 @@ function renderPlayer(me, player) {
   const canvasX = canvas.width / 2 + x - me.x;
   const canvasY = canvas.height / 2 + y - me.y;
 
-  // Draw ship
+  // Draw player
   context.save();
   context.translate(canvasX, canvasY);
   context.rotate(rotate)
@@ -96,6 +97,15 @@ function renderPlayer(me, player) {
     PLAYER_RADIUS * 2,
   );
   context.restore();
+
+  // Test effect
+  // context.fillStyle = 'rgba(255, 255, 255, 0.1)';
+  // context.fillRect(0, 0, canvas.width, canvas.height);
+  // context.beginPath();
+  // context.arc(canvas.width / 2, canvas.height / 2, PLAYER_RADIUS, 0, Math.PI * 2, true);
+  // context.closePath();
+  // context.fillStyle = 'blue';
+  // context.fill();
 
   // Draw health bar
   context.fillStyle = 'white';
