@@ -8,7 +8,7 @@ class Player extends ObjectClass {
     super(id, x, y, null, Constants.PLAYER_SPEED);
     this.options = {
       parameters: {
-        hp: 100,
+        hp: 1000,
         speed: 200
       },
       used_skill_points: {

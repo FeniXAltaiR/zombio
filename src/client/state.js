@@ -86,8 +86,9 @@ function interpolateObject(object1, object2, ratio) {
   const interpolated = {};
   Object.keys(object1).forEach(key => {
     if (typeof key === 'object') {
+      console.log('state object')
       interpolated[key] = object1[key]
-    } else if (['skill_points', 'icon', 'passive_skills', 'parameters', 'used_skill_points'].includes(key)) {
+    } else if (['skill_points', 'icon', 'passive_skills', 'parameters', 'used_skill_points', 'id'].includes(key)) {
       interpolated[key] = object1[key]
     } else if (key === 'rotate') {
       interpolated[key] = interpolateDirection(object1[key], object2[key], ratio);

@@ -87,6 +87,8 @@ function renderPlayer(me, player) {
 
   // Draw player
   context.save();
+  // context.shadowColor = 'red';
+  // context.shadowBlur = 15;
   context.translate(canvasX, canvasY);
   context.rotate(rotate)
   context.drawImage(
@@ -127,6 +129,12 @@ function renderPlayer(me, player) {
 
 function renderBullet(me, bullet) {
   const { x, y, radius } = bullet;
+
+  context.save()
+  // context.filter = 'invert(100%)'
+  // context.filter = 'saturate(200%)'
+  // context.shadowColor = 'orange';
+  // context.shadowBlur = 5;
   context.drawImage(
     getAsset('bullet.svg'),
     canvas.width / 2 + x - me.x - radius,
@@ -134,13 +142,13 @@ function renderBullet(me, bullet) {
     radius * 2,
     radius * 2,
   );
+  context.restore()
 }
 
 function renderZombie(me, zombie) {
-  const {x, y, direction, hp, max_hp, rotate} = zombie
+  const {x, y, direction, hp, max_hp, rotate, icon} = zombie
   const canvasX = canvas.width / 2 + x - me.x;
   const canvasY = canvas.height / 2 + y - me.y;
-  const icon = zombie.icon.replace('NaN', '')
 
   context.save()
   context.translate(canvasX, canvasY);

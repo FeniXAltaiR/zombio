@@ -33,6 +33,10 @@ button:focus {
   display: none !important;
 }
 
+.svg__bullet {
+  fill: #fff !important;
+}
+
 #game-canvas {
   width: 100%;
   height: 100%;
