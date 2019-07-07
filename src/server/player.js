@@ -363,28 +363,34 @@ class Player extends ObjectClass {
   }
 
   levelUp(code) {
+    const skills = {
+      '49': 'hp',
+      '50': 'speed',
+      '51': 'accuracy'
+    }
     const codes = {
-      '49': (() => {
+      'hp': (() => {
         this.options.passive_skills.hp += 0.5
         this.options.used_skill_points.hp.value += 1
       }),
-      '50': (() => {
+      'speed': (() => {
         this.options.passive_skills.speed += 0.25
         this.updateSpeed()
         this.options.used_skill_points.speed.value += 1
       }),
-      '51': (() => {
+      'accuracy': (() => {
         this.options.passive_skills.accuracy -= 0.25
         this.options.used_skill_points.accuracy.value += 1
-      }),
-      // '52': (() => this.speed += 50),
-      // '53': (() => this.speed += 50),
-      // '54': (() => this.speed += 50),
-      // '55': (() => this.speed += 50)
+      })
     }
+    const skill = skills[code]
 
-    if (this.leftSkillPoints() > 0 && codes[code]) {
-      codes[code]()
+    if (
+      this.leftSkillPoints() > 0 &&
+      codes[skill] &&
+      this.options.used_skill_points[skill].value < 7
+    ) {
+      codes[skill]()
       this.experience.skill_points += 1
     }
   }
