@@ -274,6 +274,10 @@ class Game {
           const dir = Math.atan2(zombieA.x - zombieB.x, zombieB.y - zombieA.y)
           zombieA.setDirection(dir)
           zombieB.setDirection(-dir)
+          if (zombieA.mode === 'passive' || zombieB.mode === 'passive') {
+            zombieA.changeRotate(dir)
+            zombieB.changeRotate(-dir)
+          }
           zombieA.update(dt)
           zombieB.update(dt)
         }
