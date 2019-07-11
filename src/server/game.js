@@ -196,7 +196,21 @@ class Game {
         const player = this.players[socket]
         if (zombie.distanceTo(player) < zombie.agressiveDistance) {
           zombie.setMode('active')
-        } else {
+        } else if (zombie.checkLocationInZone() === false && zombie.mode !== 'returning' && zombie.changingDirection) {
+          zombie.setMode('returning')
+          let x, y
+          if (zombie.type.name === 'easy') {
+            [x, y] = this.respawnCoords(1, 0.75, (x, y) => {return false})
+          } else if (zombie.type.name === 'normal') {
+            [x, y] = this.respawnCoords(0.75, 0.5, (x, y) => {return false})
+          } else if (zombie.type.name === 'hard') {
+            [x, y] = this.respawnCoords(0.5, 0.25, (x, y) => {return false})
+          }
+          const dir = Math.atan2(x - zombie.x, zombie.y - y)
+          zombie.setDirection(dir)
+          zombie.changeRotate(dir)
+          zombie.resetChangingDirection()
+        } else if (zombie.checkLocationInZone() === true && zombie.mode === 'returning') {
           zombie.setMode('passive')
         }
 
@@ -274,9 +288,11 @@ class Game {
           const dir = Math.atan2(zombieA.x - zombieB.x, zombieB.y - zombieA.y)
           zombieA.setDirection(dir)
           zombieB.setDirection(-dir)
-          if (zombieA.mode === 'passive' || zombieB.mode === 'passive') {
+          if (['passive', 'returning'].includes(zombieA.mode) || ['passive', 'returning'].includes(zombieB.mode) ) {
             zombieA.changeRotate(dir)
             zombieB.changeRotate(-dir)
+            zombieA.setMode('passive')
+            zombieB.setMode('passive')
           }
           zombieA.update(dt)
           zombieB.update(dt)
