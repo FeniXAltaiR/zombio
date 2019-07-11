@@ -31,6 +31,9 @@ const options = {
     },
     active: {
       speed: 215
+    },
+    returning: {
+      speed: 50
     }
   }
 }

@@ -185,22 +185,6 @@ class Player extends ObjectClass {
   }
 
   checkZonePlayer (dt) {
-    const getZoneBounds = (boundsA, boundsB) => {
-      if (
-        this.x > 0 &&
-        this.x < Constants.MAP_SIZE * boundsA &&
-        this.y > Constants.MAP_SIZE * boundsB &&
-        this.y < Constants.MAP_SIZE * boundsA ||
-        this.y > 0 &&
-        this.y < Constants.MAP_SIZE * boundsA &&
-        this.x > Constants.MAP_SIZE * boundsB &&
-        this.x < Constants.MAP_SIZE * boundsA
-      ) {
-        return true
-      }
-      return false
-    }
-
     const resetZonesEffects = () => {
       const effects = this.options.zones_effects
       this.updateSpeed()
@@ -225,16 +209,16 @@ class Player extends ObjectClass {
 
     resetZonesEffects()
 
-    if (getZoneBounds(1, 0.75)) {
+    if (this.getZoneBounds(1, 0.75)) {
       zones.green(dt)
     }
-    else if (getZoneBounds(0.75, 0.5)) {
+    else if (this.getZoneBounds(0.75, 0.5)) {
       zones.yellow(dt)
     }
-    else if (getZoneBounds(0.5, 0.25)) {
+    else if (this.getZoneBounds(0.5, 0.25)) {
       zones.violet(dt)
     }
-    else if (getZoneBounds(0.25, 0)) {
+    else if (this.getZoneBounds(0.25, 0)) {
       zones.red(dt)
     }
   }

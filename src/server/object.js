@@ -1,3 +1,5 @@
+const Constants = require('../shared/constants')
+
 class Object {
   constructor(id, x, y, dir, speed) {
     this.id = id;
@@ -20,6 +22,22 @@ class Object {
     const dx = this.x - object.x;
     const dy = this.y - object.y;
     return Math.sqrt(dx * dx + dy * dy);
+  }
+
+  getZoneBounds(boundsA, boundsB) {
+    if (
+      this.x > 0 &&
+      this.x < Constants.MAP_SIZE * boundsA &&
+      this.y > Constants.MAP_SIZE * boundsB &&
+      this.y < Constants.MAP_SIZE * boundsA ||
+      this.y > 0 &&
+      this.y < Constants.MAP_SIZE * boundsA &&
+      this.x > Constants.MAP_SIZE * boundsB &&
+      this.x < Constants.MAP_SIZE * boundsA
+    ) {
+      return true
+    }
+    return false
   }
 
   setDirection(dir) {

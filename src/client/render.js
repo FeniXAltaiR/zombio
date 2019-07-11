@@ -53,6 +53,13 @@ function render() {
 }
 
 function renderBackground(x, y) {
+  // context.drawImage(
+  //   getAsset('map.svg'),
+  //   0,
+  //   0,
+  //   MAP_SIZE,
+  //   MAP_SIZE
+  // )
   context.fillStyle = 'grey'
   context.fillRect(0, 0, canvas.width, canvas.height)
   context.fillStyle = 'green';
