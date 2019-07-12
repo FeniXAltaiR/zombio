@@ -13,8 +13,10 @@ function applyCollisionsPlayers(players, bullets) {
         bullet.parentID !== player.id &&
         player.distanceTo(bullet) <= Constants.PLAYER_RADIUS + bullet.radius
       ) {
-        destroyedBullets.push(bullet);
-        player.takeBulletDamage(bullet);
+        if (bullet.damage < player.hp) {
+          destroyedBullets.push(bullet)
+        }
+        player.takeBulletDamage(bullet)
         break
       }
     }
@@ -31,8 +33,10 @@ function applyCollisionsZombies(zombies, bullets, players) {
       if (
         zombie.distanceTo(bullet) <= Constants.ZOMBIE_RADIUS + bullet.radius
       ) {
-        destroyedBullets.push(bullet);
-        zombie.takeBulletDamage(bullet);
+        if (bullet.damage < zombie.hp) {
+          destroyedBullets.push(bullet)
+        }
+        zombie.takeBulletDamage(bullet)
         if (zombie.hp <= 0) {
           const xp = zombie.type.xp
           if (players[bullet.parentID]) {

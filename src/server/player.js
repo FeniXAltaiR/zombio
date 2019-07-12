@@ -226,7 +226,7 @@ class Player extends ObjectClass {
   updateWeapon() {
     const score = this.score
     const weapons = this.options.weapons
-    this.weapon = weapons.machinegun
+    this.weapon = weapons.sniper_rifle
     // if (score > 100) {
     //   this.weapon = weapons.uzi
     // } else if (score > 75) {
