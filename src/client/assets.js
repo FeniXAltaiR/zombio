@@ -1,4 +1,6 @@
 const ASSET_NAMES = [
+  'map.svg',
+  'map2.svg',
   'bullet.svg',
   'zombie_easy.svg',
   'zombie_normal.svg',
