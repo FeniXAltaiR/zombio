@@ -68,6 +68,49 @@ class Player extends ObjectClass {
           this.y = Constants.MAP_SIZE * Math.random()
         })
       },
+      researches: {
+        weapon: 'pistol',
+        level: 2,
+        '49': {
+          weapon: 'uzi',
+          level: 3,
+          '49': {
+            weapon: 'machinegun',
+          },
+          '50': {
+            weapon: 'sniper_rifle'
+          },
+          '51': {
+            weapon: 'auto_shotgun'
+          }
+        },
+        '50': {
+          weapon: 'rifle',
+          level: 3,
+          '49': {
+            weapon: 'machinegun',
+          },
+          '50': {
+            weapon: 'sniper_rifle'
+          },
+          '51': {
+            weapon: 'auto_shotgun'
+          }
+        },
+        '51': {
+          weapon: 'shotgun',
+          level: 3,
+          '49': {
+            weapon: 'machinegun',
+          },
+          '50': {
+            weapon: 'sniper_rifle'
+          },
+          '51': {
+            weapon: 'auto_shotgun'
+          }
+        }
+      },
       weapons: {
         pistol: {
           name: 'pistol',
@@ -146,7 +189,8 @@ class Player extends ObjectClass {
     this.score = 0;
     this.rotate = rotate
     this.bullets = []
-    this.weapon = null
+    this.weapon = this.options.weapons.pistol
+    this.research = this.options.researches
     this.fireCooldown = 0
     this.experience = {
       level: 1,
@@ -161,7 +205,7 @@ class Player extends ObjectClass {
     super.update(dt);
 
     // Update weapon
-    this.updateWeapon()
+    // this.updateWeapon()
 
     // Make sure the player stays in bounds
     this.x = Math.max(0 + Constants.PLAYER_RADIUS, Math.min(Constants.MAP_SIZE - Constants.PLAYER_RADIUS, this.x));
@@ -223,36 +267,25 @@ class Player extends ObjectClass {
     }
   }
 
-  updateWeapon() {
-    const score = this.score
-    const weapons = this.options.weapons
-    this.weapon = weapons.sniper_rifle
-    // if (score > 100) {
-    //   this.weapon = weapons.uzi
-    // } else if (score > 75) {
-    //   this.weapon = weapons.machinegun
-    // } else if (score > 50) {
-    //   this.weapon = weapons.shotgun
-    // } else if (score > 25) {
-    //   this.weapon = weapons.rifle
-    // } else {
-    //   this.weapon = weapons.pistol
-    // }
+  updateWeapon(code) {
+    const {level} = this.experience
+    const {weapons} = this.options
+    if (this.research.level && level >= this.research.level) {
+      this.research = this.research[code]
+      this.weapon = weapons[this.research.weapon]
+    }
   }
 
   updateLevel(list) {
-    let level, nextLevel, score
-    list.find((xp, index) => {
+    for (let i = 0; i < list.length; i++) {
+      const xp = list[i]
       if (this.score < xp) {
-        level = index
-        nextLevel = list[index]
-        score = this.score - list[index - 1]
-        return true
+        this.experience.level = i
+        this.experience.nextLevel = xp - (list[i - 1] ? list[i - 1] : 0)
+        this.experience.currentScore = this.score - list[i - 1]
+        break
       }
-    })
-    this.experience.level = level
-    this.experience.nextLevel = nextLevel
-    this.experience.currentScore = score
+    }
   }
 
   createBullet() {
@@ -306,7 +339,7 @@ class Player extends ObjectClass {
     this.hp -= value
   }
 
-  takeDamage(damage) {
+  takeBiteDamage(damage) {
     const {defense} = this.options.passive_skills
     const value = damage * (defense - this.options.zones_effects.defense)
     this.hp -= value
@@ -377,6 +410,8 @@ class Player extends ObjectClass {
       codes[skill]()
       this.experience.skill_points += 1
     }
+
+    this.updateWeapon(code)
   }
 
   changeRotate(rotate) {

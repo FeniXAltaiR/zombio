@@ -53,6 +53,8 @@ function render() {
 }
 
 function renderBackground(x, y) {
+  context.fillStyle = 'grey'
+  context.fillRect(0, 0, canvas.width, canvas.height)
   context.drawImage(
     getAsset('map.svg'),
     canvas.width / 2 - x,
@@ -60,8 +62,6 @@ function renderBackground(x, y) {
     MAP_SIZE,
     MAP_SIZE
   )
-  // context.fillStyle = 'grey'
-  // context.fillRect(0, 0, canvas.width, canvas.height)
   // context.fillStyle = 'green';
   // context.fillRect(canvas.width / 2 - x, canvas.height / 2 - y, MAP_SIZE, MAP_SIZE);
   // context.fillStyle = '#DDB221';

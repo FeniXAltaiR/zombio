@@ -12,9 +12,9 @@ const {
 } = Collisions
 
 const createXpList = () => {
-  const list = []
-  for (let i = 0; i < 10; i++) {
-    list.push(i * 500)
+  const list = [0]
+  for (let i = 1; i < 10; i++) {
+    list.push(i * i * 500)
   }
   list.push(1000000)
   return list
@@ -34,7 +34,6 @@ class Game {
     this.createZombies()
     // setInterval(this.respawnZombies.bind(this), 1000)
     this.options = {
-      // xp_levels: [0, 1000, 2500, 5000, 7500, 1000000]
       xp_levels: createXpList(),
       things: ['hp', 'speed', 'accuracy', 'portal']
     }
@@ -63,19 +62,19 @@ class Game {
 
   respawnZombies() {
     const amountZombiesEasy = this.zombies.filter(zombie => zombie.type.name === 'easy')
-    for (let i = 1; i < (Constants.ZOMBIE_EASY_MAX_AMOUNT / (amountZombiesEasy.length + 1)) ** 2; i++) {
+    for (let i = 1; i < (Constants.ZOMBIE_EASY_MAX_AMOUNT / (amountZombiesEasy.length + 1)) * 2; i++) {
       const [x, y] = this.respawnCoords(1, 0.75, this.checkPlayersInRadius.bind(this))
       this.createZombie(x, y, 'easy')
     }
 
     const amountZombiesNormal = this.zombies.filter(zombie => zombie.type.name === 'normal')
-    for (let i = 1; i < (Constants.ZOMBIE_NORMAL_MAX_AMOUNT / (amountZombiesNormal.length + 1)) ** 2; i++) {
+    for (let i = 1; i < (Constants.ZOMBIE_NORMAL_MAX_AMOUNT / (amountZombiesNormal.length + 1)) * 2; i++) {
       const [x, y] = this.respawnCoords(0.75, 0.5, this.checkPlayersInRadius.bind(this))
       this.createZombie(x, y, 'normal')
     }
 
     const amountZombiesHard = this.zombies.filter(zombie => zombie.type.name === 'hard')
-    for (let i = 1; i < (Constants.ZOMBIE_HARD_MAX_AMOUNT / (amountZombiesHard.length + 1)) ** 2; i++) {
+    for (let i = 1; i < (Constants.ZOMBIE_HARD_MAX_AMOUNT / (amountZombiesHard.length + 1)) * 2; i++) {
       const [x, y] = this.respawnCoords(0.5, 0.25, this.checkPlayersInRadius.bind(this))
       this.createZombie(x, y, 'hard')
     }
@@ -210,7 +209,7 @@ class Game {
           zombie.setDirection(dir)
           zombie.changeRotate(dir)
           zombie.resetChangingDirection()
-        } else if (zombie.checkLocationInZone() === true && zombie.mode === 'returning') {
+        } else if (zombie.checkLocationInZone() === true) {
           zombie.setMode('passive')
         }
 
@@ -251,7 +250,7 @@ class Game {
     const playersDamagedByZombies = applyCollisionsPlayersAndZombies(Object.values(this.players), this.zombies)
     playersDamagedByZombies.forEach(player => {
       const {id, damage} = player
-      this.players[id].takeDamage(damage)
+      this.players[id].takeBiteDamage(damage)
     })
 
     // Check if any players are dead
