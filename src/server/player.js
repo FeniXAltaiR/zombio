@@ -396,7 +396,7 @@ class Player extends ObjectClass {
         this.options.used_skill_points.speed.value += 1
       }),
       'accuracy': (() => {
-        this.options.passive_skills.accuracy -= 0.25
+        this.options.passive_skills.accuracy -= 0.1
         this.options.used_skill_points.accuracy.value += 1
       })
     }
