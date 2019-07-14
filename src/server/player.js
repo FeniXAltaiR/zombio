@@ -117,7 +117,7 @@ class Player extends ObjectClass {
           fire_cooldown: 0.45,
           radius: 5,
           speed: 500,
-          damage: 5,
+          damage: 25,
           distance: 400,
           noise: 0.3
         },
@@ -135,7 +135,7 @@ class Player extends ObjectClass {
           fire_cooldown: 0.2,
           radius: 5,
           speed: 800,
-          damage: 15,
+          damage: 25,
           distance: 600,
           noise: 0.5
         },

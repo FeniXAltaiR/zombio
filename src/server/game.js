@@ -30,7 +30,7 @@ class Game {
     this.things = []
     this.lastUpdateTime = Date.now()
     this.shouldSendUpdate = false
-    setInterval(this.update.bind(this), 1000 / 60)
+    setInterval(this.update.bind(this), 1000 / 30)
     this.createZombies()
     // setInterval(this.respawnZombies.bind(this), 1000)
     this.options = {
@@ -57,6 +57,10 @@ class Game {
     for (let i = 0; i < Constants.ZOMBIE_HARD_MAX_AMOUNT / 4; i++) {
       const [x, y] = this.respawnCoords(0.5, 0.25, this.checkPlayersInRadius.bind(this))
       this.createZombie(x, y, 'hard')
+    }
+    for (let i = 0; i < Constants.ZOMBIE_BOSS_EASY_MAX_AMOUNT; i++) {
+      const [x, y] = this.respawnCoords(0, 0.25, this.checkPlayersInRadius.bind(this))
+      this.createZombie(x, y, 'boss_easy')
     }
   }
 
@@ -204,6 +208,8 @@ class Game {
             [x, y] = this.respawnCoords(0.75, 0.5, (x, y) => {return false})
           } else if (zombie.type.name === 'hard') {
             [x, y] = this.respawnCoords(0.5, 0.25, (x, y) => {return false})
+          } else if (zombie.type.name === 'boss_easy') {
+            [x, y] = this.respawnCoords(0.25, 0, (x, y) => {return false})
           }
           const dir = Math.atan2(x - zombie.x, zombie.y - y)
           zombie.setDirection(dir)
@@ -283,7 +289,7 @@ class Game {
     // Check collisions between zombies
     this.zombies.forEach(zombieA => {
       this.zombies.forEach(zombieB => {
-        if (zombieA.distanceTo(zombieB) < Constants.ZOMBIE_RADIUS * 2 && zombieA.distanceTo(zombieB) !== 0) {
+        if (zombieA.distanceTo(zombieB) < zombieA.radius + zombieB.radius && zombieA.distanceTo(zombieB) !== 0) {
           const dir = Math.atan2(zombieA.x - zombieB.x, zombieB.y - zombieA.y)
           zombieA.setDirection(dir)
           zombieB.setDirection(-dir)

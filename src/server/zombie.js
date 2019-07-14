@@ -2,27 +2,35 @@ const shortid = require('shortid')
 const ObjectClass = require('./object')
 const Constants = require('../shared/constants')
 
-const {ZOMBIE_RADIUS} = Constants
-
 const options = {
   types: {
     easy: {
       name: 'easy',
       xp: 250,
       damage: 20,
-      hp: 50
+      hp: 50,
+      radius: 20
     },
     normal: {
       name: 'normal',
       xp: 500,
       damage: 40,
-      hp: 100
+      hp: 100,
+      radius: 20
     },
     hard: {
       name: 'hard',
       xp: 1000,
       damage: 80,
-      hp: 200
+      hp: 200,
+      radius: 20
+    },
+    boss_easy: {
+      name: 'boss_easy',
+      xp: 5000,
+      damage: 150,
+      hp: 1000,
+      radius: 50
     }
   },
   modes: {
@@ -43,6 +51,7 @@ class Zombie extends ObjectClass {
     super(shortid(), x, y, rotate, 50)
     this.hp = options.types[type].hp
     this.damage = options.types[type].damage
+    this.radius = options.types[type].radius
     this.rotate = rotate
     // active or passive behavior
     this.mode = 'passive'
@@ -50,13 +59,24 @@ class Zombie extends ObjectClass {
     this.type = options.types[type]
     this.changingDirection = true
     this.bite = false
+    this.abilities = {
+      boss_easy: {
+        increaseRadius: (() => {
+          this.radius = 80
+          setTimeout(() => {
+            this.radius = 50
+          }, 5000)
+        })
+      }
+    }
+    this.useAbility = true
     this.cooldownBite()
   }
 
   update(dt) {
     super.update(dt)
 
-    // Make sure the player stays in bounds
+    // Make sure the zombie stays in bounds
     this.x = Math.max(0 + Constants.PLAYER_RADIUS, Math.min(Constants.MAP_SIZE - Constants.PLAYER_RADIUS, this.x))
     this.y = Math.max(0 + Constants.PLAYER_RADIUS, Math.min(Constants.MAP_SIZE - Constants.PLAYER_RADIUS, this.y))
 
@@ -64,7 +84,18 @@ class Zombie extends ObjectClass {
     if (inZone) {
       this.agressiveDistance = 500
     } else {
-      this.agressiveDistance = 150
+      this.agressiveDistance = 350
+    }
+
+    if (this.useAbility && this.type.name === 'boss_easy' && this.mode === 'active') {
+      const abilities = Object.keys(this.abilities.boss_easy)
+      const ability = abilities[Math.floor(Math.random() * abilities.length)]
+      this.abilities.boss_easy[ability]()
+
+      this.useAbility = false
+      setTimeout(() => {
+        this.useAbility = true
+      }, 10000)
     }
   }
 
@@ -93,6 +124,16 @@ class Zombie extends ObjectClass {
       if (
         (this.x > 0 && this.x < Constants.MAP_SIZE * 0.5) && (this.y > Constants.MAP_SIZE * 0.25 && this.y < Constants.MAP_SIZE * 0.5) ||
         (this.y > 0 && this.y < Constants.MAP_SIZE * 0.5) && (this.x > Constants.MAP_SIZE * 0.25 && this.x < Constants.MAP_SIZE * 0.5)
+      ) {
+        return true
+      }
+      return false
+    }
+
+    if (this.type.name === 'boss_easy') {
+      if (
+        (this.x > 0 && this.x < Constants.MAP_SIZE * 0.25) && (this.y > Constants.MAP_SIZE * 0 && this.y < Constants.MAP_SIZE * 0.25) ||
+        (this.y > 0 && this.y < Constants.MAP_SIZE * 0.25) && (this.x > Constants.MAP_SIZE * 0 && this.x < Constants.MAP_SIZE * 0.25)
       ) {
         return true
       }
@@ -134,6 +175,7 @@ class Zombie extends ObjectClass {
       hp: this.hp,
       max_hp: this.type.hp,
       rotate: this.rotate,
+      radius: this.radius,
       icon: `zombie_${this.type.name}.svg`
     }
   }

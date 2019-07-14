@@ -7,7 +7,7 @@ import { setPassiveSkillsBar } from './passive-skills'
 
 const Constants = require('../shared/constants');
 
-const { PLAYER_RADIUS, BULLET_RADIUS, MAP_SIZE, ZOMBIE_RADIUS, THING_RADIUS } = Constants;
+const { PLAYER_RADIUS, BULLET_RADIUS, MAP_SIZE, THING_RADIUS } = Constants;
 
 // Get the canvas graphics context
 const canvas = document.getElementById('game-canvas');
@@ -162,26 +162,26 @@ function renderZombie(me, zombie) {
   context.rotate(rotate)
   context.drawImage(
     getAsset(icon),
-    -ZOMBIE_RADIUS,
-    -ZOMBIE_RADIUS,
-    ZOMBIE_RADIUS * 2,
-    ZOMBIE_RADIUS * 2,
+    -zombie.radius,
+    -zombie.radius,
+    zombie.radius * 2,
+    zombie.radius * 2,
   )
   context.restore()
 
   // Draw health bar
   context.fillStyle = 'white';
   context.fillRect(
-    canvasX - ZOMBIE_RADIUS,
-    canvasY + ZOMBIE_RADIUS + 8,
-    ZOMBIE_RADIUS * 2,
+    canvasX - zombie.radius,
+    canvasY + zombie.radius + 8,
+    zombie.radius * 2,
     2,
   );
   context.fillStyle = 'red';
   context.fillRect(
-    canvasX - ZOMBIE_RADIUS + ZOMBIE_RADIUS * 2 * zombie.hp / zombie.max_hp,
-    canvasY + ZOMBIE_RADIUS + 8,
-    ZOMBIE_RADIUS * 2 * (1 - zombie.hp / zombie.max_hp),
+    canvasX - zombie.radius + zombie.radius * 2 * zombie.hp / zombie.max_hp,
+    canvasY + zombie.radius + 8,
+    zombie.radius * 2 * (1 - zombie.hp / zombie.max_hp),
     2,
   );
 }

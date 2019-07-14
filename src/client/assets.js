@@ -5,6 +5,7 @@ const ASSET_NAMES = [
   'zombie_easy.svg',
   'zombie_normal.svg',
   'zombie_hard.svg',
+  'zombie_boss_easy.svg',
   'grass.svg',
   'thing_hp.svg',
   'thing_speed.svg',

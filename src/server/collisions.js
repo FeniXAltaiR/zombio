@@ -31,7 +31,7 @@ function applyCollisionsZombies(zombies, bullets, players) {
       const bullet = bullets[i];
       const zombie = zombies[j];
       if (
-        zombie.distanceTo(bullet) <= Constants.ZOMBIE_RADIUS + bullet.radius
+        zombie.distanceTo(bullet) <= zombie.radius + bullet.radius
       ) {
         if (bullet.damage < zombie.hp) {
           destroyedBullets.push(bullet)
@@ -59,7 +59,7 @@ function applyCollisionsPlayersAndZombies(players, zombies) {
     for (let j = 0; j < zombies.length; j++) {
       const zombie = zombies[j]
       if (
-        player.distanceTo(zombie) <= Constants.PLAYER_RADIUS &&
+        player.distanceTo(zombie) <= Constants.PLAYER_RADIUS + zombie.radius / 2 &&
         zombie.bite
       ) {
         full_damage += zombie.damage
