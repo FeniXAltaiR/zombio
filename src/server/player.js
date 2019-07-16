@@ -23,13 +23,23 @@ class Player extends ObjectClass {
         accuracy: {
           value: 0,
           color: 'blue',
+        },
+        defense: {
+          value: 0,
+          color: 'lightblue',
+        },
+        cooldown: {
+          value: 0,
+          color: 'greenyellow',
         }
       },
       passive_skills: {
         speed: 1,
         hp: 1,
         accuracy: 1,
-        defense: 1
+        defense: 1,
+        damage: 1,
+        cooldown: 1
       },
       zones_effects: {
         speed: 0.5,
@@ -66,6 +76,20 @@ class Player extends ObjectClass {
         portal: (() => {
           this.x = Constants.MAP_SIZE * Math.random()
           this.y = Constants.MAP_SIZE * Math.random()
+        }),
+        defense: (() => {
+          this.options.passive_skills.defense -= 0.25
+
+          setTimeout(() => {
+            this.options.passive_skills.defense += 0.25
+          }, 5000)
+        }),
+        damage: (() => {
+          this.options.passive_skills.damage += 1
+
+          setTimeout(() => {
+            this.options.passive_skills.damage -= 1
+          }, 5000)
         })
       },
       researches: {
@@ -270,7 +294,7 @@ class Player extends ObjectClass {
   updateWeapon(code) {
     const {level} = this.experience
     const {weapons} = this.options
-    if (this.research.level && level >= this.research.level) {
+    if (this.research.level && level >= this.research.level && this.research[code]) {
       this.research = this.research[code]
       this.weapon = weapons[this.research.weapon]
     }
@@ -295,35 +319,36 @@ class Player extends ObjectClass {
 
     if (this.fireCooldown <= 0) {
       const {radius, speed, damage, distance, noise} = this.weapon
+      const modDamage = damage * this.options.passive_skills.damage
 
       this.fireCooldown = this.weapon.fire_cooldown
       if (this.weapon.name === 'auto_shotgun') {
         this.bullets.push(
-          new Bullet(this.id, this.x, this.y, this.rotate - 0.2, radius, speed, damage, distance),
-          new Bullet(this.id, this.x, this.y, this.rotate - 0.1, radius, speed, damage, distance),
-          new Bullet(this.id, this.x, this.y, this.rotate, radius, speed, damage, distance),
-          new Bullet(this.id, this.x, this.y, this.rotate + 0.1, radius, speed, damage, distance),
-          new Bullet(this.id, this.x, this.y, this.rotate + 0.2, radius, speed, damage, distance)
+          new Bullet(this.id, this.x, this.y, this.rotate - 0.2, radius, speed, modDamage, distance),
+          new Bullet(this.id, this.x, this.y, this.rotate - 0.1, radius, speed, modDamage, distance),
+          new Bullet(this.id, this.x, this.y, this.rotate, radius, speed, modDamage, distance),
+          new Bullet(this.id, this.x, this.y, this.rotate + 0.1, radius, speed, modDamage, distance),
+          new Bullet(this.id, this.x, this.y, this.rotate + 0.2, radius, speed, modDamage, distance)
         )
         this.updateStatistic('amount_bullets', 5)
       } else if (this.weapon.name === 'shotgun') {
         this.bullets.push(
-          new Bullet(this.id, this.x, this.y, this.rotate - 0.15, radius, speed, damage, distance),
-          new Bullet(this.id, this.x, this.y, this.rotate, radius, speed, damage, distance),
-          new Bullet(this.id, this.x, this.y, this.rotate + 0.15, radius, speed, damage, distance)
+          new Bullet(this.id, this.x, this.y, this.rotate - 0.15, radius, speed, modDamage, distance),
+          new Bullet(this.id, this.x, this.y, this.rotate, radius, speed, modDamage, distance),
+          new Bullet(this.id, this.x, this.y, this.rotate + 0.15, radius, speed, modDamage, distance)
         )
         this.updateStatistic('amount_bullets', 3)
       } else if (this.weapon.name === 'uzi') {
         for (let i = 0; i < 3; i++) {
           const rotate = this.rotate + ((Math.random() - 0.5) * (noise * this.options.passive_skills.accuracy))
           setTimeout(() => {
-            this.bullets.push(new Bullet(this.id, this.x, this.y, rotate, radius, speed, damage, distance))
+            this.bullets.push(new Bullet(this.id, this.x, this.y, rotate, radius, speed, modDamage, distance))
           }, i * 100)
         }
         this.updateStatistic('amount_bullets', 3)
       } else {
         const rotate = this.rotate + ((Math.random() - 0.5) * (noise * this.options.passive_skills.accuracy))
-        this.bullets.push(new Bullet(this.id, this.x, this.y, rotate, radius, speed, damage, distance))
+        this.bullets.push(new Bullet(this.id, this.x, this.y, rotate, radius, speed, modDamage, distance))
         this.updateStatistic('amount_bullets', 1)
       }
     }
@@ -383,7 +408,9 @@ class Player extends ObjectClass {
     const skills = {
       '49': 'hp',
       '50': 'speed',
-      '51': 'accuracy'
+      '51': 'accuracy',
+      '52': 'defense',
+      '53': 'cooldown'
     }
     const codes = {
       'hp': (() => {
@@ -398,6 +425,14 @@ class Player extends ObjectClass {
       'accuracy': (() => {
         this.options.passive_skills.accuracy -= 0.1
         this.options.used_skill_points.accuracy.value += 1
+      }),
+      'defense': (() => {
+        this.options.passive_skills.defense -= 0.1
+        this.options.used_skill_points.defense.value += 1
+      }),
+      'cooldown': (() => {
+        this.options.passive_skills.cooldown -= 0.1
+        this.options.used_skill_points.cooldown.value += 1
       })
     }
     const skill = skills[code]

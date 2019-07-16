@@ -181,6 +181,14 @@ button:focus {
   background: blue
 }
 
+.passive-skills__skill--greenyellow {
+  background: greenyellow
+}
+
+.passive-skills__skill--lightblue {
+  background: #7F92FF
+}
+
 .passive-skills__skill--gray {
   background: #ccc
 }

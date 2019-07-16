@@ -35,7 +35,7 @@ class Game {
     // setInterval(this.respawnZombies.bind(this), 1000)
     this.options = {
       xp_levels: createXpList(),
-      things: ['hp', 'speed', 'accuracy', 'portal']
+      things: ['hp', 'speed', 'accuracy', 'portal', 'defense', 'damage']
     }
     this.createThings()
   }
