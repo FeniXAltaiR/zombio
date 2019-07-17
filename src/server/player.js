@@ -95,42 +95,42 @@ class Player extends ObjectClass {
       researches: {
         weapon: 'pistol',
         level: 2,
-        '49': {
+        'uzi': {
           weapon: 'uzi',
           level: 3,
-          '49': {
+          'machinegun': {
             weapon: 'machinegun',
           },
-          '50': {
+          'sniper_rifle': {
             weapon: 'sniper_rifle'
           },
-          '51': {
+          'auto_shotgun': {
             weapon: 'auto_shotgun'
           }
         },
-        '50': {
+        'rifle': {
           weapon: 'rifle',
           level: 3,
-          '49': {
+          'machinegun': {
             weapon: 'machinegun',
           },
-          '50': {
+          'sniper_rifle': {
             weapon: 'sniper_rifle'
           },
-          '51': {
+          'auto_shotgun': {
             weapon: 'auto_shotgun'
           }
         },
-        '51': {
+        'shotgun': {
           weapon: 'shotgun',
           level: 3,
-          '49': {
+          'machinegun': {
             weapon: 'machinegun',
           },
-          '50': {
+          'sniper_rifle': {
             weapon: 'sniper_rifle'
           },
-          '51': {
+          'auto_shotgun': {
             weapon: 'auto_shotgun'
           }
         }
@@ -291,11 +291,11 @@ class Player extends ObjectClass {
     }
   }
 
-  updateWeapon(code) {
+  updateWeapon(weapon_name) {
     const {level} = this.experience
     const {weapons} = this.options
-    if (this.research.level && level >= this.research.level && this.research[code]) {
-      this.research = this.research[code]
+    if (this.research.level && level >= this.research.level && this.research[weapon_name]) {
+      this.research = this.research[weapon_name]
       this.weapon = weapons[this.research.weapon]
     }
   }
@@ -464,7 +464,8 @@ class Player extends ObjectClass {
       passive_skills: this.options.passive_skills,
       parameters: this.options.parameters,
       used_skill_points: this.options.used_skill_points,
-      icon: `player_${this.icon}.svg`
+      icon: `player_${this.icon}.svg`,
+      weapon: this.weapon.name
     };
   }
 }

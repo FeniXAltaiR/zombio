@@ -162,6 +162,12 @@ class Game {
     }
   }
 
+  updateWeapon(socket, weapon) {
+    if (this.players[socket.id]) {
+      this.players[socket.id].updateWeapon(weapon)
+    }
+  }
+
   getOnlinePlayers() {
     return Object.keys(this.players).length
   }

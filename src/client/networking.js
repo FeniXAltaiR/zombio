@@ -48,3 +48,7 @@ export const createBullet = () => {
 export const levelUp = code => {
   socket.emit(Constants.MSG_TYPES.LEVEL_UP, code)
 }
+
+export const updateWeapon = weapon => {
+  socket.emit(Constants.MSG_TYPES.UPDATE_WEAPON, weapon)
+}

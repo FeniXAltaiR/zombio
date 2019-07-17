@@ -27,6 +27,7 @@ module.exports = Object.freeze({
     ROTATE: 'rotate',
     CLICK: 'click',
     LEVEL_UP: 'levelup',
+    UPDATE_WEAPON: 'update_weapon',
     GAME_OVER: 'dead',
   },
 });

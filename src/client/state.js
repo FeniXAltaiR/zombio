@@ -3,6 +3,7 @@
 import { updateLeaderboard } from './leaderboard';
 import { udpateExpBar } from './experience';
 import { updatePassiveSkillsBar } from './passive-skills';
+import { updateWeaponsBar } from './weapons';
 
 // The "current" state will always be RENDER_DELAY ms behind server time.
 // This makes gameplay smoother and lag less noticeable.
@@ -27,6 +28,7 @@ export function processGameUpdate(update) {
   updateLeaderboard(update.leaderboard, update.me);
   udpateExpBar(update.me)
   updatePassiveSkillsBar(update.me)
+  updateWeaponsBar(update.me)
 
   // Keep only one game update before the current server time
   const base = getBaseUpdate();
@@ -87,7 +89,7 @@ function interpolateObject(object1, object2, ratio) {
   Object.keys(object1).forEach(key => {
     if (typeof key === 'object') {
       interpolated[key] = object1[key]
-    } else if (['skill_points', 'icon', 'passive_skills', 'parameters', 'used_skill_points', 'id'].includes(key)) {
+    } else if (['skill_points', 'icon', 'passive_skills', 'parameters', 'used_skill_points', 'id', 'weapon'].includes(key)) {
       interpolated[key] = object1[key]
     } else if (key === 'rotate') {
       interpolated[key] = interpolateDirection(object1[key], object2[key], ratio);

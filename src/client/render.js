@@ -3,7 +3,6 @@
 import { debounce } from 'throttle-debounce';
 import { getAsset } from './assets';
 import { getCurrentState } from './state';
-import { setPassiveSkillsBar } from './passive-skills'
 
 const Constants = require('../shared/constants');
 

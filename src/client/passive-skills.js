@@ -1,5 +1,4 @@
 const passive = document.querySelector('.passive-skills')
-// const paragraph = document.querySelector('.passive-skills p')
 
 export const updatePassiveSkillsBar = me => {
   const skills = document.querySelectorAll('.passive-skills__skill')
