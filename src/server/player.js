@@ -300,6 +300,24 @@ class Player extends ObjectClass {
     }
   }
 
+  useActiveSkill(skill) {
+    const skills = {
+      '69': (() => {
+        this.options.passive_skills.speed += 0.5
+        setTimeout(() => {
+          this.options.passive_skills.speed -= 0.5
+        }, 5000)
+      }),
+      '81': (() => {
+        this.options.passive_skills.speed += 0.5
+        setTimeout(() => {
+          this.options.passive_skills.speed -= 0.5
+        }, 5000)
+      })
+    }
+    skills[skill]()
+  }
+
   updateLevel(list) {
     for (let i = 0; i < list.length; i++) {
       const xp = list[i]

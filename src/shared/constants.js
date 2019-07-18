@@ -28,6 +28,7 @@ module.exports = Object.freeze({
     CLICK: 'click',
     LEVEL_UP: 'levelup',
     UPDATE_WEAPON: 'update_weapon',
+    USE_ACTIVE_SKILL: 'active_skill',
     GAME_OVER: 'dead',
   },
 });

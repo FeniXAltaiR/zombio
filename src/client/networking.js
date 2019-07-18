@@ -52,3 +52,7 @@ export const levelUp = code => {
 export const updateWeapon = weapon => {
   socket.emit(Constants.MSG_TYPES.UPDATE_WEAPON, weapon)
 }
+
+export const useActiveSkill = skill => {
+  socket.emit(Constants.MSG_TYPES.USE_ACTIVE_SKILL, skill)
+}

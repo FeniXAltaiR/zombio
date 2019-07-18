@@ -72,6 +72,7 @@ io.on('connection', socket => {
   socket.on(Constants.MSG_TYPES.CLICK, createBullet);
   socket.on(Constants.MSG_TYPES.LEVEL_UP, levelUp);
   socket.on(Constants.MSG_TYPES.UPDATE_WEAPON, updateWeapon);
+  socket.on(Constants.MSG_TYPES.USE_ACTIVE_SKILL, useActiveSkill);
   socket.on('disconnect', onDisconnect);
 });
 
@@ -104,4 +105,8 @@ function levelUp(code) {
 
 function updateWeapon(weapon) {
   games[id_channel].updateWeapon(this, weapon)
+}
+
+function useActiveSkill(skill) {
+  games[id_channel].useActiveSkill(this, skill)
 }

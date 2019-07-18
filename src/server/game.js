@@ -168,6 +168,12 @@ class Game {
     }
   }
 
+  useActiveSkill(socket, skill) {
+    if (this.players[socket.id]) {
+      this.players[socket.id].useActiveSkill(skill)
+    }
+  }
+
   getOnlinePlayers() {
     return Object.keys(this.players).length
   }
