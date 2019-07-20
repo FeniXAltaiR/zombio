@@ -135,12 +135,21 @@ function renderPlayer(me, player) {
 
 function renderBullet(me, bullet) {
   const { x, y, radius } = bullet;
+  const {use_freeze_bullets, use_fire_bullets} = me.active_skills
 
   context.save()
-  // context.filter = 'invert(100%)'
-  // context.filter = 'saturate(200%)'
-  // context.shadowColor = 'orange';
-  // context.shadowBlur = 5;
+  // context.filter = 'invert(50%)'
+  // context.filter = 'sepia(60%)'
+  if (use_fire_bullets) {
+    context.shadowColor = 'orange'
+  } else if (use_freeze_bullets) {
+    context.shadowColor = 'blue'
+  } else {
+    context.shadowColor = 'transparent'
+  }
+  // context.shadowBlur = 35;
+  context.shadowOffsetX = 0;
+  context.shadowOffsetY = 5;
   context.drawImage(
     getAsset('bullet.svg'),
     canvas.width / 2 + x - me.x - radius,

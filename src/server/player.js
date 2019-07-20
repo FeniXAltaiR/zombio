@@ -43,6 +43,18 @@ class Player extends ObjectClass {
       },
       active_skills: {
         use_double_bullets: false,
+        use_fire_bullets: false,
+        use_freeze_bullets: false,
+        debuffs: {
+          firing: {
+            value: false,
+            timeout: null
+          },
+          freezing: {
+            value: false,
+            timeout: null
+          }
+        },
         first_skill: {
           value: null,
           cooldown: false
@@ -54,7 +66,7 @@ class Player extends ObjectClass {
         teleportation: (skill_name => {
           this.x += Math.sin(this.rotate) * 750
           this.y -= Math.cos(this.rotate) * 750
-          this.resetActiveSkill(skill_name, 20000)
+          this.resetActiveSkill(skill_name, 10000)
         }),
         double_bullets: (skill_name => {
           this.options.active_skills.use_double_bullets = true
@@ -64,10 +76,18 @@ class Player extends ObjectClass {
           this.resetActiveSkill(skill_name, 20000)
         }),
         fire_bullets: (skill_name => {
-
+          this.options.active_skills.use_fire_bullets = true
+          setTimeout(() => {
+            this.options.active_skills.use_fire_bullets = false
+          }, 10000)
+          this.resetActiveSkill(skill_name, 20000)
         }),
         freeze_bullets: (skill_name => {
-
+          this.options.active_skills.use_freeze_bullets = true
+          setTimeout(() => {
+            this.options.active_skills.use_freeze_bullets = false
+          }, 10000)
+          this.resetActiveSkill(skill_name, 20000)
         }),
         speedup: (skill_name => {
           this.options.passive_skills.speed += 0.5
@@ -283,6 +303,12 @@ class Player extends ObjectClass {
       this.fireCooldown -= dt
     }
 
+    if (this.options.active_skills.debuffs.firing.value) {
+      this.updateHp(-10 * dt * 5)
+    } else if (this.options.active_skills.debuffs.freezing.value) {
+      this.updateHp(-10 * dt * 2.5)
+    }
+
     if (this.bullets.length) {
       const newBullets = this.bullets
       this.bullets = []
@@ -357,7 +383,7 @@ class Player extends ObjectClass {
     const skill_name = skills[skill]
     const active_skills = this.options.active_skills
     const active_skill = active_skills[active_skills[skill_name].value]
-    if (this.options.active_skills[skill_name].cooldown === false) {
+    if (this.options.active_skills[skill_name].cooldown === false && active_skills[skill_name].value !== null) {
       active_skill(skill_name)
     }
   }
@@ -367,6 +393,16 @@ class Player extends ObjectClass {
     setTimeout(() => {
       this.options.active_skills[skill_name].cooldown = false
     }, ms)
+  }
+
+  activeDebuff(name) {
+    // let {value, timeout} = this.options.active_skills.debuffs[name]
+    // value = true
+    this.options.active_skills.debuffs[name].value = true
+    clearTimeout(this.options.active_skills.debuffs[name].timeout)
+    this.options.active_skills.debuffs[name].timeout = setTimeout(() => {
+      this.options.active_skills.debuffs[name].value = false
+    }, 2500)
   }
 
   updateLevel(list) {
@@ -392,6 +428,16 @@ class Player extends ObjectClass {
       const getRotate = () => {
         return this.rotate + ((Math.random() - 0.5) * (noise * this.options.passive_skills.accuracy))
       }
+      const getBulletEffect = () => {
+        const {use_fire_bullets, use_freeze_bullets} = this.options.active_skills
+        if (use_fire_bullets) {
+          return 'fire'
+        } else if (use_freeze_bullets) {
+          return 'freeze'
+        } else {
+          return null
+        }
+      }
       const bullet_options = {
         parentID: this.id,
         x: this.x,
@@ -400,7 +446,8 @@ class Player extends ObjectClass {
         radius,
         speed,
         damage: modDamage,
-        distance
+        distance,
+        effect: getBulletEffect()
       }
 
       this.fireCooldown = this.weapon.fire_cooldown
@@ -626,7 +673,9 @@ class Player extends ObjectClass {
       passive_skills: this.options.passive_skills,
       active_skills: {
         first_skill: this.options.active_skills.first_skill,
-        second_skill: this.options.active_skills.second_skill
+        second_skill: this.options.active_skills.second_skill,
+        use_fire_bullets: this.options.active_skills.use_fire_bullets,
+        use_freeze_bullets: this.options.active_skills.use_freeze_bullets
       },
       parameters: this.options.parameters,
       used_skill_points: this.options.used_skill_points,

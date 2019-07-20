@@ -17,6 +17,11 @@ function applyCollisionsPlayers(players, bullets) {
           destroyedBullets.push(bullet)
         }
         player.takeBulletDamage(bullet)
+        if (bullet.effect === 'fire') {
+          player.activeDebuff('firing')
+        } else if (bullet.effect === 'freeze') {
+          player.activeDebuff('freezing')
+        }
         break
       }
     }
