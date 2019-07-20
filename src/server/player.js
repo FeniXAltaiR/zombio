@@ -42,6 +42,7 @@ class Player extends ObjectClass {
         cooldown: 1
       },
       active_skills: {
+        use_double_bullets: false,
         first_skill: {
           value: null,
           cooldown: false
@@ -51,10 +52,16 @@ class Player extends ObjectClass {
           cooldown: false
         },
         teleportation: (skill_name => {
-
+          this.x += Math.sin(this.rotate) * 750
+          this.y -= Math.cos(this.rotate) * 750
+          this.resetActiveSkill(skill_name, 20000)
         }),
         double_bullets: (skill_name => {
-
+          this.options.active_skills.use_double_bullets = true
+          setTimeout(() => {
+            this.options.active_skills.use_double_bullets = false
+          }, 10000)
+          this.resetActiveSkill(skill_name, 20000)
         }),
         fire_bullets: (skill_name => {
 
@@ -382,37 +389,130 @@ class Player extends ObjectClass {
     if (this.fireCooldown <= 0) {
       const {radius, speed, damage, distance, noise} = this.weapon
       const modDamage = damage * this.options.passive_skills.damage
+      const getRotate = () => {
+        return this.rotate + ((Math.random() - 0.5) * (noise * this.options.passive_skills.accuracy))
+      }
+      const bullet_options = {
+        parentID: this.id,
+        x: this.x,
+        y: this.y,
+        rotate: this.rotate,
+        radius,
+        speed,
+        damage: modDamage,
+        distance
+      }
 
       this.fireCooldown = this.weapon.fire_cooldown
       if (this.weapon.name === 'auto_shotgun') {
-        this.bullets.push(
-          new Bullet(this.id, this.x, this.y, this.rotate - 0.2, radius, speed, modDamage, distance),
-          new Bullet(this.id, this.x, this.y, this.rotate - 0.1, radius, speed, modDamage, distance),
-          new Bullet(this.id, this.x, this.y, this.rotate, radius, speed, modDamage, distance),
-          new Bullet(this.id, this.x, this.y, this.rotate + 0.1, radius, speed, modDamage, distance),
-          new Bullet(this.id, this.x, this.y, this.rotate + 0.2, radius, speed, modDamage, distance)
-        )
-        this.updateStatistic('amount_bullets', 5)
-      } else if (this.weapon.name === 'shotgun') {
-        this.bullets.push(
-          new Bullet(this.id, this.x, this.y, this.rotate - 0.15, radius, speed, modDamage, distance),
-          new Bullet(this.id, this.x, this.y, this.rotate, radius, speed, modDamage, distance),
-          new Bullet(this.id, this.x, this.y, this.rotate + 0.15, radius, speed, modDamage, distance)
-        )
-        this.updateStatistic('amount_bullets', 3)
-      } else if (this.weapon.name === 'uzi') {
-        for (let i = 0; i < 3; i++) {
-          const rotate = this.rotate + ((Math.random() - 0.5) * (noise * this.options.passive_skills.accuracy))
-          setTimeout(() => {
-            this.bullets.push(new Bullet(this.id, this.x, this.y, rotate, radius, speed, modDamage, distance))
-          }, i * 100)
+        const rotates = [-0.2, -0.1, 0, 0.1, 0.2]
+        if (this.options.active_skills.use_double_bullets) {
+          this.bullets = rotates.reduce((bullets, rotate) => {
+            return bullets.concat(
+              new Bullet({
+                ...bullet_options,
+                x: this.x + Math.cos(this.rotate) * Constants.PLAYER_RADIUS,
+                y: this.y + Math.sin(this.rotate) * Constants.PLAYER_RADIUS,
+                rotate: this.rotate + rotate
+              }),
+              new Bullet({
+                ...bullet_options,
+                x: this.x - Math.cos(this.rotate) * Constants.PLAYER_RADIUS,
+                y: this.y - Math.sin(this.rotate) * Constants.PLAYER_RADIUS,
+                rotate: this.rotate + rotate
+              }),
+            )
+          }, [])
+        } else {
+          this.bullets = rotates.map(rotate => {
+            return new Bullet({
+              ...bullet_options,
+              rotate: this.rotate + rotate,
+            })
+          })
         }
-        this.updateStatistic('amount_bullets', 3)
+      } else if (this.weapon.name === 'shotgun') {
+        const rotates = [-0.15, 0, 0.15]
+        if (this.options.active_skills.use_double_bullets) {
+          this.bullets = rotates.reduce((bullets, rotate) => {
+            return bullets.concat(
+              new Bullet({
+                ...bullet_options,
+                x: this.x + Math.cos(this.rotate) * Constants.PLAYER_RADIUS,
+                y: this.y + Math.sin(this.rotate) * Constants.PLAYER_RADIUS,
+                rotate: this.rotate + rotate
+              }),
+              new Bullet({
+                ...bullet_options,
+                x: this.x - Math.cos(this.rotate) * Constants.PLAYER_RADIUS,
+                y: this.y - Math.sin(this.rotate) * Constants.PLAYER_RADIUS,
+                rotate: this.rotate + rotate
+              }),
+            )
+          }, [])
+        } else {
+          this.bullets = rotates.map(rotate => {
+            return new Bullet({
+              ...bullet_options,
+              rotate: this.rotate + rotate,
+            })
+          })
+        }
+      } else if (this.weapon.name === 'uzi') {
+        if (this.options.active_skills.use_double_bullets) {
+          for (let i = 0; i < 3; i++) {
+            setTimeout(() => {
+              this.bullets = [
+                new Bullet({
+                  ...bullet_options,
+                  x: this.x + Math.cos(this.rotate) * Constants.PLAYER_RADIUS,
+                  y: this.y + Math.sin(this.rotate) * Constants.PLAYER_RADIUS,
+                  rotate: getRotate()
+                }),
+                new Bullet({
+                  ...bullet_options,
+                  x: this.x - Math.cos(this.rotate) * Constants.PLAYER_RADIUS,
+                  y: this.y - Math.sin(this.rotate) * Constants.PLAYER_RADIUS,
+                  rotate: getRotate()
+                })
+              ]
+            }, i * 100)
+          }
+        } else {
+          for (let i = 0; i < 3; i++) {
+            setTimeout(() => {
+              this.bullets.push(new Bullet({
+                ...bullet_options,
+                rotate: getRotate()
+              }))
+            }, i * 100)
+          }
+        }
       } else {
-        const rotate = this.rotate + ((Math.random() - 0.5) * (noise * this.options.passive_skills.accuracy))
-        this.bullets.push(new Bullet(this.id, this.x, this.y, rotate, radius, speed, modDamage, distance))
-        this.updateStatistic('amount_bullets', 1)
+        if (this.options.active_skills.use_double_bullets) {
+          this.bullets = [
+            new Bullet({
+              ...bullet_options,
+              x: this.x + Math.cos(this.rotate) * Constants.PLAYER_RADIUS,
+              y: this.y + Math.sin(this.rotate) * Constants.PLAYER_RADIUS,
+              rotate: getRotate()
+            }),
+            new Bullet({
+              ...bullet_options,
+              x: this.x - Math.cos(this.rotate) * Constants.PLAYER_RADIUS,
+              y: this.y - Math.sin(this.rotate) * Constants.PLAYER_RADIUS,
+              rotate: getRotate()
+            })
+          ]
+        } else {
+          this.bullets.push(new Bullet({
+            ...bullet_options,
+            rotate: getRotate()
+          }))
+        }
       }
+
+      this.updateStatistic('amount_bullets', this.bullets.length)
     }
   }
 
