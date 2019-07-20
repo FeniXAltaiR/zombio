@@ -244,6 +244,11 @@ button:focus {
   margin-bottom: 0;
 }
 
+.weapons {
+  position: fixed;
+  top: 10px;
+}
+
 @media screen and (max-width: 640px) {
   h1 {
     font-size: 2rem;
