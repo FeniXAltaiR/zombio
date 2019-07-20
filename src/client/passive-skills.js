@@ -1,6 +1,13 @@
 const passive = document.querySelector('.passive-skills')
 
 export const updatePassiveSkillsBar = me => {
+  const {level, skill_points} = me.experience
+  if (level - skill_points <= 0) {
+    setPassiveSkillsBar(true)
+    return
+  } else {
+    setPassiveSkillsBar(false)
+  }
   const skills = document.querySelectorAll('.passive-skills__skill')
 
   skills.forEach(skill => {
