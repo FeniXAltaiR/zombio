@@ -41,6 +41,39 @@ class Player extends ObjectClass {
         damage: 1,
         cooldown: 1
       },
+      active_skills: {
+        first_skill: {
+          value: null,
+          cooldown: false
+        },
+        second_skill: {
+          value: null,
+          cooldown: false
+        },
+        teleportation: (skill_name => {
+
+        }),
+        double_bullets: (skill_name => {
+
+        }),
+        fire_bullets: (skill_name => {
+
+        }),
+        freeze_bullets: (skill_name => {
+
+        }),
+        speedup: (skill_name => {
+          this.options.passive_skills.speed += 0.5
+          setTimeout(() => {
+            this.options.passive_skills.speed -= 0.5
+          }, 5000)
+          this.resetActiveSkill(skill_name, 10000)
+        }),
+        health: (skill_name => {
+          this.updateHp(50)
+          this.resetActiveSkill(skill_name, 10000)
+        })
+      },
       zones_effects: {
         speed: 0.5,
         defense: 0.5
@@ -300,22 +333,33 @@ class Player extends ObjectClass {
     }
   }
 
+  addNewSkill(skill_name) {
+    const {first_skill, second_skill} = this.options.active_skills
+    if (first_skill.value === null) {
+      first_skill.value = skill_name
+    } else {
+      second_skill.value = skill_name
+    }
+  }
+
   useActiveSkill(skill) {
     const skills = {
-      '69': (() => {
-        this.options.passive_skills.speed += 0.5
-        setTimeout(() => {
-          this.options.passive_skills.speed -= 0.5
-        }, 5000)
-      }),
-      '81': (() => {
-        this.options.passive_skills.speed += 0.5
-        setTimeout(() => {
-          this.options.passive_skills.speed -= 0.5
-        }, 5000)
-      })
+      '69': 'first_skill',
+      '81': 'second_skill'
     }
-    skills[skill]()
+    const skill_name = skills[skill]
+    const active_skills = this.options.active_skills
+    const active_skill = active_skills[active_skills[skill_name].value]
+    if (this.options.active_skills[skill_name].cooldown === false) {
+      active_skill(skill_name)
+    }
+  }
+
+  resetActiveSkill(skill_name, ms) {
+    this.options.active_skills[skill_name].cooldown = true
+    setTimeout(() => {
+      this.options.active_skills[skill_name].cooldown = false
+    }, ms)
   }
 
   updateLevel(list) {
@@ -480,10 +524,14 @@ class Player extends ObjectClass {
       skill_points: this.leftSkillPoints(),
       experience: this.experience,
       passive_skills: this.options.passive_skills,
+      active_skills: {
+        first_skill: this.options.active_skills.first_skill,
+        second_skill: this.options.active_skills.second_skill
+      },
       parameters: this.options.parameters,
       used_skill_points: this.options.used_skill_points,
       icon: `player_${this.icon}.svg`,
-      weapon: this.weapon.name
+      weapon: this.weapon.name,
     };
   }
 }

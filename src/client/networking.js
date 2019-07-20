@@ -53,6 +53,10 @@ export const updateWeapon = weapon => {
   socket.emit(Constants.MSG_TYPES.UPDATE_WEAPON, weapon)
 }
 
+export const addNewSkill = skill => {
+  socket.emit(Constants.MSG_TYPES.ADD_NEW_SKILL, skill)
+}
+
 export const useActiveSkill = skill => {
   socket.emit(Constants.MSG_TYPES.USE_ACTIVE_SKILL, skill)
 }

@@ -168,6 +168,12 @@ class Game {
     }
   }
 
+  addNewSkill(socket, skill) {
+    if (this.players[socket.id]) {
+      this.players[socket.id].addNewSkill(skill)
+    }
+  }
+
   useActiveSkill(socket, skill) {
     if (this.players[socket.id]) {
       this.players[socket.id].useActiveSkill(skill)
