@@ -2,64 +2,76 @@ const shortid = require('shortid')
 const ObjectClass = require('./object')
 const Constants = require('../shared/constants')
 
-const options = {
-  types: {
-    easy: {
-      name: 'easy',
-      xp: 250,
-      damage: 20,
-      hp: 50,
-      radius: 20
-    },
-    normal: {
-      name: 'normal',
-      xp: 500,
-      damage: 40,
-      hp: 100,
-      radius: 20
-    },
-    hard: {
-      name: 'hard',
-      xp: 1000,
-      damage: 80,
-      hp: 200,
-      radius: 20
-    },
-    boss_easy: {
-      name: 'boss_easy',
-      xp: 5000,
-      damage: 150,
-      hp: 1000,
-      radius: 50
-    }
-  },
-  modes: {
-    passive: {
-      speed: 50
-    },
-    active: {
-      speed: 215
-    },
-    returning: {
-      speed: 50
-    }
-  }
-}
-
 class Zombie extends ObjectClass {
   constructor(x, y, type, rotate = Math.random() * 2 * Math.PI) {
     super(shortid(), x, y, rotate, 50)
-    this.hp = options.types[type].hp
-    this.damage = options.types[type].damage
-    this.radius = options.types[type].radius
-    this.rotate = rotate
-    // active or passive behavior
-    this.mode = 'passive'
-    this.agressiveDistance = 500
-    this.type = options.types[type]
-    this.changingDirection = true
-    this.bite = false
+    this.options = {
+      types: {
+        easy: {
+          name: 'easy',
+          xp: 250,
+          damage: 20,
+          hp: 50,
+          radius: 20
+        },
+        normal: {
+          name: 'normal',
+          xp: 500,
+          damage: 40,
+          hp: 100,
+          radius: 20
+        },
+        hard: {
+          name: 'hard',
+          xp: 1000,
+          damage: 80,
+          hp: 200,
+          radius: 20
+        },
+        boss_easy: {
+          name: 'boss_easy',
+          xp: 5000,
+          damage: 150,
+          hp: 1000,
+          radius: 50
+        },
+        boss_normal: {
+          name: 'boss_normal',
+          xp: 10000,
+          damage: 200,
+          hp: 2000,
+          radius: 60
+        },
+        boss_hard: {
+          name: 'boss_hard',
+          xp: 15000,
+          damage: 250,
+          hp: 3000,
+          radius: 75
+        },
+        boss_legend: {
+          name: 'boss_legend',
+          xp: 25000,
+          damage: 300,
+          hp: 5000,
+          radius: 100
+        }
+      },
+      modes: {
+        passive: {
+          speed: 50
+        },
+        active: {
+          speed: 215
+        },
+        returning: {
+          speed: 50
+        }
+      }
+    }
     this.abilities = {
+      use_teleport: false,
+      use_create_bullets: false,
       boss_easy: {
         increaseRadius: (() => {
           this.radius = 80
@@ -67,9 +79,37 @@ class Zombie extends ObjectClass {
             this.radius = 50
           }, 5000)
         })
+      },
+      boss_normal: {
+        teleportation: (() => {
+          this.abilities.use_teleport = true
+        })
+      },
+      boss_hard: {
+        createBullets: (() => {
+          this.abilities.use_create_bullets = true
+        })
+      },
+      boss_legend: {
+        increaseSpeed: (() => {
+          this.options.modes.active.speed += 35
+          setTimeout(() => {
+            this.options.modes.active.speed -= 35
+          }, 5000)
+        })
       }
     }
-    this.useAbility = true
+    this.use_ability = true
+    this.hp = this.options.types[type].hp
+    this.damage = this.options.types[type].damage
+    this.radius = this.options.types[type].radius
+    this.rotate = rotate
+    // active or passive behavior
+    this.mode = 'passive'
+    this.agressiveDistance = 500
+    this.type = this.options.types[type]
+    this.changingDirection = true
+    this.bite = false
     this.cooldownBite()
   }
 
@@ -87,20 +127,11 @@ class Zombie extends ObjectClass {
       this.agressiveDistance = 350
     }
 
-    if (this.useAbility && this.type.name === 'boss_easy' && this.mode === 'active') {
-      const abilities = Object.keys(this.abilities.boss_easy)
-      const ability = abilities[Math.floor(Math.random() * abilities.length)]
-      this.abilities.boss_easy[ability]()
-
-      this.useAbility = false
-      setTimeout(() => {
-        this.useAbility = true
-      }, 10000)
-    }
+    this.useActiveSkill()
   }
 
   checkLocationInZone() {
-    if (this.type.name === 'easy') {
+    if (['easy', 'boss_easy'].includes(this.type.name)) {
       if (
         this.x > 0 && this.y > Constants.MAP_SIZE * 0.75 ||
         this.y > 0 && this.x > Constants.MAP_SIZE * 0.75
@@ -110,7 +141,7 @@ class Zombie extends ObjectClass {
       return false
     }
 
-    if (this.type.name === 'normal') {
+    if (['normal', 'boss_normal'].includes(this.type.name)) {
       if (
         (this.x > 0 && this.x < Constants.MAP_SIZE * 0.75) && (this.y > Constants.MAP_SIZE * 0.5 && this.y < Constants.MAP_SIZE * 0.75) ||
         (this.y > 0 && this.y < Constants.MAP_SIZE * 0.75) && (this.x > Constants.MAP_SIZE * 0.5 && this.x < Constants.MAP_SIZE * 0.75)
@@ -120,7 +151,7 @@ class Zombie extends ObjectClass {
       return false
     }
 
-    if (this.type.name === 'hard') {
+    if (['hard', 'boss_hard'].includes(this.type.name)) {
       if (
         (this.x > 0 && this.x < Constants.MAP_SIZE * 0.5) && (this.y > Constants.MAP_SIZE * 0.25 && this.y < Constants.MAP_SIZE * 0.5) ||
         (this.y > 0 && this.y < Constants.MAP_SIZE * 0.5) && (this.x > Constants.MAP_SIZE * 0.25 && this.x < Constants.MAP_SIZE * 0.5)
@@ -130,7 +161,7 @@ class Zombie extends ObjectClass {
       return false
     }
 
-    if (this.type.name === 'boss_easy') {
+    if (['boss_legend'].includes(this.type.name)) {
       if (
         (this.x > 0 && this.x < Constants.MAP_SIZE * 0.25) && (this.y > Constants.MAP_SIZE * 0 && this.y < Constants.MAP_SIZE * 0.25) ||
         (this.y > 0 && this.y < Constants.MAP_SIZE * 0.25) && (this.x > Constants.MAP_SIZE * 0 && this.x < Constants.MAP_SIZE * 0.25)
@@ -141,13 +172,31 @@ class Zombie extends ObjectClass {
     }
   }
 
+  useActiveSkill() {
+    if (
+      this.use_ability &&
+      ['boss_easy', 'boss_normal', 'boss_hard', 'boss_legend'].includes(this.type.name) &&
+      this.mode === 'active'
+    ) {
+      const {name: boss_name} = this.type
+      const abilities = Object.keys(this.abilities[boss_name])
+      const ability = abilities[Math.floor(Math.random() * abilities.length)]
+      this.abilities[boss_name][ability]()
+
+      this.use_ability = false
+      setTimeout(() => {
+        this.use_ability = true
+      }, 10000)
+    }
+  }
+
   takeBulletDamage(bullet) {
     this.hp -= bullet.damage
   }
 
   setMode(mode) {
     this.mode = mode
-    this.speed = options.modes[mode].speed
+    this.speed = this.options.modes[mode].speed
   }
 
   resetChangingDirection() {

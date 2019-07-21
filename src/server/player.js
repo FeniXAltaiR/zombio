@@ -288,9 +288,6 @@ class Player extends ObjectClass {
   update(dt) {
     super.update(dt);
 
-    // Update weapon
-    // this.updateWeapon()
-
     // Make sure the player stays in bounds
     this.x = Math.max(0 + Constants.PLAYER_RADIUS, Math.min(Constants.MAP_SIZE - Constants.PLAYER_RADIUS, this.x));
     this.y = Math.max(0 + Constants.PLAYER_RADIUS, Math.min(Constants.MAP_SIZE - Constants.PLAYER_RADIUS, this.y));

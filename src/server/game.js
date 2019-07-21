@@ -59,8 +59,20 @@ class Game {
       this.createZombie(x, y, 'hard')
     }
     for (let i = 0; i < Constants.ZOMBIE_BOSS_EASY_MAX_AMOUNT; i++) {
-      const [x, y] = this.respawnCoords(0, 0.25, this.checkPlayersInRadius.bind(this))
+      const [x, y] = this.respawnCoords(1, 0.75, this.checkPlayersInRadius.bind(this))
       this.createZombie(x, y, 'boss_easy')
+    }
+    for (let i = 0; i < Constants.ZOMBIE_BOSS_NORMAL_MAX_AMOUNT; i++) {
+      const [x, y] = this.respawnCoords(0.75, 0.5, this.checkPlayersInRadius.bind(this))
+      this.createZombie(x, y, 'boss_normal')
+    }
+    for (let i = 0; i < Constants.ZOMBIE_BOSS_HARD_MAX_AMOUNT; i++) {
+      const [x, y] = this.respawnCoords(0.5, 0.25, this.checkPlayersInRadius.bind(this))
+      this.createZombie(x, y, 'boss_hard')
+    }
+    for (let i = 0; i < Constants.ZOMBIE_BOSS_LEGEND_MAX_AMOUNT; i++) {
+      const [x, y] = this.respawnCoords(0.25, 0, this.checkPlayersInRadius.bind(this))
+      this.createZombie(x, y, 'boss_legend')
     }
   }
 
@@ -220,13 +232,13 @@ class Game {
         } else if (zombie.checkLocationInZone() === false && zombie.mode !== 'returning' && zombie.changingDirection) {
           zombie.setMode('returning')
           let x, y
-          if (zombie.type.name === 'easy') {
+          if (['easy', 'boss_easy'].includes(zombie.type.name)) {
             [x, y] = this.respawnCoords(1, 0.75, (x, y) => {return false})
-          } else if (zombie.type.name === 'normal') {
+          } else if (['normal', 'boss_normal'].includes(zombie.type.name)) {
             [x, y] = this.respawnCoords(0.75, 0.5, (x, y) => {return false})
-          } else if (zombie.type.name === 'hard') {
+          } else if (['hard', 'boss_hard'].includes(zombie.type.name)) {
             [x, y] = this.respawnCoords(0.5, 0.25, (x, y) => {return false})
-          } else if (zombie.type.name === 'boss_easy') {
+          } else if (['boss_legend'].includes(zombie.type.name)) {
             [x, y] = this.respawnCoords(0.25, 0, (x, y) => {return false})
           }
           const dir = Math.atan2(x - zombie.x, zombie.y - y)
@@ -249,7 +261,36 @@ class Game {
           zombie.changeRotate(dir)
           zombie.resetChangingDirection()
         }
+
+        if (['boss_easy'].includes(zombie.type.name)) {
+
+        } else if (['boss_normal'].includes(zombie.type.name)) {
+          if (zombie.abilities.use_teleport) {
+            const distance = zombie.distanceTo(player)
+            zombie.x += Math.sin(zombie.rotate) * (distance + 75)
+            zombie.y -= Math.cos(zombie.rotate) * (distance + 75)
+            zombie.abilities.use_teleport = false
+          }
+        } else if (['boss_hard'].includes(zombie.type.name)) {
+          if (zombie.abilities.use_create_bullets) {
+            const bullet_options = {
+              parentID: zombie.id,
+              x: zombie.x + Math.sin(zombie.rotate) * (zombie.radius + 5),
+              y: zombie.y - Math.cos(zombie.rotate) * (zombie.radius + 5),
+              rotate: zombie.rotate,
+              radius: 7,
+              speed: 250,
+              damage: 20,
+              distance: 800
+            }
+            this.bullets.push(bullet_options)
+            zombie.abilities.use_create_bullets = false
+          }
+        } else if (['boss_legend'].includes(zombie.type.name)) {
+
+        }
       })
+
       zombie.update(dt)
     })
 
