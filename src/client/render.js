@@ -61,14 +61,6 @@ function renderBackground(x, y) {
     MAP_SIZE,
     MAP_SIZE
   )
-  // context.fillStyle = 'green';
-  // context.fillRect(canvas.width / 2 - x, canvas.height / 2 - y, MAP_SIZE, MAP_SIZE);
-  // context.fillStyle = '#DDB221';
-  // context.fillRect(canvas.width / 2 - x, canvas.height / 2 - y, MAP_SIZE * 0.75, MAP_SIZE * 0.75);
-  // context.fillStyle = '#9147B7';
-  // context.fillRect(canvas.width / 2 - x, canvas.height / 2 - y, MAP_SIZE * 0.5, MAP_SIZE * 0.5);
-  // context.fillStyle = '#9A4430';
-  // context.fillRect(canvas.width / 2 - x, canvas.height / 2 - y, MAP_SIZE * 0.25, MAP_SIZE * 0.25);
 
   context.strokeStyle = 'rgba(0, 0, 0, .2)'
   for (let i = 0; i < MAP_SIZE; i += 50) {
@@ -140,13 +132,13 @@ function renderBullet(me, bullet) {
   context.save()
   // context.filter = 'invert(50%)'
   // context.filter = 'sepia(60%)'
-  if (use_fire_bullets) {
-    context.shadowColor = 'orange'
-  } else if (use_freeze_bullets) {
-    context.shadowColor = 'blue'
-  } else {
-    context.shadowColor = 'transparent'
-  }
+    if (bullet.effect === 'fire') {
+      context.shadowColor = 'orange'
+    } else if (bullet.effect === 'freeze') {
+      context.shadowColor = 'blue'
+    } else {
+      context.shadowColor = 'transparent'
+    }
   // context.shadowBlur = 35;
   context.shadowOffsetX = 0;
   context.shadowOffsetY = 5;

@@ -25,7 +25,8 @@ class Bullet extends ObjectClass {
   serializeForUpdate() {
     return {
       ...(super.serializeForUpdate()),
-      radius: this.radius
+      radius: this.radius,
+      effect: this.effect
     };
   }
 }

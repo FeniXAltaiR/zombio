@@ -263,34 +263,56 @@ class Game {
           zombie.resetChangingDirection()
         }
 
-        if (['boss_easy'].includes(zombie.type.name)) {
+        if (['boss_easy'].includes(zombie.type.name) && zombie.mode === 'active') {
 
-        } else if (['boss_normal'].includes(zombie.type.name)) {
+        } else if (['boss_normal'].includes(zombie.type.name) && zombie.mode === 'active') {
           if (zombie.abilities.use_teleport) {
             const distance = zombie.distanceTo(player)
             zombie.x += Math.sin(zombie.rotate) * (distance + 100)
             zombie.y -= Math.cos(zombie.rotate) * (distance + 100)
             zombie.abilities.use_teleport = false
           }
-        } else if (['boss_hard'].includes(zombie.type.name)) {
-          if (zombie.abilities.use_create_bullets) {
-            for (let i = 0; i < 12; i++) {
+        } else if (['boss_hard'].includes(zombie.type.name) && zombie.mode === 'active') {
+          if (zombie.abilities.use_create_freeze_bullets) {
+            const amount_bullets = 24
+            for (let i = 0; i < amount_bullets; i++) {
               const bullet_options = {
                 parentID: zombie.id,
-                x: zombie.x + Math.sin(zombie.rotate + (Math.PI / 6 * i)) * (zombie.radius + 25),
-                y: zombie.y - Math.cos(zombie.rotate + (Math.PI / 6 * i)) * (zombie.radius + 25),
-                rotate: zombie.rotate + (Math.PI / 6 * i),
+                x: zombie.x + Math.sin(zombie.rotate + (Math.PI / (amount_bullets / 2) * i)) * (zombie.radius + 25),
+                y: zombie.y - Math.cos(zombie.rotate + (Math.PI / (amount_bullets / 2) * i)) * (zombie.radius + 25),
+                rotate: zombie.rotate + (Math.PI / (amount_bullets / 2) * i),
                 radius: 10,
                 speed: 300,
                 damage: 20,
-                distance: 1500
+                distance: 1500,
+                effect: 'freeze'
               }
               this.bullets.push(new Bullet(bullet_options))
             }
-            zombie.abilities.use_create_bullets = false
+            zombie.resetActiveSkill('use_create_freeze_bullets')
           }
-        } else if (['boss_legend'].includes(zombie.type.name)) {
-
+        } else if (['boss_legend'].includes(zombie.type.name) && zombie.mode === 'active') {
+          if (zombie.abilities.use_create_fire_bullets) {
+            const amount_bullets = 36
+            for (let i = 0; i < amount_bullets; i++) {
+              const bullet_options = {
+                parentID: zombie.id,
+                x: zombie.x + Math.sin(zombie.rotate + (Math.PI / (amount_bullets / 2) * i)) * (zombie.radius + 25),
+                y: zombie.y - Math.cos(zombie.rotate + (Math.PI / (amount_bullets / 2) * i)) * (zombie.radius + 25),
+                rotate: zombie.rotate + (Math.PI / (amount_bullets / 2) * i),
+                radius: 10,
+                speed: 300,
+                damage: 20,
+                distance: 1500,
+                effect: 'fire'
+              }
+              this.bullets.push(new Bullet(bullet_options))
+              setTimeout(() => {
+                this.bullets.push(new Bullet(bullet_options))
+              }, 500)
+            }
+            zombie.resetActiveSkill('use_create_fire_bullets')
+          }
         }
       })
 

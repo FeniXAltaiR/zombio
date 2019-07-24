@@ -37,6 +37,10 @@ app.get('/', (req, res, next) => {
   if (exist_id_channel) {
     id_channel = exist_id_channel
   } else {
+    // for (let i = 0; i < 5; i++) {
+    //   id_channel = shortid()
+    //   games[id_channel] = new Game(id_channel)
+    // }
     id_channel = shortid()
     games[id_channel] = new Game(id_channel)
   }

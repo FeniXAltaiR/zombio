@@ -71,12 +71,15 @@ class Zombie extends ObjectClass {
     }
     this.abilities = {
       use_teleport: false,
-      use_create_bullets: false,
+      use_create_freeze_bullets: false,
+      use_create_fire_bullets: false,
       boss_easy: {
         increaseRadius: (() => {
           this.radius = 80
+          this.damage += 20
           setTimeout(() => {
             this.radius = 50
+            this.damage -= 20
           }, 5000)
         })
       },
@@ -87,14 +90,15 @@ class Zombie extends ObjectClass {
       },
       boss_hard: {
         createBullets: (() => {
-          this.abilities.use_create_bullets = true
+          this.abilities.use_create_freeze_bullets = true
         })
       },
       boss_legend: {
         increaseSpeed: (() => {
-          this.options.modes.active.speed += 35
+          this.options.modes.active.speed += 50
+          this.abilities.use_create_fire_bullets = true
           setTimeout(() => {
-            this.options.modes.active.speed -= 35
+            this.options.modes.active.speed -= 50
           }, 5000)
         })
       }
@@ -188,6 +192,10 @@ class Zombie extends ObjectClass {
         this.use_ability = true
       }, 10000)
     }
+  }
+
+  resetActiveSkill(ability) {
+    this.abilities[ability] = false
   }
 
   takeBulletDamage(bullet) {
