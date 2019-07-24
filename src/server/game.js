@@ -1,5 +1,6 @@
 const Constants = require('../shared/constants');
 const Player = require('./player');
+const Bullet = require('./bullet');
 const Zombie = require('./zombie');
 const Thing = require('./thing');
 const Collisions = require('./collisions');
@@ -267,23 +268,25 @@ class Game {
         } else if (['boss_normal'].includes(zombie.type.name)) {
           if (zombie.abilities.use_teleport) {
             const distance = zombie.distanceTo(player)
-            zombie.x += Math.sin(zombie.rotate) * (distance + 75)
-            zombie.y -= Math.cos(zombie.rotate) * (distance + 75)
+            zombie.x += Math.sin(zombie.rotate) * (distance + 100)
+            zombie.y -= Math.cos(zombie.rotate) * (distance + 100)
             zombie.abilities.use_teleport = false
           }
         } else if (['boss_hard'].includes(zombie.type.name)) {
           if (zombie.abilities.use_create_bullets) {
-            const bullet_options = {
-              parentID: zombie.id,
-              x: zombie.x + Math.sin(zombie.rotate) * (zombie.radius + 5),
-              y: zombie.y - Math.cos(zombie.rotate) * (zombie.radius + 5),
-              rotate: zombie.rotate,
-              radius: 7,
-              speed: 250,
-              damage: 20,
-              distance: 800
+            for (let i = 0; i < 12; i++) {
+              const bullet_options = {
+                parentID: zombie.id,
+                x: zombie.x + Math.sin(zombie.rotate + (Math.PI / 6 * i)) * (zombie.radius + 25),
+                y: zombie.y - Math.cos(zombie.rotate + (Math.PI / 6 * i)) * (zombie.radius + 25),
+                rotate: zombie.rotate + (Math.PI / 6 * i),
+                radius: 10,
+                speed: 300,
+                damage: 20,
+                distance: 1500
+              }
+              this.bullets.push(new Bullet(bullet_options))
             }
-            this.bullets.push(bullet_options)
             zombie.abilities.use_create_bullets = false
           }
         } else if (['boss_legend'].includes(zombie.type.name)) {
