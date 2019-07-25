@@ -308,8 +308,12 @@ class Game {
               }
               this.bullets.push(new Bullet(bullet_options))
               setTimeout(() => {
-                this.bullets.push(new Bullet(bullet_options))
-              }, 500)
+                this.bullets.push(new Bullet({
+                  ...bullet_options,
+                  x: zombie.x + Math.sin(zombie.rotate + (Math.PI / (amount_bullets / 2) * i) + (Math.PI / 6)) * (zombie.radius + 25),
+                  y: zombie.y - Math.cos(zombie.rotate + (Math.PI / (amount_bullets / 2) * i) + (Math.PI / 6)) * (zombie.radius + 25),
+                }))
+              }, 300)
             }
             zombie.resetActiveSkill('use_create_fire_bullets')
           }

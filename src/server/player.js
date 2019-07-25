@@ -46,11 +46,11 @@ class Player extends ObjectClass {
         use_fire_bullets: false,
         use_freeze_bullets: false,
         debuffs: {
-          firing: {
+          fire: {
             value: false,
             timeout: null
           },
-          freezing: {
+          freeze: {
             value: false,
             timeout: null
           }
@@ -300,9 +300,9 @@ class Player extends ObjectClass {
       this.fireCooldown -= dt
     }
 
-    if (this.options.active_skills.debuffs.firing.value) {
+    if (this.options.active_skills.debuffs.fire.value) {
       this.updateHp(-10 * dt * 5)
-    } else if (this.options.active_skills.debuffs.freezing.value) {
+    } else if (this.options.active_skills.debuffs.freeze.value) {
       this.updateHp(-10 * dt * 2.5)
     }
 
@@ -386,19 +386,21 @@ class Player extends ObjectClass {
   }
 
   resetActiveSkill(skill_name, ms) {
+    const {cooldown} = this.options.passive_skills
     this.options.active_skills[skill_name].cooldown = true
     setTimeout(() => {
       this.options.active_skills[skill_name].cooldown = false
-    }, ms)
+    }, ms * cooldown)
   }
 
   activeDebuff(name) {
-    // let {value, timeout} = this.options.active_skills.debuffs[name]
-    // value = true
     this.options.active_skills.debuffs[name].value = true
     clearTimeout(this.options.active_skills.debuffs[name].timeout)
     this.options.active_skills.debuffs[name].timeout = setTimeout(() => {
       this.options.active_skills.debuffs[name].value = false
+      if (name === 'freeze') {
+        this.updateSpeed()
+      }
     }, 2500)
   }
 
@@ -596,7 +598,12 @@ class Player extends ObjectClass {
   }
 
   updateSpeed() {
-    this.speed = this.options.parameters.speed * (this.options.passive_skills.speed + this.options.zones_effects.speed)
+    let modifier = 1
+    if (this.options.active_skills.debuffs.freeze.value) {
+      modifier -= 0.5
+    }
+
+    this.speed = this.options.parameters.speed * (this.options.passive_skills.speed + this.options.zones_effects.speed) * modifier
   }
 
   updateHp(value) {

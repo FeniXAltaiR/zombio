@@ -18,9 +18,9 @@ function applyCollisionsPlayers(players, bullets) {
         }
         player.takeBulletDamage(bullet)
         if (bullet.effect === 'fire') {
-          player.activeDebuff('firing')
+          player.activeDebuff('fire')
         } else if (bullet.effect === 'freeze') {
-          player.activeDebuff('freezing')
+          player.activeDebuff('freeze')
         }
         break
       }
@@ -36,6 +36,7 @@ function applyCollisionsZombies(zombies, bullets, players) {
       const bullet = bullets[i];
       const zombie = zombies[j];
       if (
+        bullet.parentID !== zombie.id &&
         zombie.distanceTo(bullet) <= zombie.radius + bullet.radius
       ) {
         if (bullet.damage < zombie.hp) {
@@ -47,6 +48,11 @@ function applyCollisionsZombies(zombies, bullets, players) {
           if (players[bullet.parentID]) {
             players[bullet.parentID].onKilledZombie(xp)
           }
+        }
+        if (bullet.effect === 'fire') {
+          zombie.activeDebuff('fire')
+        } else if (bullet.effect === 'freeze') {
+          zombie.activeDebuff('freeze')
         }
         break
       }

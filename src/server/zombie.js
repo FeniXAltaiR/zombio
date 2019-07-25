@@ -57,6 +57,18 @@ class Zombie extends ObjectClass {
           radius: 100
         }
       },
+      active_skills: {
+        debuffs: {
+          fire: {
+            value: false,
+            timeout: null
+          },
+          freeze: {
+            value: false,
+            timeout: null
+          }
+        },
+      },
       modes: {
         passive: {
           speed: 50
@@ -131,6 +143,12 @@ class Zombie extends ObjectClass {
       this.agressiveDistance = 350
     }
 
+    if (this.options.active_skills.debuffs.fire.value) {
+      this.updateHp(-10 * dt * 5)
+    } else if (this.options.active_skills.debuffs.freeze.value) {
+      this.updateHp(-10 * dt * 2.5)
+    }
+
     this.useActiveSkill()
   }
 
@@ -198,6 +216,10 @@ class Zombie extends ObjectClass {
     this.abilities[ability] = false
   }
 
+  updateHp(value) {
+    this.hp += value
+  }
+
   takeBulletDamage(bullet) {
     this.hp -= bullet.damage
   }
@@ -212,6 +234,17 @@ class Zombie extends ObjectClass {
     setTimeout(() => {
       this.changingDirection = true
     }, 5000)
+  }
+
+  activeDebuff(name) {
+    this.options.active_skills.debuffs[name].value = true
+    clearTimeout(this.options.active_skills.debuffs[name].timeout)
+    this.options.active_skills.debuffs[name].timeout = setTimeout(() => {
+      this.options.active_skills.debuffs[name].value = false
+      // if (name === 'freeze') {
+      //   this.updateSpeed()
+      // }
+    }, 2500)
   }
 
   cooldownBite() {
