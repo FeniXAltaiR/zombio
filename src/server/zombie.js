@@ -62,10 +62,6 @@ class Zombie extends ObjectClass {
           fire: {
             value: false,
             timeout: null
-          },
-          freeze: {
-            value: false,
-            timeout: null
           }
         },
       },
@@ -83,7 +79,7 @@ class Zombie extends ObjectClass {
     }
     this.abilities = {
       use_teleport: false,
-      use_create_freeze_bullets: false,
+      use_create_vampire_bullets: false,
       use_create_fire_bullets: false,
       boss_easy: {
         increaseRadius: (() => {
@@ -102,7 +98,7 @@ class Zombie extends ObjectClass {
       },
       boss_hard: {
         createBullets: (() => {
-          this.abilities.use_create_freeze_bullets = true
+          this.abilities.use_create_vampire_bullets = true
         })
       },
       boss_legend: {
@@ -145,8 +141,6 @@ class Zombie extends ObjectClass {
 
     if (this.options.active_skills.debuffs.fire.value) {
       this.updateHp(-10 * dt * 5)
-    } else if (this.options.active_skills.debuffs.freeze.value) {
-      this.updateHp(-10 * dt * 2.5)
     }
 
     this.useActiveSkill()
@@ -217,6 +211,10 @@ class Zombie extends ObjectClass {
   }
 
   updateHp(value) {
+    const {hp} = this.type
+    if (this.hp + value > hp) {
+      this.hp = hp
+    }
     this.hp += value
   }
 
@@ -241,9 +239,6 @@ class Zombie extends ObjectClass {
     clearTimeout(this.options.active_skills.debuffs[name].timeout)
     this.options.active_skills.debuffs[name].timeout = setTimeout(() => {
       this.options.active_skills.debuffs[name].value = false
-      // if (name === 'freeze') {
-      //   this.updateSpeed()
-      // }
     }, 2500)
   }
 

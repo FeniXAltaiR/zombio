@@ -273,7 +273,7 @@ class Game {
             zombie.abilities.use_teleport = false
           }
         } else if (['boss_hard'].includes(zombie.type.name) && zombie.mode === 'active') {
-          if (zombie.abilities.use_create_freeze_bullets) {
+          if (zombie.abilities.use_create_vampire_bullets) {
             const amount_bullets = 24
             for (let i = 0; i < amount_bullets; i++) {
               const bullet_options = {
@@ -285,11 +285,11 @@ class Game {
                 speed: 300,
                 damage: 20,
                 distance: 1500,
-                effect: 'freeze'
+                effect: 'vampire'
               }
               this.bullets.push(new Bullet(bullet_options))
             }
-            zombie.resetActiveSkill('use_create_freeze_bullets')
+            zombie.resetActiveSkill('use_create_vampire_bullets')
           }
         } else if (['boss_legend'].includes(zombie.type.name) && zombie.mode === 'active') {
           if (zombie.abilities.use_create_fire_bullets) {
@@ -324,7 +324,7 @@ class Game {
     })
 
     // Apply collisions, give players score for hitting bullets
-    const destroyedBulletsPlayers = applyCollisionsPlayers(Object.values(this.players), this.bullets);
+    const destroyedBulletsPlayers = applyCollisionsPlayers(Object.values(this.players), this.bullets, this.zombies);
     destroyedBulletsPlayers.forEach(b => {
       if (this.players[b.parentID]) {
         this.players[b.parentID].onDealtDamage();

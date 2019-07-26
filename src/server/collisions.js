@@ -1,7 +1,7 @@
 const Constants = require('../shared/constants');
 
 // Returns an array of bullets to be destroyed.
-function applyCollisionsPlayers(players, bullets) {
+function applyCollisionsPlayers(players, bullets, zombies) {
   const destroyedBullets = [];
   for (let i = 0; i < bullets.length; i++) {
     // Look for a player (who didn't create the bullet) to collide each bullet with.
@@ -19,8 +19,12 @@ function applyCollisionsPlayers(players, bullets) {
         player.takeBulletDamage(bullet)
         if (bullet.effect === 'fire') {
           player.activeDebuff('fire')
-        } else if (bullet.effect === 'freeze') {
-          player.activeDebuff('freeze')
+        } else if (bullet.effect === 'vampire') {
+          const id_bullet = bullet.parentID
+          const findZombie = zombies.find(zomb => zomb.id === id_bullet)
+          if (findZombie) {
+            findZombie.updateHp(bullet.damage / 2)
+          }
         }
         break
       }
@@ -51,8 +55,12 @@ function applyCollisionsZombies(zombies, bullets, players) {
         }
         if (bullet.effect === 'fire') {
           zombie.activeDebuff('fire')
-        } else if (bullet.effect === 'freeze') {
-          zombie.activeDebuff('freeze')
+        } else if (bullet.effect === 'vampire') {
+          const id_bullet = bullet.parentID
+          const findZombie = zombies.find(zomb => zomb.id === id_bullet)
+          if (findZombie) {
+            findZombie.updateHp(bullet.damage / 2)
+          }
         }
         break
       }

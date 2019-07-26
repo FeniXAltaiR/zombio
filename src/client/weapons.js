@@ -30,11 +30,11 @@ export const updateWeaponsBar = me => {
       createBtn(weapon, 'weapon')
     })
   } else if (first_skill.value === null && level >= 4) {
-    ['speedup', 'health', 'teleportation', 'double_bullets', 'fire_bullets', 'freeze_bullets'].forEach(skill => {
+    ['speedup', 'health', 'teleportation', 'double_bullets', 'fire_bullets', 'defense'].forEach(skill => {
       createBtn(skill, 'skill')
     })
   } else if (second_skill.value === null && level >= 5) {
-    const skills = ['speedup', 'health', 'teleportation', 'double_bullets', 'fire_bullets', 'freeze_bullets'].filter(skill => skill !== first_skill.value)
+    const skills = ['speedup', 'health', 'teleportation', 'double_bullets', 'fire_bullets', 'defense'].filter(skill => skill !== first_skill.value)
     skills.forEach(skill => {
       createBtn(skill, 'skill')
     })

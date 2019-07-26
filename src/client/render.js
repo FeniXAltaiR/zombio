@@ -127,15 +127,15 @@ function renderPlayer(me, player) {
 
 function renderBullet(me, bullet) {
   const { x, y, radius } = bullet;
-  const {use_freeze_bullets, use_fire_bullets} = me.active_skills
+  const {use_fire_bullets} = me.active_skills
 
   context.save()
   // context.filter = 'invert(50%)'
   // context.filter = 'sepia(60%)'
     if (bullet.effect === 'fire') {
       context.shadowColor = 'orange'
-    } else if (bullet.effect === 'freeze') {
-      context.shadowColor = 'blue'
+    } else if (bullet.effect === 'vampire') {
+      context.shadowColor = 'red'
     } else {
       context.shadowColor = 'transparent'
     }
