@@ -224,31 +224,24 @@ class Game {
     const dt = (now - this.lastUpdateTime) / 1000;
     this.lastUpdateTime = now;
 
-    // Update each bullet
-    const bulletsToRemove = [];
-    this.bullets.forEach(bullet => {
-      if (bullet.update(dt)) {
-        // Destroy this bullet
-        bulletsToRemove.push(bullet);
-      }
-    });
-    this.bullets = this.bullets.filter(bullet => !bulletsToRemove.includes(bullet));
+    // Objects, which should be removed
+    const bullets_removed = []
+    const things_removed = []
+    const zombies_removed = []
 
-    // Update each player
-    Object.keys(this.sockets).forEach(playerID => {
-      const player = this.players[playerID]
+    const createBullets = player => {
       const newBullets = player.update(dt)
       if (newBullets) {
         newBullets.forEach(newBullet => {
           this.bullets.push(newBullet)
         })
       }
-    });
+    }
 
-    // Update each zombie
-    this.zombies.forEach(zombie => {
-      Object.keys(this.sockets).forEach(socket => {
-        const player = this.players[socket]
+    const udpateZombies = player => {
+      let full_damage = 0
+
+      this.zombies.forEach(zombie => {
         if (zombie.distanceTo(player) < zombie.agressiveDistance) {
           zombie.setMode('active')
         } else if (zombie.checkLocationInZone() === false && zombie.mode !== 'returning' && zombie.changingDirection) {
@@ -339,61 +332,63 @@ class Game {
             zombie.resetActiveSkill('use_create_fire_bullets')
           }
         }
+
+        // Check if any zombie has destroyed
+        if (zombie.hp <= 0) {
+          const rand = Math.random()
+          if (rand > 0.95) {
+            const {x, y} = zombie
+            const thing = new Thing(x, y, {name: 'hp', icon: `thing_hp.svg`})
+            this.things.push(thing)
+          }
+          zombies_removed.push(zombie)
+        }
+
+        // Players, which have damaged by zombies
+        if (
+          player.distanceTo(zombie) <= Constants.PLAYER_RADIUS + zombie.radius / 2 &&
+          zombie.bite
+        ) {
+          full_damage += zombie.damage
+          zombie.cooldownBite()
+        }
+
+        zombie.update(dt)
       })
 
-      zombie.update(dt)
-    })
-
-    // Apply collisions, give players score for hitting bullets
-    const destroyedBulletsPlayers = applyCollisionsPlayers(Object.values(this.players), this.bullets, this.zombies);
-    destroyedBulletsPlayers.forEach(b => {
-      if (this.players[b.parentID]) {
-        this.players[b.parentID].onDealtDamage();
+      if (full_damage > 0) {
+        const {id} = player
+        this.players[id].takeBiteDamage(full_damage)
       }
-    });
-    this.bullets = this.bullets.filter(bullet => !destroyedBulletsPlayers.includes(bullet));
+    }
 
-    // Apply collisions zombies
-    const destroyedBulletsZombies = applyCollisionsZombies(this.zombies, this.bullets, this.players)
-    destroyedBulletsZombies.forEach(b => {
-      if (this.players[b.parentID]) {
-        this.players[b.parentID].onDealtDamage()
+    const sendGameUpdate = (socket, player) => {
+      if (this.shouldSendUpdate) {
+        const leaderboard = this.getLeaderboard();
+        socket.emit(Constants.MSG_TYPES.GAME_UPDATE, this.createUpdate(player, leaderboard));
+        this.shouldSendUpdate = false;
+      } else {
+        this.shouldSendUpdate = true;
       }
-    });
-    this.bullets = this.bullets.filter(bullet => !destroyedBulletsZombies.includes(bullet))
+    }
 
-    const playersDamagedByZombies = applyCollisionsPlayersAndZombies(Object.values(this.players), this.zombies)
-    playersDamagedByZombies.forEach(player => {
-      const {id, damage} = player
-      this.players[id].takeBiteDamage(damage)
-    })
-
-    // Check if any players are dead
-    Object.keys(this.sockets).forEach(playerID => {
-      const socket = this.sockets[playerID];
-      const player = this.players[playerID];
+    const checkPlayerIsAlive = (socket, player) => {
       if (player.hp <= 0) {
         socket.emit(Constants.MSG_TYPES.GAME_OVER, player.statistic);
         this.removePlayer(socket);
       }
 
       player.updateLevel(this.options.xp_levels)
-    });
+    }
 
-    // Check if any zombies are destroyed
-    const destroyedZombies = []
-    this.zombies.forEach(zombie => {
-      if (zombie.hp <= 0) {
-        const rand = Math.random()
-        if (rand > 0.95) {
-          const {x, y} = zombie
-          const thing = new Thing(x, y, {name: 'hp', icon: `thing_hp.svg`})
-          this.things.push(thing)
+    const checkThingsToRemove = player => {
+      this.things.forEach(thing => {
+        if (player.distanceTo(thing) <= Constants.PLAYER_RADIUS + Constants.THING_RADIUS) {
+          player.takeBuff(thing.options.name)
+          things_removed.push(thing)
         }
-        destroyedZombies.push(zombie)
-      }
-    })
-    this.zombies = this.zombies.filter(zombie => !destroyedZombies.includes(zombie))
+      })
+    }
 
     // Check collisions between zombies
     this.zombies.forEach(zombieA => {
@@ -408,28 +403,102 @@ class Game {
             zombieA.setMode('passive')
             zombieB.setMode('passive')
           }
-          zombieA.update(dt)
-          zombieB.update(dt)
+          // zombieA.update(dt)
+          // zombieB.update(dt)
         }
       })
     })
 
-    // Apply collisions between players and things
-    const takedThings = applyCollisionsPlayersAndThings(Object.values(this.players), this.things)
-    this.things = this.things.filter(thing => !takedThings.includes(thing))
+    // Update each player
+    Object.keys(this.sockets).forEach(id_socket => {
+      const socket = this.sockets[id_socket]
+      const player = this.players[id_socket]
 
-    // Send a game update to each player every other time
-    if (this.shouldSendUpdate) {
-      const leaderboard = this.getLeaderboard();
-      Object.keys(this.sockets).forEach(playerID => {
-        const socket = this.sockets[playerID];
-        const player = this.players[playerID];
-        socket.emit(Constants.MSG_TYPES.GAME_UPDATE, this.createUpdate(player, leaderboard));
-      });
-      this.shouldSendUpdate = false;
-    } else {
-      this.shouldSendUpdate = true;
+      createBullets(player)
+      udpateZombies(player)
+      sendGameUpdate(socket, player)
+      checkPlayerIsAlive(socket, player)
+      checkThingsToRemove(player)
+    });
+
+    const checkBulletShootPlayers = bullet => {
+      Object.keys(this.sockets).forEach(socket => {
+        const player = this.players[socket]
+        if (
+          bullet.parentID !== player.id &&
+          player.distanceTo(bullet) <= Constants.PLAYER_RADIUS + bullet.radius
+        ) {
+          if (bullet.damage < player.hp) {
+            bullets_removed.push(bullet)
+          }
+          player.takeBulletDamage(bullet)
+          if (this.players[bullet.parentID]) {
+            this.players[bullet.parentID].onDealtDamage();
+          }
+          if (bullet.effect === 'fire') {
+            player.activeDebuff('fire')
+          } else if (bullet.effect === 'vampire') {
+            const id_bullet = bullet.parentID
+            const findZombie = this.zombies.find(zomb => zomb.id === id_bullet)
+            if (findZombie) {
+              findZombie.updateHp(bullet.damage / 2)
+            }
+          }
+        }
+      })
     }
+
+    const checkBulletShootZombies = bullet => {
+      this.zombies.forEach(zombie => {
+        if (
+          bullet.parentID !== zombie.id &&
+          zombie.distanceTo(bullet) <= zombie.radius + bullet.radius
+        ) {
+          if (bullet.damage < zombie.hp) {
+            bullets_removed.push(bullet)
+          }
+          zombie.takeBulletDamage(bullet)
+          if (this.players[bullet.parentID]) {
+            this.players[bullet.parentID].onDealtDamage();
+          }
+          if (zombie.hp <= 0) {
+            const xp = zombie.type.xp
+            if (this.players[bullet.parentID]) {
+              this.players[bullet.parentID].onKilledZombie(xp)
+              if (['boss_easy', 'boss_normal', 'boss_hard', 'boss_legend'].includes(zombie.type.name)) {
+                this.players[bullet.parentID].activeBossBonus(zombie.type.name)
+              }
+            }
+            bullets_removed.push(zombie)
+          }
+          if (bullet.effect === 'fire') {
+            zombie.activeDebuff('fire')
+          } else if (bullet.effect === 'vampire') {
+            const id_bullet = bullet.parentID
+            const findZombie = zombies.find(zomb => zomb.id === id_bullet)
+            if (findZombie) {
+              findZombie.updateHp(bullet.damage / 2)
+            }
+          }
+        }
+      })
+    }
+
+    const updateBullet = bullet => {
+      if (bullet.update(dt)) {
+        bullets_removed.push(bullet);
+      }
+    }
+
+    this.bullets.forEach(bullet => {
+      checkBulletShootPlayers(bullet)
+      checkBulletShootZombies(bullet)
+      updateBullet(bullet)
+    })
+
+    this.bullets = this.bullets.filter(bullet => !bullets_removed.includes(bullet))
+    this.things = this.things.filter(thing => !things_removed.includes(thing))
+    this.zombies = this.zombies.filter(zombie => !zombies_removed.includes(zombie))
   }
 
   getLeaderboard() {

@@ -37,10 +37,6 @@ app.get('/', (req, res, next) => {
   if (exist_id_channel) {
     id_channel = exist_id_channel
   } else {
-    // for (let i = 0; i < 5; i++) {
-    //   id_channel = shortid()
-    //   games[id_channel] = new Game(id_channel)
-    // }
     id_channel = shortid()
     games[id_channel] = new Game(id_channel)
   }
@@ -83,6 +79,11 @@ io.on('connection', socket => {
 
 // Setup the Game
 const games = {}
+
+for (let i = 0; i < 3; i++) {
+  const id = shortid()
+  games[id] = new Game(id)
+}
 
 function joinGame(options) {
   games[id_channel].addPlayer(this, options);
