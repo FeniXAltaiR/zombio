@@ -31,9 +31,9 @@ class Game {
     this.things = []
     this.lastUpdateTime = Date.now()
     this.shouldSendUpdate = false
-    setInterval(this.update.bind(this), 1000 / 30)
+    setInterval(this.update.bind(this), 1000 / 24)
     this.createZombies()
-    // setInterval(this.respawnZombies.bind(this), 1000)
+    setInterval(this.respawnZombies.bind(this), 60000)
     this.options = {
       xp_levels: createXpList(),
       things: ['hp', 'speed', 'accuracy', 'portal', 'defense', 'damage']
@@ -47,15 +47,15 @@ class Game {
   }
 
   createZombies() {
-    for (let i = 0; i < Constants.ZOMBIE_EASY_MAX_AMOUNT / 4; i++) {
+    for (let i = 0; i < Constants.ZOMBIE_EASY_MAX_AMOUNT; i++) {
       const [x, y] = this.respawnCoords(1, 0.75, this.checkPlayersInRadius.bind(this))
       this.createZombie(x, y, 'easy')
     }
-    for (let i = 0; i < Constants.ZOMBIE_NORMAL_MAX_AMOUNT / 4; i++) {
+    for (let i = 0; i < Constants.ZOMBIE_NORMAL_MAX_AMOUNT; i++) {
       const [x, y] = this.respawnCoords(0.75, 0.5, this.checkPlayersInRadius.bind(this))
       this.createZombie(x, y, 'normal')
     }
-    for (let i = 0; i < Constants.ZOMBIE_HARD_MAX_AMOUNT / 4; i++) {
+    for (let i = 0; i < Constants.ZOMBIE_HARD_MAX_AMOUNT; i++) {
       const [x, y] = this.respawnCoords(0.5, 0.25, this.checkPlayersInRadius.bind(this))
       this.createZombie(x, y, 'hard')
     }
@@ -78,22 +78,43 @@ class Game {
   }
 
   respawnZombies() {
-    const amountZombiesEasy = this.zombies.filter(zombie => zombie.type.name === 'easy')
-    for (let i = 1; i < (Constants.ZOMBIE_EASY_MAX_AMOUNT / (amountZombiesEasy.length + 1)) * 2; i++) {
+    const zombieTypes = this.zombies.reduce((total, zombie) => {
+      const {name} = zombie.type
+      if (total[name]) {
+        total[name] += 1
+        return total
+      }
+      total[name] = 1
+      return total
+    }, {})
+
+    for (let i = 0; i < Constants.ZOMBIE_EASY_MAX_AMOUNT - zombieTypes['easy']; i++) {
       const [x, y] = this.respawnCoords(1, 0.75, this.checkPlayersInRadius.bind(this))
       this.createZombie(x, y, 'easy')
     }
-
-    const amountZombiesNormal = this.zombies.filter(zombie => zombie.type.name === 'normal')
-    for (let i = 1; i < (Constants.ZOMBIE_NORMAL_MAX_AMOUNT / (amountZombiesNormal.length + 1)) * 2; i++) {
+    for (let i = 0; i < Constants.ZOMBIE_NORMAL_MAX_AMOUNT - zombieTypes['normal']; i++) {
       const [x, y] = this.respawnCoords(0.75, 0.5, this.checkPlayersInRadius.bind(this))
       this.createZombie(x, y, 'normal')
     }
-
-    const amountZombiesHard = this.zombies.filter(zombie => zombie.type.name === 'hard')
-    for (let i = 1; i < (Constants.ZOMBIE_HARD_MAX_AMOUNT / (amountZombiesHard.length + 1)) * 2; i++) {
+    for (let i = 0; i < Constants.ZOMBIE_HARD_MAX_AMOUNT - zombieTypes['hard']; i++) {
       const [x, y] = this.respawnCoords(0.5, 0.25, this.checkPlayersInRadius.bind(this))
       this.createZombie(x, y, 'hard')
+    }
+    for (let i = 0; i < Constants.ZOMBIE_BOSS_EASY_MAX_AMOUNT - zombieTypes['boss_easy']; i++) {
+      const [x, y] = this.respawnCoords(1, 0.75, this.checkPlayersInRadius.bind(this))
+      this.createZombie(x, y, 'boss_easy')
+    }
+    for (let i = 0; i < Constants.ZOMBIE_BOSS_NORMAL_MAX_AMOUNT - zombieTypes['boss_normal']; i++) {
+      const [x, y] = this.respawnCoords(0.75, 0.5, this.checkPlayersInRadius.bind(this))
+      this.createZombie(x, y, 'boss_normal')
+    }
+    for (let i = 0; i < Constants.ZOMBIE_BOSS_HARD_MAX_AMOUNT - zombieTypes['boss_hard']; i++) {
+      const [x, y] = this.respawnCoords(0.5, 0.25, this.checkPlayersInRadius.bind(this))
+      this.createZombie(x, y, 'boss_hard')
+    }
+    for (let i = 0; i < Constants.ZOMBIE_BOSS_LEGEND_MAX_AMOUNT - zombieTypes['boss_legend']; i++) {
+      const [x, y] = this.respawnCoords(0.25, 0, this.checkPlayersInRadius.bind(this))
+      this.createZombie(x, y, 'boss_legend')
     }
   }
 
@@ -120,7 +141,7 @@ class Game {
       y = Constants.MAP_SIZE * (Math.random() * boundsA)
     }
 
-    if (checkFn(x, y)) {
+    if (checkFn && checkFn(x, y)) {
       return this.respawnCoords(boundsA, boundsB, checkFn.bind(this))
     } else {
       return [x, y]
@@ -234,13 +255,13 @@ class Game {
           zombie.setMode('returning')
           let x, y
           if (['easy', 'boss_easy'].includes(zombie.type.name)) {
-            [x, y] = this.respawnCoords(1, 0.75, (x, y) => {return false})
+            [x, y] = this.respawnCoords(1, 0.75, false)
           } else if (['normal', 'boss_normal'].includes(zombie.type.name)) {
-            [x, y] = this.respawnCoords(0.75, 0.5, (x, y) => {return false})
+            [x, y] = this.respawnCoords(0.75, 0.5, false)
           } else if (['hard', 'boss_hard'].includes(zombie.type.name)) {
-            [x, y] = this.respawnCoords(0.5, 0.25, (x, y) => {return false})
+            [x, y] = this.respawnCoords(0.5, 0.25, false)
           } else if (['boss_legend'].includes(zombie.type.name)) {
-            [x, y] = this.respawnCoords(0.25, 0, (x, y) => {return false})
+            [x, y] = this.respawnCoords(0.25, 0, false)
           }
           const dir = Math.atan2(x - zombie.x, zombie.y - y)
           zombie.setDirection(dir)

@@ -51,6 +51,9 @@ function applyCollisionsZombies(zombies, bullets, players) {
           const xp = zombie.type.xp
           if (players[bullet.parentID]) {
             players[bullet.parentID].onKilledZombie(xp)
+            if (['boss_easy', 'boss_normal', 'boss_hard', 'boss_legend'].includes(zombie.type.name)) {
+              players[bullet.parentID].activeBossBonus(zombie.type.name)
+            }
           }
         }
         if (bullet.effect === 'fire') {

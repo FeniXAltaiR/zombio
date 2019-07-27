@@ -41,7 +41,7 @@ function onKeyDownInput (e) {
     return
   }
 
-  if ([69, 81].includes(e.keyCode)) {
+  if ([69, 81, 82].includes(e.keyCode)) {
     useActiveSkill(e.keyCode)
   }
 

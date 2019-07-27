@@ -58,6 +58,10 @@ class Player extends ObjectClass {
           value: null,
           cooldown: false
         },
+        ultra_skill: {
+          value: null,
+          cooldown: false
+        },
         teleportation: (skill_name => {
           this.x += Math.sin(this.rotate) * 750
           this.y -= Math.cos(this.rotate) * 750
@@ -94,11 +98,55 @@ class Player extends ObjectClass {
         health: (skill_name => {
           this.updateHp(50)
           this.resetActiveSkill(skill_name, 10000)
+        }),
+        ultimate: (skill_name => {
+          const amount_bullets = 36
+          for (let i = 0; i < amount_bullets; i++) {
+            const bullet_options = {
+              parentID: this.id,
+              x: this.x + Math.sin(this.rotate + (Math.PI / (amount_bullets / 2) * i)) * (Constants.PLAYER_RADIUS + 25),
+              y: this.y - Math.cos(this.rotate + (Math.PI / (amount_bullets / 2) * i)) * (Constants.PLAYER_RADIUS + 25),
+              rotate: this.rotate + (Math.PI / (amount_bullets / 2) * i),
+              radius: 10,
+              speed: 300,
+              damage: 20,
+              distance: 1500,
+              effect: 'fire'
+            }
+            this.bullets.push(new Bullet(bullet_options))
+          }
+          this.resetActiveSkill(skill_name, 30000)
         })
       },
       zones_effects: {
         speed: 0.5,
         defense: 0.5
+      },
+      killed_bosses: {
+        boss_easy: {
+          value: false,
+          bonus: (() => {
+            this.options.passive_skills.hp += 1
+          })
+        },
+        boss_normal: {
+          value: false,
+          bonus: (() => {
+            this.options.passive_skills.cooldown -= 0.1
+          })
+        },
+        boss_hard: {
+          value: false,
+          bonus: (() => {
+            this.options.passive_skills.damage += 0.25
+          })
+        },
+        boss_legend: {
+          value: false,
+          bonus: (() => {
+            this.options.active_skills.ultra_skill.value = 'ultimate'
+          })
+        }
       },
       buffs: {
         hp: (() => {
@@ -371,7 +419,8 @@ class Player extends ObjectClass {
   useActiveSkill(skill) {
     const skills = {
       '69': 'first_skill',
-      '81': 'second_skill'
+      '81': 'second_skill',
+      '82': 'ultra_skill'
     }
     const skill_name = skills[skill]
     const active_skills = this.options.active_skills
@@ -556,6 +605,14 @@ class Player extends ObjectClass {
     this.statistic[property] += value
   }
 
+  activeBossBonus(boss_name) {
+    const boss = this.options.killed_bosses[boss_name]
+    if (boss.value === false) {
+      boss.value = true
+      boss.bonus()
+    }
+  }
+
   takeBulletDamage(bullet) {
     const {defense} = this.options.passive_skills
     const value = bullet.damage * (defense - this.options.zones_effects.defense)
@@ -629,7 +686,7 @@ class Player extends ObjectClass {
         this.options.used_skill_points.defense.value += 1
       }),
       'cooldown': (() => {
-        this.options.passive_skills.cooldown -= 0.1
+        this.options.passive_skills.cooldown -= 0.05
         this.options.used_skill_points.cooldown.value += 1
       })
     }
