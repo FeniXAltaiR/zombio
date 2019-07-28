@@ -222,6 +222,7 @@ class Game {
     // Calculate time elapsed
     const now = Date.now();
     const dt = (now - this.lastUpdateTime) / 1000;
+    // console.log(dt)
     this.lastUpdateTime = now;
 
     // Objects, which should be removed
@@ -242,7 +243,7 @@ class Game {
       let full_damage = 0
 
       this.zombies.forEach(zombie => {
-        if (zombie.distanceTo(player) < zombie.agressiveDistance) {
+        if (zombie.distanceTo({x: player.x, y: player.y}) < zombie.agressiveDistance) {
           zombie.setMode('active')
         } else if (zombie.checkLocationInZone() === false && zombie.mode !== 'returning' && zombie.changingDirection) {
           zombie.setMode('returning')
@@ -281,7 +282,7 @@ class Game {
 
         } else if (['boss_normal'].includes(zombie.type.name) && zombie.mode === 'active') {
           if (zombie.abilities.use_teleport) {
-            const distance = zombie.distanceTo(player)
+            const distance = zombie.distanceTo({x: player.x, y: player.y})
             zombie.x += Math.sin(zombie.rotate) * (distance + 100)
             zombie.y -= Math.cos(zombie.rotate) * (distance + 100)
             zombie.abilities.use_teleport = false
@@ -346,7 +347,7 @@ class Game {
 
         // Players, which have damaged by zombies
         if (
-          player.distanceTo(zombie) <= Constants.PLAYER_RADIUS + zombie.radius / 2 &&
+          player.distanceTo({x: zombie.x, y: zombie.y}) <= Constants.PLAYER_RADIUS + zombie.radius / 2 &&
           zombie.bite
         ) {
           full_damage += zombie.damage
@@ -383,7 +384,8 @@ class Game {
 
     const checkThingsToRemove = player => {
       this.things.forEach(thing => {
-        if (player.distanceTo(thing) <= Constants.PLAYER_RADIUS + Constants.THING_RADIUS) {
+        const {x, y} = thing
+        if (player.distanceTo({x, y}) <= Constants.PLAYER_RADIUS + Constants.THING_RADIUS) {
           player.takeBuff(thing.options.name)
           things_removed.push(thing)
         }
@@ -393,7 +395,8 @@ class Game {
     // Check collisions between zombies
     this.zombies.forEach(zombieA => {
       this.zombies.forEach(zombieB => {
-        if (zombieA.distanceTo(zombieB) < zombieA.radius + zombieB.radius && zombieA.distanceTo(zombieB) !== 0) {
+        const {x, y} = zombieB
+        if (zombieA.distanceTo({x, y}) < zombieA.radius + zombieB.radius && zombieA.distanceTo({x, y}) !== 0) {
           const dir = Math.atan2(zombieA.x - zombieB.x, zombieB.y - zombieA.y)
           zombieA.setDirection(dir)
           zombieB.setDirection(-dir)
@@ -403,8 +406,8 @@ class Game {
             zombieA.setMode('passive')
             zombieB.setMode('passive')
           }
-          // zombieA.update(dt)
-          // zombieB.update(dt)
+          zombieA.update(dt)
+          zombieB.update(dt)
         }
       })
     })
@@ -416,17 +419,17 @@ class Game {
 
       createBullets(player)
       udpateZombies(player)
-      sendGameUpdate(socket, player)
       checkPlayerIsAlive(socket, player)
       checkThingsToRemove(player)
     });
 
     const checkBulletShootPlayers = bullet => {
+      const {x, y} = bullet
       Object.keys(this.sockets).forEach(socket => {
         const player = this.players[socket]
         if (
           bullet.parentID !== player.id &&
-          player.distanceTo(bullet) <= Constants.PLAYER_RADIUS + bullet.radius
+          player.distanceTo({x, y}) <= Constants.PLAYER_RADIUS + bullet.radius
         ) {
           if (bullet.damage < player.hp) {
             bullets_removed.push(bullet)
@@ -449,10 +452,11 @@ class Game {
     }
 
     const checkBulletShootZombies = bullet => {
+      const {x, y} = bullet
       this.zombies.forEach(zombie => {
         if (
           bullet.parentID !== zombie.id &&
-          zombie.distanceTo(bullet) <= zombie.radius + bullet.radius
+          zombie.distanceTo({x, y}) <= zombie.radius + bullet.radius
         ) {
           if (bullet.damage < zombie.hp) {
             bullets_removed.push(bullet)
@@ -469,7 +473,7 @@ class Game {
                 this.players[bullet.parentID].activeBossBonus(zombie.type.name)
               }
             }
-            bullets_removed.push(zombie)
+            zombies_removed.push(zombie)
           }
           if (bullet.effect === 'fire') {
             zombie.activeDebuff('fire')
@@ -499,6 +503,12 @@ class Game {
     this.bullets = this.bullets.filter(bullet => !bullets_removed.includes(bullet))
     this.things = this.things.filter(thing => !things_removed.includes(thing))
     this.zombies = this.zombies.filter(zombie => !zombies_removed.includes(zombie))
+
+    Object.keys(this.sockets).forEach(id_socket => {
+      const socket = this.sockets[id_socket]
+      const player = this.players[id_socket]
+      sendGameUpdate(socket, player)
+    })
   }
 
   getLeaderboard() {
@@ -509,18 +519,22 @@ class Game {
   }
 
   createUpdate(player, leaderboard) {
-    const nearbyPlayers = Object.values(this.players).filter(
-      p => p !== player && p.distanceTo(player) <= 1500
-    );
-    const nearbyBullets = this.bullets.filter(
-      b => b.distanceTo(player) <= 1500
-    );
-    const nearbyZombies = this.zombies.filter(
-      z => z.distanceTo(player) <= 1500
-    );
-    const nearbyThings = this.things.filter(
-      t => t.distanceTo(player) <= 1500
-    );
+    const nearbyPlayers = Object.values(this.players).filter(p => {
+      const {x, y} = player
+      return p !== player && p.distanceTo({x, y}) <= 1500
+    })
+    const nearbyBullets = this.bullets.filter(b => {
+      const {x, y} = player
+      return b.distanceTo({x, y}) <= 1500
+    })
+    const nearbyZombies = this.zombies.filter(z => {
+      const {x, y} = player
+      return z.distanceTo({x, y}) <= 1500
+    })
+    const nearbyThings = this.things.filter(t => {
+      const {x, y} = player
+      return t.distanceTo({x, y}) <= 1500
+    })
 
     return {
       t: Date.now(),
