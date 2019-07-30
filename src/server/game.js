@@ -39,6 +39,10 @@ class Game {
       things: ['hp', 'speed', 'accuracy', 'portal', 'defense', 'damage']
     }
     this.createThings()
+    this.avg = {
+      index: 0,
+      value: 0
+    }
   }
 
   createZombie (x, y, type) {
@@ -222,7 +226,6 @@ class Game {
     // Calculate time elapsed
     const now = Date.now();
     const dt = (now - this.lastUpdateTime) / 1000;
-    // console.log(dt)
     this.lastUpdateTime = now;
 
     // Objects, which should be removed
@@ -230,8 +233,8 @@ class Game {
     const things_removed = []
     const zombies_removed = []
 
-    const createBullets = player => {
-      const newBullets = player.update(dt)
+    const createBullets = id => {
+      const newBullets = this.players[id].update(dt)
       if (newBullets) {
         newBullets.forEach(newBullet => {
           this.bullets.push(newBullet)
@@ -342,12 +345,12 @@ class Game {
             const thing = new Thing(x, y, {name: 'hp', icon: `thing_hp.svg`})
             this.things.push(thing)
           }
-          zombies_removed.push(zombie)
+          zombies_removed.push(zombie.id)
         }
 
         // Players, which have damaged by zombies
         if (
-          player.distanceTo({x: zombie.x, y: zombie.y}) <= Constants.PLAYER_RADIUS + zombie.radius / 2 &&
+          this.players[player.id].distanceTo({x: zombie.x, y: zombie.y}) <= Constants.PLAYER_RADIUS + zombie.radius / 2 &&
           zombie.bite
         ) {
           full_damage += zombie.damage
@@ -363,31 +366,31 @@ class Game {
       }
     }
 
-    const sendGameUpdate = (socket, player) => {
+    const sendGameUpdate = (socket, {x, y, id}) => {
       if (this.shouldSendUpdate) {
         const leaderboard = this.getLeaderboard();
-        socket.emit(Constants.MSG_TYPES.GAME_UPDATE, this.createUpdate(player, leaderboard));
+        socket.emit(Constants.MSG_TYPES.GAME_UPDATE, this.createUpdate({x, y, id}, leaderboard));
         this.shouldSendUpdate = false;
       } else {
         this.shouldSendUpdate = true;
       }
     }
 
-    const checkPlayerIsAlive = (socket, player) => {
-      if (player.hp <= 0) {
-        socket.emit(Constants.MSG_TYPES.GAME_OVER, player.statistic);
+    const checkPlayerIsAlive = (socket, {hp, id}) => {
+      this.players[id].updateLevel(this.options.xp_levels)
+
+      if (hp <= 0) {
+        socket.emit(Constants.MSG_TYPES.GAME_OVER, this.players[id].statistic);
         this.removePlayer(socket);
       }
-
-      player.updateLevel(this.options.xp_levels)
     }
 
-    const checkThingsToRemove = player => {
+    const checkThingsToRemove = id => {
       this.things.forEach(thing => {
         const {x, y} = thing
-        if (player.distanceTo({x, y}) <= Constants.PLAYER_RADIUS + Constants.THING_RADIUS) {
-          player.takeBuff(thing.options.name)
-          things_removed.push(thing)
+        if (this.players[id].distanceTo({x, y}) <= Constants.PLAYER_RADIUS + Constants.THING_RADIUS) {
+          this.players[id].takeBuff(thing.options.name)
+          things_removed.push(thing.id)
         }
       })
     }
@@ -412,76 +415,61 @@ class Game {
       })
     })
 
-    // Update each player
-    Object.keys(this.sockets).forEach(id_socket => {
-      const socket = this.sockets[id_socket]
-      const player = this.players[id_socket]
-
-      createBullets(player)
-      udpateZombies(player)
-      checkPlayerIsAlive(socket, player)
-      checkThingsToRemove(player)
-    });
-
-    const checkBulletShootPlayers = bullet => {
-      const {x, y} = bullet
+    const checkBulletShootPlayers = ({x, y, parentID, damage, radius, effect, id}) => {
       Object.keys(this.sockets).forEach(socket => {
         const player = this.players[socket]
         if (
-          bullet.parentID !== player.id &&
-          player.distanceTo({x, y}) <= Constants.PLAYER_RADIUS + bullet.radius
+          parentID !== player.id &&
+          player.distanceTo({x, y}) <= Constants.PLAYER_RADIUS + radius
         ) {
-          if (bullet.damage < player.hp) {
-            bullets_removed.push(bullet)
+          if (damage < player.hp) {
+            bullets_removed.push(id)
           }
-          player.takeBulletDamage(bullet)
-          if (this.players[bullet.parentID]) {
-            this.players[bullet.parentID].onDealtDamage();
+          player.takeBulletDamage({damage})
+          if (this.players[parentID]) {
+            this.players[parentID].onDealtDamage();
           }
-          if (bullet.effect === 'fire') {
+          if (effect === 'fire') {
             player.activeDebuff('fire')
-          } else if (bullet.effect === 'vampire') {
-            const id_bullet = bullet.parentID
-            const findZombie = this.zombies.find(zomb => zomb.id === id_bullet)
+          } else if (effect === 'vampire') {
+            const findZombie = this.zombies.find(zomb => zomb.id === parentID)
             if (findZombie) {
-              findZombie.updateHp(bullet.damage / 2)
+              findZombie.updateHp(damage / 2)
             }
           }
         }
       })
     }
 
-    const checkBulletShootZombies = bullet => {
-      const {x, y} = bullet
+    const checkBulletShootZombies = ({x, y, parentID, damage, radius, effect, id}) => {
       this.zombies.forEach(zombie => {
         if (
-          bullet.parentID !== zombie.id &&
-          zombie.distanceTo({x, y}) <= zombie.radius + bullet.radius
+          parentID !== zombie.id &&
+          zombie.distanceTo({x, y}) <= zombie.radius + radius
         ) {
-          if (bullet.damage < zombie.hp) {
-            bullets_removed.push(bullet)
+          if (damage < zombie.hp) {
+            bullets_removed.push(id)
           }
-          zombie.takeBulletDamage(bullet)
-          if (this.players[bullet.parentID]) {
-            this.players[bullet.parentID].onDealtDamage();
+          zombie.takeBulletDamage({damage})
+          if (this.players[parentID]) {
+            this.players[parentID].onDealtDamage();
           }
           if (zombie.hp <= 0) {
             const xp = zombie.type.xp
-            if (this.players[bullet.parentID]) {
-              this.players[bullet.parentID].onKilledZombie(xp)
+            if (this.players[parentID]) {
+              this.players[parentID].onKilledZombie(xp)
               if (['boss_easy', 'boss_normal', 'boss_hard', 'boss_legend'].includes(zombie.type.name)) {
-                this.players[bullet.parentID].activeBossBonus(zombie.type.name)
+                this.players[parentID].activeBossBonus(zombie.type.name)
               }
             }
-            zombies_removed.push(zombie)
+            zombies_removed.push(zombie.id)
           }
-          if (bullet.effect === 'fire') {
+          if (effect === 'fire') {
             zombie.activeDebuff('fire')
-          } else if (bullet.effect === 'vampire') {
-            const id_bullet = bullet.parentID
-            const findZombie = zombies.find(zomb => zomb.id === id_bullet)
+          } else if (effect === 'vampire') {
+            const findZombie = this.zombies.find(zomb => zomb.id === parentID)
             if (findZombie) {
-              findZombie.updateHp(bullet.damage / 2)
+              findZombie.updateHp(damage / 2)
             }
           }
         }
@@ -490,7 +478,7 @@ class Game {
 
     const updateBullet = bullet => {
       if (bullet.update(dt)) {
-        bullets_removed.push(bullet);
+        bullets_removed.push(bullet.id);
       }
     }
 
@@ -500,14 +488,26 @@ class Game {
       updateBullet(bullet)
     })
 
-    this.bullets = this.bullets.filter(bullet => !bullets_removed.includes(bullet))
-    this.things = this.things.filter(thing => !things_removed.includes(thing))
-    this.zombies = this.zombies.filter(zombie => !zombies_removed.includes(zombie))
-
+    // Update each player
     Object.keys(this.sockets).forEach(id_socket => {
       const socket = this.sockets[id_socket]
       const player = this.players[id_socket]
-      sendGameUpdate(socket, player)
+      const {x, y, id, hp} = player
+
+      createBullets(id)
+      udpateZombies({x, y, id})
+      checkThingsToRemove(id)
+      checkPlayerIsAlive(socket, {hp, id})
+    });
+
+    this.bullets = this.bullets.filter(bullet => !bullets_removed.includes(bullet.id))
+    this.things = this.things.filter(thing => !things_removed.includes(thing.id))
+    this.zombies = this.zombies.filter(zombie => !zombies_removed.includes(zombie.id))
+
+    Object.keys(this.sockets).forEach(id_socket => {
+      const socket = this.sockets[id_socket]
+      const {x, y, id} = this.players[id_socket]
+      sendGameUpdate(socket, {x, y, id})
     })
   }
 
@@ -518,27 +518,23 @@ class Game {
       .map(p => ({ username: p.username, score: Math.round(p.score), level: p.experience.level }));
   }
 
-  createUpdate(player, leaderboard) {
+  createUpdate({x, y, id}, leaderboard) {
     const nearbyPlayers = Object.values(this.players).filter(p => {
-      const {x, y} = player
-      return p !== player && p.distanceTo({x, y}) <= 1500
+      return p.id !== id && p.distanceTo({x, y}) <= 1500
     })
     const nearbyBullets = this.bullets.filter(b => {
-      const {x, y} = player
       return b.distanceTo({x, y}) <= 1500
     })
     const nearbyZombies = this.zombies.filter(z => {
-      const {x, y} = player
       return z.distanceTo({x, y}) <= 1500
     })
     const nearbyThings = this.things.filter(t => {
-      const {x, y} = player
       return t.distanceTo({x, y}) <= 1500
     })
 
     return {
       t: Date.now(),
-      me: player.serializeForUpdate(),
+      me: this.players[id].serializeForUpdate(),
       others: nearbyPlayers.map(p => p.serializeForUpdate()),
       bullets: nearbyBullets.map(b => b.serializeForUpdate()),
       zombies: nearbyZombies.map(z => z.serializeForUpdate()),
