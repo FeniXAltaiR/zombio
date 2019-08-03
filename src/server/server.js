@@ -80,10 +80,10 @@ io.on('connection', socket => {
 // Setup the Game
 const games = {}
 
-// for (let i = 0; i < 15; i++) {
-//   const id = shortid()
-//   games[id] = new Game(id)
-// }
+for (let i = 0; i < 25; i++) {
+  const id = shortid()
+  games[id] = new Game(id)
+}
 
 function joinGame(options) {
   games[id_channel].addPlayer(this, options);
