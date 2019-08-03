@@ -629,6 +629,15 @@ class Player extends ObjectClass {
     this.score += Constants.SCORE_BULLET_HIT;
   }
 
+  onKilledPlayer(score) {
+    const diff = score - this.score
+    if (diff < 1000) {
+      this.score += 1000
+    } else {
+      this.score += diff
+    }
+  }
+
   onKilledZombie(xp) {
     this.score += xp
     this.updateStatistic('amount_zombies', 1)

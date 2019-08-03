@@ -421,6 +421,9 @@ class Game {
         player.takeBulletDamage({damage})
         if (this.players[parentID]) {
           this.players[parentID].onDealtDamage();
+          if (player.hp <= 0) {
+            this.players[parentID].onKilledPlayer(player.score)
+          }
         }
         if (effect === 'fire') {
           player.activeDebuff('fire')
