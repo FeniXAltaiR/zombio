@@ -148,42 +148,14 @@ class Zombie extends ObjectClass {
 
   checkLocationInZone() {
     if (['easy', 'boss_easy'].includes(this.type.name)) {
-      if (
-        this.x > 0 && this.y > Constants.MAP_SIZE * 0.75 ||
-        this.y > 0 && this.x > Constants.MAP_SIZE * 0.75
-      ) {
-        return true
-      }
-      return false
-    }
-
-    if (['normal', 'boss_normal'].includes(this.type.name)) {
-      if (
-        (this.x > 0 && this.x < Constants.MAP_SIZE * 0.75) && (this.y > Constants.MAP_SIZE * 0.5 && this.y < Constants.MAP_SIZE * 0.75) ||
-        (this.y > 0 && this.y < Constants.MAP_SIZE * 0.75) && (this.x > Constants.MAP_SIZE * 0.5 && this.x < Constants.MAP_SIZE * 0.75)
-      ) {
-        return true
-      }
-      return false
-    }
-
-    if (['hard', 'boss_hard'].includes(this.type.name)) {
-      if (
-        (this.x > 0 && this.x < Constants.MAP_SIZE * 0.5) && (this.y > Constants.MAP_SIZE * 0.25 && this.y < Constants.MAP_SIZE * 0.5) ||
-        (this.y > 0 && this.y < Constants.MAP_SIZE * 0.5) && (this.x > Constants.MAP_SIZE * 0.25 && this.x < Constants.MAP_SIZE * 0.5)
-      ) {
-        return true
-      }
-      return false
-    }
-
-    if (['boss_legend'].includes(this.type.name)) {
-      if (
-        (this.x > 0 && this.x < Constants.MAP_SIZE * 0.25) && (this.y > Constants.MAP_SIZE * 0 && this.y < Constants.MAP_SIZE * 0.25) ||
-        (this.y > 0 && this.y < Constants.MAP_SIZE * 0.25) && (this.x > Constants.MAP_SIZE * 0 && this.x < Constants.MAP_SIZE * 0.25)
-      ) {
-        return true
-      }
+      return this.getZoneBounds(1, 0.75)
+    } else if (['normal', 'boss_normal'].includes(this.type.name)) {
+      return this.getZoneBounds(0.75, 0.5)
+    } else if (['hard', 'boss_hard'].includes(this.type.name)) {
+      return this.getZoneBounds(0.5, 0.25)
+    } else if (['boss_legend'].includes(this.type.name)) {
+      return this.getZoneBounds(0.25, 0)
+    } else {
       return false
     }
   }

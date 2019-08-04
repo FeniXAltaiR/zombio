@@ -342,9 +342,7 @@ class Player extends ObjectClass {
     this.checkZonePlayer(dt)
 
     // Fire a bullet, if needed
-    if (this.fireCooldown > 0) {
-      this.fireCooldown -= dt
-    }
+    this.updateFireCooldown(dt)
 
     if (this.options.active_skills.debuffs.fire.value) {
       this.updateHp(-10 * dt * 5)
@@ -357,6 +355,12 @@ class Player extends ObjectClass {
     }
 
     return null;
+  }
+
+  updateFireCooldown(dt) {
+    if (this.fireCooldown > 0) {
+      this.fireCooldown -= dt
+    }
   }
 
   checkZonePlayer (dt) {
@@ -378,7 +382,7 @@ class Player extends ObjectClass {
         this.options.zones_effects.defense = -0.25
       }),
       red: (dt => {
-        this.hp -= dt
+        this.updateHp(-dt)
       })
     }
 
