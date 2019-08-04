@@ -3,6 +3,7 @@
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin= require('copy-webpack-plugin')
 
 module.exports = {
   entry: {
@@ -43,5 +44,9 @@ module.exports = {
       filename: 'index.html',
       template: 'src/client/html/index.html',
     }),
+    new CopyWebpackPlugin([{
+      from: './public/assets',
+      to: './svg'
+    }]),
   ],
 };
