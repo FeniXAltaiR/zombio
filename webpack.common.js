@@ -44,9 +44,9 @@ module.exports = {
       filename: 'index.html',
       template: 'src/client/html/index.html',
     }),
-    new CopyWebpackPlugin([{
-      from: './public/assets',
-      to: './svg'
-    }]),
+    // new CopyWebpackPlugin([{
+    //   from: './public/assets',
+    //   to: './svg'
+    // }]),
   ],
 };

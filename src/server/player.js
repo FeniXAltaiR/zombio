@@ -8,7 +8,7 @@ class Player extends ObjectClass {
     super(id, x, y, null, Constants.PLAYER_SPEED);
     this.options = {
       parameters: {
-        hp: 1000,
+        hp: 200,
         speed: 200
       },
       used_skill_points: {
@@ -65,39 +65,39 @@ class Player extends ObjectClass {
         teleportation: (skill_name => {
           this.x += Math.sin(this.rotate) * 750
           this.y -= Math.cos(this.rotate) * 750
-          this.resetActiveSkill(skill_name, 10000)
+          this.resetActiveSkill(skill_name, 20000)
         }),
         double_bullets: (skill_name => {
           this.options.active_skills.use_double_bullets = true
           setTimeout(() => {
             this.options.active_skills.use_double_bullets = false
           }, 10000)
-          this.resetActiveSkill(skill_name, 20000)
+          this.resetActiveSkill(skill_name, 30000)
         }),
         fire_bullets: (skill_name => {
           this.options.active_skills.use_fire_bullets = true
           setTimeout(() => {
             this.options.active_skills.use_fire_bullets = false
           }, 10000)
-          this.resetActiveSkill(skill_name, 20000)
+          this.resetActiveSkill(skill_name, 30000)
         }),
         defense: (skill_name => {
           this.options.passive_skills.defense -= 0.35
           setTimeout(() => {
             this.options.passive_skills.defense += 0.35
           }, 10000)
-          this.resetActiveSkill(skill_name, 20000)
+          this.resetActiveSkill(skill_name, 25000)
         }),
         speedup: (skill_name => {
           this.options.passive_skills.speed += 0.5
           setTimeout(() => {
             this.options.passive_skills.speed -= 0.5
           }, 5000)
-          this.resetActiveSkill(skill_name, 10000)
+          this.resetActiveSkill(skill_name, 25000)
         }),
         health: (skill_name => {
-          this.updateHp(50)
-          this.resetActiveSkill(skill_name, 10000)
+          this.updateHp(500)
+          this.resetActiveSkill(skill_name, 25000)
         }),
         ultimate: (skill_name => {
           const amount_bullets = 36
@@ -153,11 +153,11 @@ class Player extends ObjectClass {
           this.updateHp(100)
         }),
         speed: (() => {
-          this.options.passive_skills.speed += 1
+          this.options.passive_skills.speed += 0.25
           this.updateSpeed()
 
           setTimeout(() => {
-            this.options.passive_skills.speed -= 1
+            this.options.passive_skills.speed -= 0.25
             this.updateSpeed()
           }, 5000)
         }),
@@ -182,28 +182,28 @@ class Player extends ObjectClass {
         }),
         defense: (() => {
           this.options.passive_skills.defense -= 0.25
-          this.options.passive_skills.speed -= 0.15
+          // this.options.passive_skills.speed -= 0.15
           this.updateSpeed()
           setTimeout(() => {
             this.options.passive_skills.defense += 0.25
-            this.options.passive_skills.speed += 0.15
+            // this.options.passive_skills.speed += 0.15
             this.updateSpeed()
           }, 5000)
         }),
         damage: (() => {
-          this.options.passive_skills.damage += 1
+          this.options.passive_skills.damage += 0.25
 
           setTimeout(() => {
-            this.options.passive_skills.damage -= 1
+            this.options.passive_skills.damage -= 0.25
           }, 5000)
         })
       },
       researches: {
         weapon: 'pistol',
-        level: 2,
+        level: 3,
         'uzi': {
           weapon: 'uzi',
-          level: 3,
+          level: 7,
           'machinegun': {
             weapon: 'machinegun',
           },
@@ -216,7 +216,7 @@ class Player extends ObjectClass {
         },
         'rifle': {
           weapon: 'rifle',
-          level: 3,
+          level: 7,
           'machinegun': {
             weapon: 'machinegun',
           },
@@ -229,7 +229,7 @@ class Player extends ObjectClass {
         },
         'shotgun': {
           weapon: 'shotgun',
-          level: 3,
+          level: 7,
           'machinegun': {
             weapon: 'machinegun',
           },
@@ -254,54 +254,54 @@ class Player extends ObjectClass {
         uzi: {
           name: 'uzi',
           fire_cooldown: 0.75,
-          radius: 3,
-          speed: 800,
-          damage: 10,
+          radius: 5,
+          speed: 600,
+          damage: 20,
           distance: 500,
           noise: 0.4
         },
         machinegun: {
           name: 'machinegun',
-          fire_cooldown: 0.2,
+          fire_cooldown: 0.25,
           radius: 5,
-          speed: 800,
-          damage: 25,
-          distance: 600,
+          speed: 700,
+          damage: 35,
+          distance: 800,
           noise: 0.5
         },
         shotgun: {
           name: 'shotgun',
-          fire_cooldown: 0.5,
+          fire_cooldown: 0.8,
           radius: 7,
           speed: 400,
-          damage: 20,
-          distance: 200,
+          damage: 25,
+          distance: 400,
           noise: 0
         },
         auto_shotgun: {
           name: 'auto_shotgun',
-          fire_cooldown: 0.8,
+          fire_cooldown: 0.65,
           radius: 7,
           speed: 400,
-          damage: 20,
-          distance: 350,
+          damage: 30,
+          distance: 500,
           noise: 0
         },
         rifle: {
           name: 'rifle',
           fire_cooldown: 0.35,
-          radius: 5,
+          radius: 6,
           speed: 600,
-          damage: 7,
-          distance: 400,
+          damage: 35,
+          distance: 700,
           noise: 0.2
         },
         sniper_rifle: {
           name: 'sniper_rifle',
           fire_cooldown: 1,
-          radius: 5,
+          radius: 7,
           speed: 1000,
-          damage: 50,
+          damage: 120,
           distance: 1000,
           noise: 0
         }
@@ -630,11 +630,11 @@ class Player extends ObjectClass {
   }
 
   onDealtDamage() {
-    this.score += Constants.SCORE_BULLET_HIT;
+    this.score += this.weapon.damage;
   }
 
-  onKilledPlayer(score) {
-    const diff = score - this.score
+  onKilledPlayer(xp) {
+    const diff = xp - this.score
     if (diff < 1000) {
       this.score += 1000
     } else {
@@ -682,11 +682,11 @@ class Player extends ObjectClass {
     }
     const codes = {
       'hp': (() => {
-        this.options.passive_skills.hp += 0.5
+        this.options.passive_skills.hp += 0.25
         this.options.used_skill_points.hp.value += 1
       }),
       'speed': (() => {
-        this.options.passive_skills.speed += 0.25
+        this.options.passive_skills.speed += 0.1
         this.updateSpeed()
         this.options.used_skill_points.speed.value += 1
       }),

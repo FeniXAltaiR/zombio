@@ -9,52 +9,59 @@ class Zombie extends ObjectClass {
       types: {
         easy: {
           name: 'easy',
-          xp: 250,
-          damage: 20,
-          hp: 50,
-          radius: 20
+          xp: 500,
+          damage: 25,
+          hp: 100,
+          radius: 20,
+          speed: 215
         },
         normal: {
           name: 'normal',
-          xp: 500,
-          damage: 40,
-          hp: 100,
-          radius: 20
+          xp: 1000,
+          damage: 50,
+          hp: 175,
+          radius: 20,
+          speed: 235
         },
         hard: {
           name: 'hard',
-          xp: 1000,
-          damage: 80,
-          hp: 200,
-          radius: 20
+          xp: 2000,
+          damage: 95,
+          hp: 240,
+          radius: 20,
+          speed: 255
         },
         boss_easy: {
           name: 'boss_easy',
-          xp: 5000,
+          xp: 10000,
           damage: 150,
           hp: 1000,
-          radius: 50
+          radius: 50,
+          speed: 225
         },
         boss_normal: {
           name: 'boss_normal',
-          xp: 10000,
+          xp: 20000,
           damage: 200,
           hp: 2000,
-          radius: 60
+          radius: 60,
+          speed: 245
         },
         boss_hard: {
           name: 'boss_hard',
-          xp: 15000,
+          xp: 30000,
           damage: 250,
           hp: 3000,
-          radius: 75
+          radius: 75,
+          speed: 265
         },
         boss_legend: {
           name: 'boss_legend',
-          xp: 25000,
+          xp: 50000,
           damage: 300,
           hp: 5000,
-          radius: 100
+          radius: 100,
+          speed: 275
         }
       },
       active_skills: {
@@ -70,7 +77,7 @@ class Zombie extends ObjectClass {
           speed: 50
         },
         active: {
-          speed: 215
+          speed: 200
         },
         returning: {
           speed: 50
@@ -104,9 +111,11 @@ class Zombie extends ObjectClass {
       boss_legend: {
         increaseSpeed: (() => {
           this.options.modes.active.speed += 50
+          this.radius -= 25
           this.abilities.use_create_fire_bullets = true
           setTimeout(() => {
             this.options.modes.active.speed -= 50
+            this.radius += 25
           }, 5000)
         })
       }
@@ -115,6 +124,7 @@ class Zombie extends ObjectClass {
     this.hp = this.options.types[type].hp
     this.damage = this.options.types[type].damage
     this.radius = this.options.types[type].radius
+    this.options.modes.active.speed = this.options.types[type].speed
     this.rotate = rotate
     // active or passive behavior
     this.mode = 'passive'

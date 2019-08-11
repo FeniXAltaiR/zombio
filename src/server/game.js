@@ -14,8 +14,8 @@ const {
 
 const createXpList = () => {
   const list = [0]
-  for (let i = 1; i < 10; i++) {
-    list.push(i * i * 500)
+  for (let i = 1; i < 20; i++) {
+    list.push(Math.round(i * i * 500 * Math.sqrt(i)))
   }
   list.push(1000000)
   return list
@@ -34,6 +34,7 @@ class Game {
     setInterval(this.update.bind(this), 1000 / 24)
     this.createZombies()
     setInterval(this.respawnZombies.bind(this), 60000)
+    setInterval(this.respawnThings.bind(this), 60000)
     this.options = {
       xp_levels: createXpList(),
       things: ['hp', 'speed', 'accuracy', 'portal', 'defense', 'damage']
@@ -123,6 +124,27 @@ class Game {
     }
   }
 
+  createThing() {
+    const rand = Math.floor(Math.random() * this.options.things.length)
+    const name = this.options.things[rand]
+    const [x, y] = [Math.random() * Constants.MAP_SIZE, Math.random() * Constants.MAP_SIZE]
+    const thing = new Thing(x, y, {name, icon: `thing_${name}.svg`})
+    this.things.push(thing)
+  }
+
+  createThings () {
+    for (let i = 0; i < Constants.THING_AMOUNT; i++) {
+      this.createThing()
+    }
+  }
+
+  respawnThings() {
+    const length = this.things.length
+    for (let i = length; i < Constants.THING_AMOUNT; i++) {
+      this.createThing()
+    }
+  }
+
   checkZombiesInRadius(x, y) {
     const findZombieInZone = this.zombies.find(zombie => zombie.distanceTo({x, y}) < 250)
     return findZombieInZone
@@ -150,16 +172,6 @@ class Game {
       return this.respawnCoords(boundsA, boundsB, checkFn.bind(this))
     } else {
       return [x, y]
-    }
-  }
-
-  createThings () {
-    for (let i = 0; i < Constants.THING_AMOUNT; i++) {
-      const rand = Math.floor(Math.random() * this.options.things.length)
-      const name = this.options.things[rand]
-      const [x, y] = [Math.random() * Constants.MAP_SIZE, Math.random() * Constants.MAP_SIZE]
-      const thing = new Thing(x, y, {name, icon: `thing_${name}.svg`})
-      this.things.push(thing)
     }
   }
 
@@ -299,8 +311,8 @@ class Game {
       } else if (['boss_normal'].includes(zombie.type.name) && zombie.mode === 'active') {
         if (zombie.abilities.use_teleport) {
           const distance = zombie.distanceTo({x: player.x, y: player.y})
-          zombie.x += Math.sin(zombie.rotate) * (distance + 100)
-          zombie.y -= Math.cos(zombie.rotate) * (distance + 100)
+          zombie.x += Math.sin(zombie.rotate) * (distance + 250)
+          zombie.y -= Math.cos(zombie.rotate) * (distance + 250)
           zombie.abilities.use_teleport = false
         }
       } else if (['boss_hard'].includes(zombie.type.name) && zombie.mode === 'active') {
@@ -430,7 +442,7 @@ class Game {
         } else if (effect === 'vampire') {
           const findZombie = this.zombies.find(zomb => zomb.id === parentID)
           if (findZombie) {
-            findZombie.updateHp(damage / 2)
+            findZombie.updateHp(damage * 2)
           }
         }
       }
@@ -465,7 +477,7 @@ class Game {
         } else if (effect === 'vampire') {
           const findZombie = this.zombies.find(zomb => zomb.id === parentID)
           if (findZombie) {
-            findZombie.updateHp(damage / 2)
+            findZombie.updateHp(damage * 2)
           }
         }
       }
