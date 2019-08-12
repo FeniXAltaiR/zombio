@@ -2,7 +2,7 @@
 // https://victorzhou.com/blog/build-an-io-game-part-1/#3-client-entrypoints
 import { connect, play } from './networking';
 import { startRendering, stopRendering } from './render';
-import { startCapturingInput, stopCapturingInput } from './input';
+import { startCapturingInput, stopCapturingInput, clearKeys } from './input';
 import { downloadAssets } from './assets';
 import { initState } from './state';
 import { setLeaderboardHidden } from './leaderboard';
@@ -76,6 +76,7 @@ Promise.all([
 }).catch(console.error);
 
 function onGameOver(statistic) {
+  clearKeys()
   stopCapturingInput();
   stopRendering();
   playMenu.classList.remove('hidden');

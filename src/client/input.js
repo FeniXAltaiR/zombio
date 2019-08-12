@@ -13,13 +13,19 @@ function onMouseMoveInput(e) {
 }
 
 let creatingBullets = null
+setInterval(() => {
+  if (creatingBullets) {
+    createBullet()
+  }
+}, 20)
+
 function onMouseDownInput(e) {
   createBullet()
-  creatingBullets = setInterval(createBullet, 20)
+  creatingBullets = true
 }
 
 function onMouseUpInput(e) {
-  clearInterval(creatingBullets)
+  creatingBullets = false
 }
 
 function onTouchInput(e) {
@@ -117,4 +123,8 @@ export function stopCapturingInput() {
   window.removeEventListener('keyup', onKeyUpInput);
 
   onMouseUpInput()
+}
+
+export function clearKeys() {
+  keys = []
 }

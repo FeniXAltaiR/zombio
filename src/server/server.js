@@ -80,7 +80,7 @@ io.on('connection', socket => {
 // Setup the Game
 const games = {}
 
-for (let i = 0; i < 25; i++) {
+for (let i = 0; i < 15; i++) {
   const id = shortid()
   games[id] = new Game(id)
 }

@@ -4,6 +4,11 @@ html, body {
   overflow: hidden;
   overscroll-behavior: none;
   background-color: black;
+
+  -moz-user-select: none; /* Mozilla Firefox */
+  -ms-user-select: none; /* Internet Explorer (не поддерживается) */
+  -o-user-select: none; /* Opera Presto (не поддерживается) */
+  -webkit-user-select: none; /* Google Chrome, Opera Next, Safari */
 }
 
 hr {
