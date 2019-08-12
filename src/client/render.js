@@ -54,13 +54,15 @@ function render() {
 function renderBackground(x, y) {
   context.fillStyle = 'grey'
   context.fillRect(0, 0, canvas.width, canvas.height)
-  context.drawImage(
-    getAsset('map.svg'),
-    canvas.width / 2 - x,
-    canvas.height / 2 - y,
-    MAP_SIZE,
-    MAP_SIZE
-  )
+  if (getAsset('map.svg')) {
+    context.drawImage(
+      getAsset('map.svg'),
+      canvas.width / 2 - x,
+      canvas.height / 2 - y,
+      MAP_SIZE,
+      MAP_SIZE
+    )
+  }
 
   context.strokeStyle = 'rgba(0, 0, 0, .2)'
   for (let i = 0; i < MAP_SIZE; i += 50) {
@@ -207,7 +209,7 @@ function renderMainMenu() {
   const t = Date.now() / 7500;
   const x = MAP_SIZE / 2 + 800 * Math.cos(t);
   const y = MAP_SIZE / 2 + 800 * Math.sin(t);
-  // renderBackground(x, y);
+  renderBackground(x, y);
 }
 
 let renderInterval = stopRendering()
