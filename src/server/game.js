@@ -26,7 +26,7 @@ class Game {
     this.id = id
     this.sockets = {}
     this.players = {}
-    this.killed_players = {}
+    this.watchers = {}
     this.bullets = []
     this.zombies = []
     this.things = []
@@ -183,7 +183,7 @@ class Game {
     const {username, icon} = options
 
     const getHistoryScore = () => {
-      const killed_player = this.killed_players[socket.id]
+      const killed_player = this.watchers[socket.id]
       if (killed_player) {
         return Math.round(killed_player.score / 1.3)
       }
@@ -203,7 +203,7 @@ class Game {
   removePlayer(socket) {
     const player = this.players[socket.id]
     if (player) {
-      this.killed_players[socket.id] = {
+      this.watchers[socket.id] = {
         score: player.score
       }
     }
@@ -212,9 +212,9 @@ class Game {
   }
 
   disconnectPlayer(socket) {
-    const killed_player = this.killed_players[socket.id]
+    const killed_player = this.watchers[socket.id]
     if (killed_player) {
-      delete this.killed_players[socket.id]
+      delete this.watchers[socket.id]
     }
   }
 
