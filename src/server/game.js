@@ -26,6 +26,7 @@ class Game {
     this.id = id
     this.sockets = {}
     this.players = {}
+    this.killed_players = {}
     this.bullets = []
     this.zombies = []
     this.things = []
@@ -178,13 +179,33 @@ class Game {
   addPlayer(socket, options) {
     this.sockets[socket.id] = socket;
 
+
     const [x, y] = this.respawnCoords(1, 0.75, this.checkZombiesInRadius.bind(this))
     const {username, icon} = options
+
+    const getHistoryScore = () => {
+      const killed_player = this.killed_players[socket.id]
+      if (killed_player) {
+        return Math.round(killed_player.score / 1.3)
+      }
+      return 0
+    }
     
-    this.players[socket.id] = new Player(socket.id, username, x, y, icon);
+    this.players[socket.id] = new Player({
+      id: socket.id,
+      username,
+      x,
+      y,
+      icon,
+      score: getHistoryScore()
+    })
   }
 
   removePlayer(socket) {
+    const player = this.players[socket.id]
+    this.killed_players[socket.id] = {
+      score: player.score
+    }
     delete this.sockets[socket.id];
     delete this.players[socket.id];
   }
@@ -500,7 +521,7 @@ class Game {
     // Calculate time elapsed
     const now = Date.now();
     const dt = (now - this.lastUpdateTime) / 1000;
-    console.log(dt)
+    // console.log(dt)
     this.lastUpdateTime = now;
 
     // Check collisions between zombies

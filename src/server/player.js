@@ -4,7 +4,7 @@ const Constants = require('../shared/constants');
 // const options_player = require('./options-player')
 
 class Player extends ObjectClass {
-  constructor(id, username, x, y, icon, rotate = Math.random() * 2 * Math.PI) {
+  constructor({id, username, x, y, icon, score = 0, rotate = Math.random() * 2 * Math.PI}) {
     super(id, x, y, null, Constants.PLAYER_SPEED);
     this.options = {
       parameters: {
@@ -316,7 +316,7 @@ class Player extends ObjectClass {
     this.username = username;
     this.icon = icon
     this.hp = this.options.parameters.hp;
-    this.score = 0;
+    this.score = score;
     this.rotate = rotate
     this.bullets = []
     this.weapon = this.options.weapons.pistol
