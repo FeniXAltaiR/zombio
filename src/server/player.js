@@ -620,13 +620,13 @@ class Player extends ObjectClass {
   takeBulletDamage(bullet) {
     const {defense} = this.options.passive_skills
     const value = bullet.damage * (defense - this.options.zones_effects.defense)
-    this.hp -= value
+    this.updateHp(-value)
   }
 
   takeBiteDamage(damage) {
     const {defense} = this.options.passive_skills
     const value = damage * (defense - this.options.zones_effects.defense)
-    this.hp -= value
+    this.updateHp(-value)
   }
 
   onDealtDamage() {

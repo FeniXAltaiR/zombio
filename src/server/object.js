@@ -7,6 +7,7 @@ class Object {
     this.y = y;
     this.direction = dir;
     this.speed = speed;
+    this.lastShot = null
   }
 
   update(dt) {
@@ -42,6 +43,10 @@ class Object {
 
   setDirection(dir) {
     this.direction = dir;
+  }
+
+  udpateLastShot(id) {
+    this.lastShot = id
   }
 
   serializeForUpdate() {

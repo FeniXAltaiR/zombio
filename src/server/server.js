@@ -95,6 +95,7 @@ function handleInput(dir) {
 
 function onDisconnect() {
   games[id_channel].removePlayer(this);
+  games[id_channel].disconnectPlayer(this)
 }
 
 function rotateInput(rotate) {
