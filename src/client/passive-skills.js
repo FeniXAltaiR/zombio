@@ -1,26 +1,34 @@
+import { getAsset } from './assets';
+import { levelUp } from './networking.js'
+
 const passive = document.querySelector('.passive-skills')
+const skills = document.querySelectorAll('.passive-skills__skill')
 
-export const updatePassiveSkillsBar = me => {
-  const skills = document.querySelectorAll('.passive-skills__skill')
-
+const setBtnEvents = () => {
   skills.forEach(skill => {
     const name = skill.dataset.name
-    const spans = skill.querySelectorAll('span')
+    const btn = skill.querySelector('img')
+    btn.onclick = e => {
+      e.stopPropagation()
+      levelUp(name)
+    }
+  })
+}
 
-    spans.forEach((span, index) => {
-      if (me.used_skill_points[name].value > index) {
-        const color = me.used_skill_points[name].color
-        span.className = `passive-skills__skill--${color}`
-      } else {
-        span.className = `passive-skills__skill--gray`
-      }
-    })
+setBtnEvents()
+
+export const updatePassiveSkillsBar = me => {
+  skills.forEach(skill => {
+    const name = skill.dataset.name
+    const span = skill.querySelector('span')
+    const currentValue = me.used_skill_points[name].value
+
+    span.innerHTML = `${currentValue}/7`
   })
   
   const {level, skill_points} = me.experience
   if (level - skill_points <= 0) {
     setPassiveSkillsBar(true)
-    return
   } else {
     setPassiveSkillsBar(false)
   }
@@ -29,9 +37,9 @@ export const updatePassiveSkillsBar = me => {
 export const setPassiveSkillsBar = hidden => {
   if (hidden) {
     // passive.classList.add('hidden');
-    passive.style.left = '-100px'
+    passive.style.right = '-160px'
   } else {
-    passive.classList.remove('hidden');
-    passive.style.left = '10px'
+    // passive.classList.remove('hidden');
+    passive.style.right = '10px'
   }
 }

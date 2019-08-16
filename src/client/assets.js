@@ -1,7 +1,9 @@
 const ASSET_NAMES = [
   'map.svg',
   'map2.svg',
+
   'bullet.svg',
+
   'zombie_easy.svg',
   'zombie_normal.svg',
   'zombie_hard.svg',
@@ -9,13 +11,19 @@ const ASSET_NAMES = [
   'zombie_boss_normal.svg',
   'zombie_boss_hard.svg',
   'zombie_boss_legend.svg',
-  'grass.svg',
+
   'thing_hp.svg',
   'thing_speed.svg',
   'thing_accuracy.svg',
   'thing_portal.svg',
   'thing_defense.svg',
   'thing_damage.svg',
+
+  'passive_skills_hp.svg',
+  'passive_skills_speed.svg',
+  'passive_skills_defense.svg',
+  'passive_skills_cooldown.svg',
+  
   'player_man1.svg',
   'player_man2.svg',
   'player_man3.svg'

@@ -160,19 +160,60 @@ button:focus {
 
 .passive-skills {
   position: fixed;
-  width: 100px;
+  width: 170px;
   bottom: 10px;
-  transition: all 2s ease
+  right: -160px;
+  transition: all 1s ease
 }
 
 .passive-skills__skill {
   display: flex;
+  align-items: center;
+  justify-content: flex-end;
   margin-top: 5px;
+  padding-top: 6px;
+  -webkit-background-size: contain;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center right;
+  min-height: 45px;
+}
+
+.passive-skills__skill[data-name="hp"] {
+  background-image: url('/assets/bg_passive_hp.png');
+}
+
+.passive-skills__skill[data-name="speed"] {
+  background-image: url('/assets/bg_passive_speed.png');
+}
+
+.passive-skills__skill[data-name="defense"] {
+  background-image: url('/assets/bg_passive_defense.png');
+}
+
+.passive-skills__skill[data-name="cooldown"] {
+  background-image: url('/assets/bg_passive_cooldown.png');
 }
 
 .passive-skills__skill span {
   min-width: 30px;
-  border: 1px solid gray;
+  color: white;
+  font-size: 20px;
+  margin-top: 3px;
+}
+
+.passive-skills__skill img {
+  height: 35px;
+  width: 35px;
+  margin-top: 5px;
+  margin-right: 17px;
+  margin-left: 19px;
+  transition: all .25s ease;
+  cursor: pointer;
+}
+
+.passive-skills__skill img:hover {
+  transform: scale(1.1);
 }
 
 .passive-skills__skill--red {

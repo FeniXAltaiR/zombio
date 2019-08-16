@@ -676,34 +676,33 @@ class Player extends ObjectClass {
     const skills = {
       '49': 'hp',
       '50': 'speed',
-      '51': 'accuracy',
-      '52': 'defense',
-      '53': 'cooldown'
+      '51': 'defense',
+      '52': 'cooldown'
     }
     const codes = {
-      'hp': (() => {
+      hp: () => {
         this.options.passive_skills.hp += 0.25
         this.options.used_skill_points.hp.value += 1
-      }),
-      'speed': (() => {
+      },
+      speed: () => {
         this.options.passive_skills.speed += 0.1
         this.updateSpeed()
         this.options.used_skill_points.speed.value += 1
-      }),
-      'accuracy': (() => {
+      },
+      accuracy: () => {
         this.options.passive_skills.accuracy -= 0.1
         this.options.used_skill_points.accuracy.value += 1
-      }),
-      'defense': (() => {
+      },
+      defense: () => {
         this.options.passive_skills.defense -= 0.05
         this.options.used_skill_points.defense.value += 1
-      }),
-      'cooldown': (() => {
+      },
+      cooldown: () => {
         this.options.passive_skills.cooldown -= 0.05
         this.options.used_skill_points.cooldown.value += 1
-      })
+      }
     }
-    const skill = skills[code]
+    const skill = skills[code] || code
 
     if (
       this.leftSkillPoints() > 0 &&

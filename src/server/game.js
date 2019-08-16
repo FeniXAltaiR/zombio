@@ -296,7 +296,7 @@ class Game {
     }
   }
 
-  useActiveSkillZombies(zombie) {
+  useActiveSkillZombies(zombie, player) {
     if (['boss_easy'].includes(zombie.type.name) && zombie.mode === 'active') {
 
     } else if (['boss_normal'].includes(zombie.type.name) && zombie.mode === 'active') {
@@ -393,7 +393,7 @@ class Game {
         zombie.resetChangingDirection()
       }
 
-      this.useActiveSkillZombies(zombie)
+      this.useActiveSkillZombies(zombie, player)
 
       // Check if any zombie has destroyed
       if (zombie.hp <= 0) {
