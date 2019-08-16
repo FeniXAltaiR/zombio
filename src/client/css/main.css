@@ -161,7 +161,8 @@ button:focus {
 .passive-skills {
   position: fixed;
   width: 100px;
-  left: 10px;
+  bottom: 10px;
+  transition: all 2s ease
 }
 
 .passive-skills__skill {
