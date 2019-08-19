@@ -147,7 +147,7 @@ button:focus {
 }
 
 .experience .experience__current {
-  border: 1px solid black;
+  border: 1px solid rgba(0, 0, 0, .9);
   border-radius: 15px;
   width: 350px;
   display: flex;
@@ -316,7 +316,8 @@ button:focus {
 
 .weapons {
   position: fixed;
-  top: 10px;
+  bottom: 10px;
+  z-index: 5;
 }
 
 @media screen and (max-width: 640px) {

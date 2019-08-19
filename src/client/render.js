@@ -134,31 +134,23 @@ function renderBullet(me, bullet) {
   context.save()
   // context.filter = 'invert(50%)'
   // context.filter = 'sepia(60%)'
-    if (bullet.effect === 'fire') {
-      context.drawImage(
-        getAsset('bullet_fire.svg'),
-        canvas.width / 2 + x - me.x - radius,
-        canvas.height / 2 + y - me.y - radius,
-        radius * 2,
-        radius * 2,
-      );
-    } else if (bullet.effect === 'vampire') {
-      context.drawImage(
-        getAsset('bullet.svg'),
-        canvas.width / 2 + x - me.x - radius,
-        canvas.height / 2 + y - me.y - radius,
-        radius * 2,
-        radius * 2,
-      );
-    } else {
-      context.drawImage(
-        getAsset('bullet_ice.svg'),
-        canvas.width / 2 + x - me.x - radius,
-        canvas.height / 2 + y - me.y - radius,
-        radius * 2,
-        radius * 2,
-      );
-    }
+  if (bullet.effect) {
+    context.drawImage(
+      getAsset(`bullet_${bullet.effect}.svg`),
+      canvas.width / 2 + x - me.x - radius,
+      canvas.height / 2 + y - me.y - radius,
+      radius * 2,
+      radius * 2,
+    );
+  } else {
+    context.drawImage(
+      getAsset(`bullet.svg`),
+      canvas.width / 2 + x - me.x - radius,
+      canvas.height / 2 + y - me.y - radius,
+      radius * 2,
+      radius * 2,
+    );
+  }
   
   context.restore()
 }

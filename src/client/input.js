@@ -95,12 +95,14 @@ function onWheelInput(e) {
   e.preventDefault()
 }
 
+const canvas = document.getElementById('game-canvas');
+
 export function startCapturingInput() {
   // Mouse events
-  window.addEventListener('mousemove', onMouseMoveInput);
-  window.addEventListener('mousedown', onMouseDownInput);
-  window.addEventListener('mouseup', onMouseUpInput);
-  window.addEventListener('wheel', onWheelInput);
+  canvas.addEventListener('mousemove', onMouseMoveInput);
+  canvas.addEventListener('mousedown', onMouseDownInput);
+  canvas.addEventListener('mouseup', onMouseUpInput);
+  canvas.addEventListener('wheel', onWheelInput);
   // Touch events
   window.addEventListener('touchstart', onTouchInput);
   window.addEventListener('touchmove', onTouchInput);
@@ -111,10 +113,10 @@ export function startCapturingInput() {
 
 export function stopCapturingInput() {
   // Mouse events
-  window.removeEventListener('mousemove', onMouseMoveInput);
-  window.removeEventListener('mousedown', onMouseDownInput);
-  window.removeEventListener('mouseup', onMouseUpInput);
-  window.removeEventListener('wheel', onWheelInput);
+  canvas.removeEventListener('mousemove', onMouseMoveInput);
+  canvas.removeEventListener('mousedown', onMouseDownInput);
+  canvas.removeEventListener('mouseup', onMouseUpInput);
+  canvas.removeEventListener('wheel', onWheelInput);
   // Touch events
   window.removeEventListener('touchstart', onTouchInput);
   window.removeEventListener('touchmove', onTouchInput);

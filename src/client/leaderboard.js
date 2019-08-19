@@ -22,7 +22,7 @@ export function updateLeaderboard(data, me) {
     rows[i + 1].innerHTML = `
       <td>${i + 1}</td>
       <td>${escape(data[i].username.slice(0, 15)) || 'Anonymous'}</td>
-      <td>${me.score}</td>
+      <td>${data[i].score}</td>
     `
   }
   for (let i = data.length; i < 5; i++) {
