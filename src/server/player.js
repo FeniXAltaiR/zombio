@@ -8,7 +8,7 @@ class Player extends ObjectClass {
     super(id, x, y, null, Constants.PLAYER_SPEED);
     this.options = {
       parameters: {
-        hp: 200,
+        hp: 20000,
         speed: 200
       },
       used_skill_points: {
@@ -316,7 +316,7 @@ class Player extends ObjectClass {
     this.username = username;
     this.icon = icon
     this.hp = this.options.parameters.hp;
-    this.score = score;
+    this.score = 30000;
     this.rotate = rotate
     this.bullets = []
     this.weapon = this.options.weapons.pistol
