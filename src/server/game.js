@@ -431,10 +431,14 @@ class Game {
     }
   }
 
-  sendGameUpdate(socket, {x, y, id}) {
+  sendGameUpdate() {
     if (this.shouldSendUpdate) {
       const leaderboard = this.getLeaderboard();
-      socket.emit(Constants.MSG_TYPES.GAME_UPDATE, this.createUpdate({x, y, id}, leaderboard));
+      Object.keys(this.sockets).forEach(socket => {
+        const socket = this.sockets[socket]
+        const {x, y, id} = this.players[socket]
+        socket.emit(Constants.MSG_TYPES.GAME_UPDATE, this.createUpdate({x, y, id}, leaderboard));
+      })
       this.shouldSendUpdate = false;
     } else {
       this.shouldSendUpdate = true;
@@ -577,12 +581,7 @@ class Game {
     });
 
     this.clearTrash()
-
-    Object.keys(this.sockets).forEach(id_socket => {
-      const socket = this.sockets[id_socket]
-      const {x, y, id} = this.players[id_socket]
-      this.sendGameUpdate(socket, {x, y, id})
-    })
+    this.sendGameUpdate()
   }
 
   getLeaderboard() {

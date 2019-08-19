@@ -52,11 +52,11 @@ function render() {
 }
 
 function renderBackground(x, y) {
-  context.fillStyle = 'grey'
+  context.fillStyle = 'black'
   context.fillRect(0, 0, canvas.width, canvas.height)
-  if (getAsset('map.svg')) {
+  if (getAsset('map2.svg')) {
     context.drawImage(
-      getAsset('map.svg'),
+      getAsset('map2.svg'),
       canvas.width / 2 - x,
       canvas.height / 2 - y,
       MAP_SIZE,
@@ -64,19 +64,19 @@ function renderBackground(x, y) {
     )
   }
 
-  context.strokeStyle = 'rgba(0, 0, 0, .2)'
-  for (let i = 0; i < MAP_SIZE; i += 50) {
-    for (let k = 0; k < MAP_SIZE; k += 50) {
-      if (
-        x - i < (canvas.width / 2 + 100) &&
-        x - i > -(canvas.width / 2 + 100) &&
-        y - k < (canvas.height / 2 + 100) &&
-        y - k > -(canvas.height / 2 + 100)
-      ) {
-        context.strokeRect(canvas.width / 2 - x + i, canvas.height / 2 - y + k, 50, 50)
-      }
-    }
-  }
+  // context.strokeStyle = 'rgba(0, 0, 0, .2)'
+  // for (let i = 0; i < MAP_SIZE; i += 50) {
+  //   for (let k = 0; k < MAP_SIZE; k += 50) {
+  //     if (
+  //       x - i < (canvas.width / 2 + 100) &&
+  //       x - i > -(canvas.width / 2 + 100) &&
+  //       y - k < (canvas.height / 2 + 100) &&
+  //       y - k > -(canvas.height / 2 + 100)
+  //     ) {
+  //       context.strokeRect(canvas.width / 2 - x + i, canvas.height / 2 - y + k, 50, 50)
+  //     }
+  //   }
+  // }
 }
 
 // Renders a ship at the given coordinates
@@ -135,22 +135,31 @@ function renderBullet(me, bullet) {
   // context.filter = 'invert(50%)'
   // context.filter = 'sepia(60%)'
     if (bullet.effect === 'fire') {
-      context.shadowColor = 'orange'
+      context.drawImage(
+        getAsset('bullet_fire.svg'),
+        canvas.width / 2 + x - me.x - radius,
+        canvas.height / 2 + y - me.y - radius,
+        radius * 2,
+        radius * 2,
+      );
     } else if (bullet.effect === 'vampire') {
-      context.shadowColor = 'red'
+      context.drawImage(
+        getAsset('bullet.svg'),
+        canvas.width / 2 + x - me.x - radius,
+        canvas.height / 2 + y - me.y - radius,
+        radius * 2,
+        radius * 2,
+      );
     } else {
-      context.shadowColor = 'transparent'
+      context.drawImage(
+        getAsset('bullet_ice.svg'),
+        canvas.width / 2 + x - me.x - radius,
+        canvas.height / 2 + y - me.y - radius,
+        radius * 2,
+        radius * 2,
+      );
     }
-  // context.shadowBlur = 35;
-  context.shadowOffsetX = 0;
-  context.shadowOffsetY = 5;
-  context.drawImage(
-    getAsset('bullet.svg'),
-    canvas.width / 2 + x - me.x - radius,
-    canvas.height / 2 + y - me.y - radius,
-    radius * 2,
-    radius * 2,
-  );
+  
   context.restore()
 }
 

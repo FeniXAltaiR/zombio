@@ -8,7 +8,7 @@ class Player extends ObjectClass {
     super(id, x, y, null, Constants.PLAYER_SPEED);
     this.options = {
       parameters: {
-        hp: 20000,
+        hp: Constants.PLAYER_MAX_HP,
         speed: 200
       },
       used_skill_points: {
@@ -59,7 +59,7 @@ class Player extends ObjectClass {
           cooldown: false
         },
         ultra_skill: {
-          value: null,
+          value: 'ultimate',
           cooldown: false
         },
         teleportation: (skill_name => {
@@ -119,8 +119,8 @@ class Player extends ObjectClass {
         })
       },
       zones_effects: {
-        speed: 0.5,
-        defense: 0.5
+        speed: 0,
+        defense: 0
       },
       killed_bosses: {
         boss_easy: {
@@ -738,6 +738,7 @@ class Player extends ObjectClass {
       used_skill_points: this.options.used_skill_points,
       icon: `player_${this.icon}.svg`,
       weapon: this.weapon.name,
+      score: this.score
     };
   }
 }

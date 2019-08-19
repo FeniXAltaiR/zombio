@@ -7,6 +7,7 @@ import { downloadAssets } from './assets';
 import { initState } from './state';
 import { setLeaderboardHidden } from './leaderboard';
 import { setExperienceHidden } from './experience';
+import { setHealthBarHidden } from './health-bar';
 import { setPassiveSkillsBar } from './passive-skills'
 import { setWeaponsBar } from './weapons'
 
@@ -62,6 +63,7 @@ Promise.all([
     startRendering();
     setLeaderboardHidden(false);
     setExperienceHidden(false)
+    setHealthBarHidden(false)
     setPassiveSkillsBar(false)
     setWeaponsBar(false)
   };
@@ -82,6 +84,7 @@ function onGameOver(statistic) {
   playMenu.classList.remove('hidden');
   setLeaderboardHidden(true);
   setExperienceHidden(true)
+  setHealthBarHidden(true)
   setPassiveSkillsBar(true)
   setWeaponsBar(true)
   showStatistic(statistic)

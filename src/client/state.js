@@ -1,7 +1,8 @@
 // Learn more about this file at:
 // https://victorzhou.com/blog/build-an-io-game-part-1/#7-client-state
 import { updateLeaderboard } from './leaderboard';
-import { udpateExpBar } from './experience';
+import { updateExpBar } from './experience';
+import { updateHealthBar } from './health-bar';
 import { updatePassiveSkillsBar } from './passive-skills';
 import { updateWeaponsBar } from './weapons';
 
@@ -26,7 +27,8 @@ export function processGameUpdate(update) {
   gameUpdates.push(update);
 
   updateLeaderboard(update.leaderboard, update.me);
-  udpateExpBar(update.me)
+  updateExpBar(update.me)
+  updateHealthBar(update.me)
   updatePassiveSkillsBar(update.me)
   updateWeaponsBar(update.me)
 
