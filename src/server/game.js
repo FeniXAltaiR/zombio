@@ -434,9 +434,9 @@ class Game {
   sendGameUpdate() {
     if (this.shouldSendUpdate) {
       const leaderboard = this.getLeaderboard();
-      Object.keys(this.sockets).forEach(socket => {
-        const socket = this.sockets[socket]
-        const {x, y, id} = this.players[socket]
+      Object.keys(this.sockets).forEach(id_socket => {
+        const socket = this.sockets[id_socket]
+        const {x, y, id} = this.players[id_socket]
         socket.emit(Constants.MSG_TYPES.GAME_UPDATE, this.createUpdate({x, y, id}, leaderboard));
       })
       this.shouldSendUpdate = false;
