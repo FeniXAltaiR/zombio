@@ -181,8 +181,8 @@ button:focus {
   position: fixed;
   width: 170px;
   bottom: 10px;
-  /* right: -160px; */
-  right: 10px;
+  right: -160px;
+  /* right: 10px; */
   transition: all 1s ease
 }
 
@@ -292,7 +292,8 @@ button:focus {
 
 .health-bar {
   position: fixed;
-  top: 10px;
+  /* top: 10px; */
+  top: -100px;
   left: 10px;
   height: 71px;
   width: 71px;
@@ -313,7 +314,8 @@ button:focus {
 .effects {
   min-width: 180px;
   position: fixed;
-  top: 10px;
+  /* top: 10px; */
+  top: -100px;
   left: 100px;
 }
 
