@@ -14,10 +14,10 @@ const {
 
 const createXpList = () => {
   const list = [0]
-  for (let i = 1; i < 20; i++) {
+  for (let i = 1; i < 28; i++) {
     list.push(Math.round(i * i * 500 * Math.sqrt(i)))
   }
-  list.push(1000000)
+  list.push(10000000)
   return list
 }
 

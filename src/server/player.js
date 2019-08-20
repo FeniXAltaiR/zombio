@@ -316,7 +316,7 @@ class Player extends ObjectClass {
     this.username = username;
     this.icon = icon
     this.hp = this.options.parameters.hp;
-    this.score = 30000;
+    this.score = score;
     this.rotate = rotate
     this.bullets = []
     this.weapon = this.options.weapons.pistol
