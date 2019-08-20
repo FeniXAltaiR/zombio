@@ -2,6 +2,7 @@
 // https://victorzhou.com/blog/build-an-io-game-part-1/#7-client-state
 import { updateLeaderboard } from './leaderboard';
 import { updateExpBar } from './experience';
+import { updateEffectsBar } from './effects';
 import { updateHealthBar } from './health-bar';
 import { updatePassiveSkillsBar } from './passive-skills';
 import { updateWeaponsBar } from './weapons';
@@ -28,6 +29,7 @@ export function processGameUpdate(update) {
 
   updateLeaderboard(update.leaderboard, update.me);
   updateExpBar(update.me)
+  updateEffectsBar(update.me)
   updateHealthBar(update.me)
   updatePassiveSkillsBar(update.me)
   updateWeaponsBar(update.me)
@@ -91,7 +93,7 @@ function interpolateObject(object1, object2, ratio) {
   Object.keys(object1).forEach(key => {
     if (typeof key === 'object') {
       interpolated[key] = object1[key]
-    } else if (['skill_points', 'icon', 'passive_skills', 'parameters', 'used_skill_points', 'id', 'weapon', 'active_skills', 'effect'].includes(key)) {
+    } else if (['skill_points', 'icon', 'passive_skills', 'parameters', 'used_skill_points', 'id', 'weapon', 'active_skills', 'effect', 'effects'].includes(key)) {
       interpolated[key] = object1[key]
     } else if (key === 'rotate') {
       interpolated[key] = interpolateDirection(object1[key], object2[key], ratio);

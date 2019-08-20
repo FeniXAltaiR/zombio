@@ -243,14 +243,9 @@ button:focus {
   background: #ccc
 }
 
-.passive-skills p {
-  margin-bottom: 0;
-  min-width: 80px
-}
-
 .health-bar {
   position: fixed;
-  top: -100px;
+  top: 10px;
   left: 10px;
   height: 71px;
   width: 71px;
@@ -266,6 +261,43 @@ button:focus {
   color: white;
   font-size: 20px;
   /* background: linear-gradient(180deg, white 0%, white 25%, #AA0300 25%, #DB1B04 100%); */
+}
+
+.effects {
+  min-width: 180px;
+  position: fixed;
+  top: 10px;
+  left: 100px;
+}
+
+.effects img {
+  margin: 0 5px;
+}
+
+.effects__buffs {
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flex;
+  display: -o-flex;
+  display: flex;
+  align-items: flex-end;
+  padding-left: 20px;
+  background-image: url('/assets/effects_buffs.svg');
+  background-repeat: no-repeat;
+  height: 50px
+}
+
+.effects__debuffs {
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flex;
+  display: -o-flex;
+  display: flex;
+  align-items: flex-end;
+  padding-left: 20px;
+  background-image: url('/assets/effects_debuffs.svg');
+  background-repeat: no-repeat;
+  height: 50px
 }
 
 .skins {

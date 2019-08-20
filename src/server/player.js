@@ -83,15 +83,19 @@ class Player extends ObjectClass {
         }),
         defense: (skill_name => {
           this.options.passive_skills.defense -= 0.35
+          this.setEffect('buff', 'defense')
           setTimeout(() => {
             this.options.passive_skills.defense += 0.35
+            this.setEffect('debuff', 'defense')
           }, 10000)
           this.resetActiveSkill(skill_name, 25000)
         }),
         speedup: (skill_name => {
           this.options.passive_skills.speed += 0.5
+          this.setEffect('buff', 'speed')
           setTimeout(() => {
             this.options.passive_skills.speed -= 0.5
+            this.setEffect('debuff', 'speed')
           }, 5000)
           this.resetActiveSkill(skill_name, 25000)
         }),
@@ -119,6 +123,7 @@ class Player extends ObjectClass {
         })
       },
       zones_effects: {
+        hp: 0,
         speed: 0,
         defense: 0
       },
@@ -154,11 +159,11 @@ class Player extends ObjectClass {
         }),
         speed: (() => {
           this.options.passive_skills.speed += 0.25
-          this.updateSpeed()
+          this.setEffect('buff', 'speed')
 
           setTimeout(() => {
             this.options.passive_skills.speed -= 0.25
-            this.updateSpeed()
+            this.setEffect('debuff', 'speed')
           }, 5000)
         }),
         accuracy: (() => {
@@ -171,9 +176,11 @@ class Player extends ObjectClass {
           } else {
             this.options.passive_skills.accuracy -= diff
           }
+          this.setEffect('buff', 'accuracy')
 
           setTimeout(() => {
             this.options.passive_skills.accuracy += diff
+            this.setEffect('debuff', 'accuracy')
           }, 5000)
         }),
         portal: (() => {
@@ -182,21 +189,23 @@ class Player extends ObjectClass {
         }),
         defense: (() => {
           this.options.passive_skills.defense -= 0.25
-          // this.options.passive_skills.speed -= 0.15
-          this.updateSpeed()
+          this.setEffect('buff', 'defense')
           setTimeout(() => {
             this.options.passive_skills.defense += 0.25
-            // this.options.passive_skills.speed += 0.15
-            this.updateSpeed()
+            this.setEffect('debuff', 'defense')
           }, 5000)
         }),
         damage: (() => {
           this.options.passive_skills.damage += 0.25
+          this.setEffect('buff', 'damage')
 
           setTimeout(() => {
             this.options.passive_skills.damage -= 0.25
+            this.setEffect('debuff', 'damage')
           }, 5000)
         })
+      },
+      effects: {
       },
       researches: {
         weapon: 'pistol',
@@ -334,6 +343,9 @@ class Player extends ObjectClass {
   update(dt) {
     super.update(dt);
 
+    this.updateSpeed()
+    // console.log(Object.entries(this.options.effects));
+
     // Make sure the player stays in bounds
     this.x = Math.max(0 + Constants.PLAYER_RADIUS, Math.min(Constants.MAP_SIZE - Constants.PLAYER_RADIUS, this.x));
     this.y = Math.max(0 + Constants.PLAYER_RADIUS, Math.min(Constants.MAP_SIZE - Constants.PLAYER_RADIUS, this.y));
@@ -363,16 +375,31 @@ class Player extends ObjectClass {
     }
   }
 
-  checkZonePlayer (dt) {
+  checkZonePlayer(dt) {
     const resetZonesEffects = () => {
       const effects = this.options.zones_effects
-      this.updateSpeed()
-      effects.speed = 0
-      effects.defense = 0
+      if (effects.speed !== 0) {
+        effects.speed = 0
+        this.setEffect('buff', 'speed')
+      }
+
+      if (effects.defense !== 0) {
+        effects.defense = 0
+        this.setEffect('buff', 'defense')
+      }
+
+      if (effects.hp > 0) {
+        effects.hp = 0
+        this.setEffect('debuff', 'hp')
+      } else if (effects.hp < 0) {
+        effects.hp = 0
+        this.setEffect('buff', 'hp')
+      }
     }
 
     const zones = {
       green: (dt => {
+        this.options.zones_effects.hp = 1
         this.updateHp(dt)
       }),
       yellow: (dt => {
@@ -382,6 +409,7 @@ class Player extends ObjectClass {
         this.options.zones_effects.defense = -0.25
       }),
       red: (dt => {
+        this.options.zones_effects.hp = -1
         this.updateHp(-dt)
       })
     }
@@ -390,15 +418,19 @@ class Player extends ObjectClass {
 
     if (this.getZoneBounds(1, 0.75)) {
       zones.green(dt)
+      this.setEffect('buff', 'hp')
     }
     else if (this.getZoneBounds(0.75, 0.5)) {
       zones.yellow(dt)
+      this.setEffect('debuff', 'speed')
     }
     else if (this.getZoneBounds(0.5, 0.25)) {
       zones.violet(dt)
+      this.setEffect('debuff', 'defense')
     }
     else if (this.getZoneBounds(0.25, 0)) {
       zones.red(dt)
+      this.setEffect('debuff', 'hp')
     }
   }
 
@@ -665,10 +697,14 @@ class Player extends ObjectClass {
     const {hp} = this.options.passive_skills
     if (this.hp + value > this.options.parameters.hp * hp) {
       this.hp = this.options.parameters.hp * hp
-      this.updateStatistic('amount_recovery_hp', this.options.parameters.hp * hp - this.hp)
+      if (value >= 0) {
+        this.updateStatistic('amount_recovery_hp', this.options.parameters.hp * hp - this.hp)
+      }
     } else {
       this.hp += value
-      this.updateStatistic('amount_recovery_hp', value)
+      if (value >= 0) {
+        this.updateStatistic('amount_recovery_hp', value)
+      }
     }
   }
 
@@ -720,6 +756,18 @@ class Player extends ObjectClass {
     this.rotate = rotate
   }
 
+  setEffect(type, name) {
+    if (!this.options.effects[name]) {
+      this.options.effects[name] = 0
+    }
+
+    if (type === 'buff') {
+      this.options.effects[name] += 1
+    } else if (type === 'debuff') {
+      this.options.effects[name] -= 1
+    }
+  }
+
   serializeForUpdate() {
     return {
       ...(super.serializeForUpdate()),
@@ -738,7 +786,8 @@ class Player extends ObjectClass {
       used_skill_points: this.options.used_skill_points,
       icon: `player_${this.icon}.svg`,
       weapon: this.weapon.name,
-      score: this.score
+      score: this.score,
+      effects: this.options.effects
     };
   }
 }

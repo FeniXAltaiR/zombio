@@ -27,6 +27,8 @@ const ASSET_NAMES = [
   'passive_skills_speed.svg',
   'passive_skills_defense.svg',
   'passive_skills_cooldown.svg',
+  'passive_skills_damage.svg',
+  'passive_skills_accuracy.svg',
   
   'player_man1.svg',
   'player_man2.svg',
