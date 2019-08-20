@@ -141,15 +141,32 @@ button:focus {
 .experience {
   position: fixed;
   display: flex;
-  justify-content: center;
+  -webkit-flex-direction: column;
+  -moz-flex-direction: column;
+  -ms-flex-direction: column;
+  -o-flex-direction: column;
+  flex-direction: column;
+  align-items: center;
   width: 100%;
   padding: 0px;
+}
+
+.experience .experience__score {
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flex;
+  display: -o-flex;
+  display: flex;
+  justify-content: space-between;
+  width: 350px;
+  font-size: 20px;
 }
 
 .experience .experience__current {
   border: 1px solid rgba(0, 0, 0, .9);
   border-radius: 15px;
   width: 350px;
+  height: 25px;
   display: flex;
   justify-content: center;
 }
@@ -241,6 +258,36 @@ button:focus {
 
 .passive-skills__skill--gray {
   background: #ccc
+}
+
+.active-skills {
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flex;
+  display: -o-flex;
+  display: flex;
+  position: fixed;
+  bottom: 10px;
+  right: 30vw;
+}
+
+.active-skills__skill {
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flex;
+  display: -o-flex;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 5px;
+}
+
+.active-skills__skill p {
+  margin-bottom: 5px;
+}
+
+.active-skills__cooldown {
+  opacity: .25
 }
 
 .health-bar {

@@ -10,6 +10,7 @@ import { setExperienceHidden } from './experience';
 import { setEffectsHidden } from './effects';
 import { setHealthBarHidden } from './health-bar';
 import { setPassiveSkillsBar } from './passive-skills'
+import { setActiveSkillsHidden } from './active-skills'
 import { setWeaponsBar } from './weapons'
 
 // I'm using Bootstrap here for convenience, but I wouldn't recommend actually doing this for a real
@@ -67,6 +68,7 @@ Promise.all([
     setEffectsHidden(false)
     setHealthBarHidden(false)
     setPassiveSkillsBar(false)
+    setActiveSkillsHidden(false)
     setWeaponsBar(false)
   };
 
@@ -89,6 +91,7 @@ function onGameOver(statistic) {
   setEffectsHidden(true)
   setHealthBarHidden(true)
   setPassiveSkillsBar(true)
+  setActiveSkillsHidden(true)
   setWeaponsBar(true)
   showStatistic(statistic)
 }

@@ -1,4 +1,3 @@
-import { getAsset } from './assets';
 import { levelUp } from './networking.js'
 
 const passive = document.querySelector('.passive-skills')

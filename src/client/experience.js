@@ -1,6 +1,7 @@
 const experience = document.querySelector('.experience')
-const current = document.querySelector('.experience__current')
-const paragraph = document.querySelector('.experience p')
+const current = experience.querySelector('.experience__current')
+const paragraph = experience.querySelector('.p')
+const expScore = experience.querySelector('.experience__score')
 
 export const updateExpBar = me => {
   const {currentScore, nextLevel} = me.experience
@@ -9,10 +10,14 @@ export const updateExpBar = me => {
     to right,
     #8A2886 0%,
     #8A2886 ${currentScore * 100/nextLevel}%,
-    #F8F8F8 ${currentScore * 100/nextLevel}%,
+    #D0CACB ${currentScore * 100/nextLevel}%,
     #F8F8F8
   )`
-  paragraph.innerHTML = `${currentScore}/${nextLevel}`
+
+  expScore.innerHTML = `
+    <span>${currentScore}</span>
+    <span>${nextLevel}</span>
+  `
 }
 
 export const setExperienceHidden = hidden => {

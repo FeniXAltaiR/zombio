@@ -5,6 +5,7 @@ import { updateExpBar } from './experience';
 import { updateEffectsBar } from './effects';
 import { updateHealthBar } from './health-bar';
 import { updatePassiveSkillsBar } from './passive-skills';
+import { updateActiveSkills } from './active-skills';
 import { updateWeaponsBar } from './weapons';
 
 // The "current" state will always be RENDER_DELAY ms behind server time.
@@ -32,6 +33,7 @@ export function processGameUpdate(update) {
   updateEffectsBar(update.me)
   updateHealthBar(update.me)
   updatePassiveSkillsBar(update.me)
+  updateActiveSkills(update.me)
   updateWeaponsBar(update.me)
 
   // Keep only one game update before the current server time

@@ -52,14 +52,17 @@ class Player extends ObjectClass {
         },
         first_skill: {
           value: null,
+          keyCode: 'E',
           cooldown: false
         },
         second_skill: {
           value: null,
+          keyCode: 'Q',
           cooldown: false
         },
         ultra_skill: {
-          value: 'ultimate',
+          value: null,
+          keyCode: 'R',
           cooldown: false
         },
         teleportation: (skill_name => {
@@ -780,6 +783,7 @@ class Player extends ObjectClass {
       active_skills: {
         first_skill: this.options.active_skills.first_skill,
         second_skill: this.options.active_skills.second_skill,
+        ultra_skill: this.options.active_skills.ultra_skill,
         use_fire_bullets: this.options.active_skills.use_fire_bullets
       },
       parameters: this.options.parameters,
