@@ -669,12 +669,8 @@ class Player extends ObjectClass {
   }
 
   onKilledPlayer(xp) {
-    const diff = xp - this.score
-    if (diff < 1000) {
-      this.score += 1000
-    } else {
-      this.score += diff
-    }
+    const score = parseInt(xp / 5, 10)
+    this.score += score
   }
 
   onKilledZombie(xp) {
