@@ -4,7 +4,7 @@ const paragraph = experience.querySelector('.p')
 const expScore = experience.querySelector('.experience__score')
 
 export const updateExpBar = me => {
-  const {currentScore, nextLevel} = me.experience
+  const {currentScore, nextLevel, level} = me.experience
   const gradient = 'linear-gradient(180deg, #8A2886 0%, #BC77BF 43.75%, #481455 100%)'
   current.style['background-image'] = `linear-gradient(
     to right,
@@ -16,6 +16,7 @@ export const updateExpBar = me => {
 
   expScore.innerHTML = `
     <span>${currentScore}</span>
+    <span>${level} lvl</span>
     <span>${nextLevel}</span>
   `
 }
