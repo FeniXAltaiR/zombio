@@ -669,7 +669,7 @@ class Player extends ObjectClass {
   }
 
   onKilledPlayer(xp) {
-    const score = parseInt(xp / 5, 10)
+    const score = Math.round(xp / 5)
     this.score += score
   }
 
