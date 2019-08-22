@@ -134,23 +134,21 @@ function renderBullet(me, bullet) {
   context.save()
   // context.filter = 'invert(50%)'
   // context.filter = 'sepia(60%)'
-  if (bullet.effect) {
-    context.drawImage(
-      getAsset(`bullet_${bullet.effect}.svg`),
-      canvas.width / 2 + x - me.x - radius,
-      canvas.height / 2 + y - me.y - radius,
-      radius * 2,
-      radius * 2,
-    );
-  } else {
-    context.drawImage(
-      getAsset(`bullet.svg`),
-      canvas.width / 2 + x - me.x - radius,
-      canvas.height / 2 + y - me.y - radius,
-      radius * 2,
-      radius * 2,
-    );
+
+  const getBulletIcon = () => {
+    if (bullet.effect) {
+      return `bullet_${bullet.effect}.svg`
+    }
+    return `bullet.svg`
   }
+
+  context.drawImage(
+    getAsset(getBulletIcon()),
+    canvas.width / 2 + x - me.x - radius,
+    canvas.height / 2 + y - me.y - radius,
+    radius * 2,
+    radius * 2,
+  );
   
   context.restore()
 }
