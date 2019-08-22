@@ -1,6 +1,6 @@
 module.exports = Object.freeze({
   PLAYER_RADIUS: 20,
-  PLAYER_MAX_HP: 500,
+  PLAYER_MAX_HP: 50000,
   PLAYER_SPEED: 200,
   PLAYER_FIRE_COOLDOWN: 0.1,
 

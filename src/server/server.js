@@ -20,7 +20,7 @@ app.get('/', (req, res, next) => {
   let exist_id_channel = null
 
   function getOnlinePlayers(game) {
-    return games[game].getOnlinePlayers() < 3
+    return games[game].getOnlinePlayers() < 10
   }
 
   if (servers.length) {
