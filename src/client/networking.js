@@ -14,11 +14,20 @@ const connectedPromise = new Promise(resolve => {
   });
 });
 
+const saveIdToLocalStorage = ({id, score}) => {
+  localStorage.setItem('id_player', id)
+  socket.emit(Constants.MSG_TYPES.SAVE_ID_PLAYER, {
+    id,
+    score
+  })
+}
+
 export const connect = onGameOver => (
   connectedPromise.then(() => {
     // Register callbacks
     socket.on(Constants.MSG_TYPES.GAME_UPDATE, processGameUpdate);
     socket.on(Constants.MSG_TYPES.GAME_OVER, onGameOver);
+    socket.on(Constants.MSG_TYPES.SAVE_ID_PLAYER, saveIdToLocalStorage);
     socket.on('disconnect', () => {
       console.log('Disconnected from server.');
       document.getElementById('disconnect-modal').classList.remove('hidden');

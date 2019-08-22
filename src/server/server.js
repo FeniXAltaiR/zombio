@@ -59,6 +59,14 @@ const port = process.env.PORT || 3000;
 const server = app.listen(port);
 console.log(`Server listening on port ${port}`);
 
+// KilledPlayers
+const storage = {}
+const saveIdToStorage = ({id, score}) => {
+  storage[id] = {
+    score: Math.round(score / 1.3)
+  }
+}
+
 // Setup socket.io
 const io = socketio(server);
 
@@ -74,6 +82,7 @@ io.on('connection', socket => {
   socket.on(Constants.MSG_TYPES.UPDATE_WEAPON, updateWeapon);
   socket.on(Constants.MSG_TYPES.ADD_NEW_SKILL, addNewSkill);
   socket.on(Constants.MSG_TYPES.USE_ACTIVE_SKILL, useActiveSkill);
+  socket.on(Constants.MSG_TYPES.SAVE_ID_PLAYER, saveIdToStorage);
   socket.on('disconnect', onDisconnect);
 });
 
@@ -85,8 +94,21 @@ for (let i = 0; i < 1; i++) {
   games[id] = new Game(id)
 }
 
+const getLastScore = id_player => {
+  const lastIdPlayer = storage[id_player]
+  if (lastIdPlayer) {
+    const score = lastIdPlayer.score
+    delete storage[id_player]
+    return score
+  }
+  return 0
+}
+
 function joinGame(options) {
-  games[id_channel].addPlayer(this, options);
+  games[id_channel].addPlayer(this, {
+    ...options,
+    score: getLastScore(options.last_id_player)
+  });
 }
 
 function handleInput(dir) {

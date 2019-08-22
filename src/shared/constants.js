@@ -1,6 +1,6 @@
 module.exports = Object.freeze({
   PLAYER_RADIUS: 20,
-  PLAYER_MAX_HP: 5000,
+  PLAYER_MAX_HP: 500,
   PLAYER_SPEED: 200,
   PLAYER_FIRE_COOLDOWN: 0.1,
 
@@ -34,5 +34,6 @@ module.exports = Object.freeze({
     ADD_NEW_SKILL: 'new_skill',
     USE_ACTIVE_SKILL: 'active_skill',
     GAME_OVER: 'dead',
+    SAVE_ID_PLAYER: 'save_id_player'
   },
 });

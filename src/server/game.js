@@ -180,15 +180,7 @@ class Game {
     this.sockets[socket.id] = socket;
 
     const [x, y] = this.respawnCoords(1, 0.75, this.checkZombiesInRadius.bind(this))
-    const {username, icon} = options
-
-    const getHistoryScore = () => {
-      const killed_player = this.watchers[socket.id]
-      if (killed_player) {
-        return Math.round(killed_player.score / 1.3)
-      }
-      return 0
-    }
+    const {username, icon, score} = options
     
     this.players[socket.id] = new Player({
       id: socket.id,
@@ -196,7 +188,7 @@ class Game {
       x,
       y,
       icon,
-      score: getHistoryScore()
+      score
     })
   }
 
@@ -457,6 +449,10 @@ class Game {
         this.players[lastShot].updateHp(75)
       }
       socket.emit(Constants.MSG_TYPES.GAME_OVER, this.players[id].statistic);
+      socket.emit(Constants.MSG_TYPES.SAVE_ID_PLAYER, {
+        id,
+        score: this.players[id].score
+      });
       this.removePlayer(socket);
     }
   }

@@ -47,6 +47,14 @@ const showStatistic = statistic => {
   })
 }
 
+const getIdPlayer = () => {
+  const id_player = localStorage.getItem('id_player')
+  if (id_player) {
+    return id_player
+  }
+  return null
+}
+
 Promise.all([
   connect(onGameOver),
   downloadAssets(),
@@ -57,7 +65,8 @@ Promise.all([
     // Play!
     play({
       username: usernameInput.value,
-      icon: getSkinValue()
+      icon: getSkinValue(),
+      last_id_player: getIdPlayer()
     });
     playMenu.classList.add('hidden');
     initState();
