@@ -681,6 +681,7 @@ class Player extends ObjectClass {
   takeBuff(name) {
     const buff = this.options.buffs[name]
     buff()
+    this.score += 250
     this.updateStatistic('amount_things', 1)
   }
 
