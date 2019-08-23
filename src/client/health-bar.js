@@ -4,7 +4,7 @@ const Constants = require('../shared/constants');
 
 export const updateHealthBar = me => {
   const {hp} = me
-  const max_hp = Constants.PLAYER_MAX_HP
+  const max_hp = me.parameters.hp * me.passive_skills.hp
   const percent = hp * 100 / max_hp
   healthBar.style['background-image'] = `linear-gradient(
     0deg,
@@ -23,10 +23,10 @@ export const updateHealthBar = me => {
 
 export const setHealthBarHidden = hidden => {
   if (hidden) {
-    healthBar.classList.add('hidden');
-    healthBar.style.top = '-100px'
+    // healthBar.classList.add('hidden');
+    healthBar.style.left = '-100px'
   } else {
-    healthBar.classList.remove('hidden');
-    healthBar.style.top = '10px'
+    // healthBar.classList.remove('hidden');
+    healthBar.style.left = '10px'
   }
 }

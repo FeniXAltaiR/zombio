@@ -45,8 +45,10 @@ export const updateWeaponsBar = me => {
 export const setWeaponsBar = hidden => {
   if (hidden) {
     weapons.classList.add('hidden');
+    weapons.style.bottom = '-100px'
     weapons.innerHTML = ''
   } else {
     weapons.classList.remove('hidden');
+    weapons.style.bottom = '10px'
   }
 }

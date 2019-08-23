@@ -1,24 +1,37 @@
 const activeSkills = document.querySelector('.active-skills')
+const skills = activeSkills.querySelectorAll('.active-skills__skill')
 
 const getCooldown = skill => {
   if (skill.cooldown) {
-    return 'active-skills__cooldown'
+    return true
   }
-  return null
+  return false
 }
 
 export const updateActiveSkills = me => {
   const {first_skill, second_skill, ultra_skill} = me.active_skills
-  activeSkills.innerHTML = [first_skill, second_skill, ultra_skill].reduce((str, skill) => {
-    let cooldown = getCooldown(skill)
 
-    return str + `
-      <span class="${cooldown} active-skills__skill">
-        <p>${skill.keyCode}</p>
-        <img src="assets/passive_skills_hp.svg" alt="">
-      </span>
-    `
-  }, '')
+  skills.forEach(nodeSkill => {
+    const skill_name = nodeSkill.dataset.name
+    const p = nodeSkill.querySelector('p')
+    p.innerHTML = me.active_skills[skill_name].keyCode
+
+    const cooldown = getCooldown(me.active_skills[skill_name])
+
+    if (me.active_skills[skill_name].value === null) {
+      // nodeSkill.classList.add('hidden')
+      nodeSkill.style.bottom = '-100px'
+    } else {
+      // nodeSkill.classList.remove('hidden')
+      nodeSkill.style.bottom = '10px'
+    }
+
+    if (cooldown) {
+      nodeSkill.classList.add('active-skills__cooldown')
+    } else {
+      nodeSkill.classList.remove('active-skills__cooldown')
+    }
+  })
 }
 
 export const setActiveSkillsHidden = hidden => {

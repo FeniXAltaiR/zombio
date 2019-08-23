@@ -23,10 +23,10 @@ export const updateExpBar = me => {
 
 export const setExperienceHidden = hidden => {
   if (hidden) {
-    experience.classList.add('hidden');
+    // experience.classList.add('hidden');
     experience.style.bottom = '-100px'
   } else {
-    experience.classList.remove('hidden');
+    // experience.classList.remove('hidden');
     experience.style.bottom = '10px'
   }
 }

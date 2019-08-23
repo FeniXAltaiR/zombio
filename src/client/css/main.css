@@ -100,12 +100,13 @@ button:focus {
 #leaderboard {
   position: fixed;
   top: 10px;
-  right: 10px;
+  right: -225px;
   padding: 10px;
   font-weight: bold;
   color: white;
   background: linear-gradient(355.31deg, rgba(186, 118, 189, 0.46) 0.11%, rgba(128, 69, 137, 0.780876) 58.14%, #592365 97.77%);
   border-radius: 5px;
+  transition: all 1s ease
 }
 
 #leaderboard th {
@@ -141,6 +142,7 @@ button:focus {
 .experience {
   position: fixed;
   display: flex;
+  bottom: -100px;
   -webkit-flex-direction: column;
   -moz-flex-direction: column;
   -ms-flex-direction: column;
@@ -149,6 +151,7 @@ button:focus {
   align-items: center;
   width: 100%;
   padding: 0px;
+  transition: all 1s ease;
 }
 
 .experience .experience__score {
@@ -286,7 +289,6 @@ button:focus {
   display: flex;
   position: fixed;
   bottom: 10px;
-  right: calc(50vw - 350px);
 }
 
 .active-skills__skill {
@@ -304,15 +306,35 @@ button:focus {
   margin-bottom: 5px;
 }
 
+.active-skills__skill[data-name="first_skill"] {
+  position: fixed;
+  left: calc(50vw + 230px);
+  bottom: -100px;
+  transition: all 1s ease
+}
+
+.active-skills__skill[data-name="second_skill"] {
+  position: fixed;
+  left: calc(50vw - 277px);
+  bottom: -100px;
+  transition: all 1s ease
+}
+
+.active-skills__skill[data-name="ultra_skill"] {
+  position: fixed;
+  left: calc(50vw + 280px);
+  bottom: -100px;
+  transition: all 1s ease
+}
+
 .active-skills__cooldown {
   opacity: .25
 }
 
 .health-bar {
   position: fixed;
-  /* top: 10px; */
-  top: -100px;
-  left: 10px;
+  left: -100px;
+  top: 10px;
   height: 71px;
   width: 71px;
   border-radius: 50%;
@@ -326,7 +348,7 @@ button:focus {
   align-items: center;
   color: white;
   font-size: 20px;
-  /* background: linear-gradient(180deg, white 0%, white 25%, #AA0300 25%, #DB1B04 100%); */
+  transition: all 1s ease
 }
 
 .effects {
@@ -335,6 +357,7 @@ button:focus {
   /* top: 10px; */
   top: -100px;
   left: 100px;
+  transition: all 1s ease
 }
 
 .effects img {
@@ -415,8 +438,10 @@ button:focus {
 
 .weapons {
   position: fixed;
-  bottom: 10px;
+  bottom: -100px;
+  left: 10px;
   z-index: 5;
+  transition: all 1s ease;
 }
 
 @media screen and (max-width: 640px) {

@@ -23,10 +23,10 @@ export const updateEffectsBar = me => {
 
 export const setEffectsHidden = hidden => {
   if (hidden) {
-    effectsBar.classList.add('hidden');
-    effectsBar.style.top = '-100px'
+    // effectsBar.classList.add('hidden');
+    effectsBar.style.top = '-150px'
   } else {
-    effectsBar.classList.remove('hidden');
+    // effectsBar.classList.remove('hidden');
     effectsBar.style.top = '10px'
   }
 }

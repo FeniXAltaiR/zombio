@@ -49,8 +49,10 @@ export function updateLeaderboard(data, me) {
 
 export function setLeaderboardHidden(hidden) {
   if (hidden) {
-    leaderboard.classList.add('hidden');
+    // leaderboard.classList.add('hidden');
+    leaderboard.style.right = '-225px'
   } else {
-    leaderboard.classList.remove('hidden');
+    // leaderboard.classList.remove('hidden');
+    leaderboard.style.right = '10px'
   }
 }
