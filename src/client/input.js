@@ -95,12 +95,17 @@ function onWheelInput(e) {
   e.preventDefault()
 }
 
+function onMouseContextInput(e) {
+  e.preventDefault()
+}
+
 const canvas = document.getElementById('game-canvas');
 
 export function startCapturingInput() {
   // Mouse events
   canvas.addEventListener('mousemove', onMouseMoveInput);
   canvas.addEventListener('mousedown', onMouseDownInput);
+  canvas.addEventListener('contextmenu', onMouseContextInput);
   canvas.addEventListener('mouseup', onMouseUpInput);
   canvas.addEventListener('wheel', onWheelInput);
   // Touch events
@@ -115,6 +120,7 @@ export function stopCapturingInput() {
   // Mouse events
   canvas.removeEventListener('mousemove', onMouseMoveInput);
   canvas.removeEventListener('mousedown', onMouseDownInput);
+  canvas.removeEventListener('contextmenu', onMouseContextInput);
   canvas.removeEventListener('mouseup', onMouseUpInput);
   canvas.removeEventListener('wheel', onWheelInput);
   // Touch events

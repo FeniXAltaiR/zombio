@@ -15,7 +15,7 @@ export const updateActiveSkills = me => {
     return str + `
       <span class="${cooldown} active-skills__skill">
         <p>${skill.keyCode}</p>
-        <img src="../../../assets/passive_skills_hp.svg" alt="">
+        <img src="assets/passive_skills_hp.svg" alt="">
       </span>
     `
   }, '')

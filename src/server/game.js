@@ -346,7 +346,7 @@ class Game {
     }
   }
 
-  udpateZombies(player, dt) {
+  updateZombies(player, dt) {
     let full_damage = 0
 
     this.zombies.forEach(zombie => {
@@ -552,7 +552,7 @@ class Game {
     // Calculate time elapsed
     const now = Date.now();
     const dt = (now - this.lastUpdateTime) / 1000;
-    // console.log(dt)
+    console.log(dt)
     this.lastUpdateTime = now;
 
     // Check collisions between zombies
@@ -571,7 +571,7 @@ class Game {
       const {x, y, id, hp} = player
 
       this.createBullets(id, dt)
-      this.udpateZombies({x, y, id}, dt)
+      this.updateZombies({x, y, id}, dt)
       this.checkThingsToRemove(id)
       this.checkPlayerIsAlive(socket, {hp, id})
     });

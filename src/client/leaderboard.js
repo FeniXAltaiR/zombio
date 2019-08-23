@@ -13,7 +13,7 @@ const rows = document.querySelectorAll('#leaderboard table tr');
 //   `<img src="../../../assets/passive_skills_hp.svg" alt="" />`
 // ]
 const img = new Image()
-img.src = '../../../assets/passive_skills_hp.svg'
+img.src = 'assets/passive_skills_hp.svg'
 
 export function updateLeaderboard(data, me) {
   // This is a bit of a hacky way to do this and can get dangerous if you don't escape usernames

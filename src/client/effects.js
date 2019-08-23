@@ -9,12 +9,12 @@ export const updateEffectsBar = me => {
 
   let buffs_str = ''
   list_buffs.forEach(buff => {
-    buffs_str += `<img src="../../../assets/passive_skills_${buff}.svg" alt="">`
+    buffs_str += `<img src="assets/passive_skills_${buff}.svg" alt="">`
   })
 
   let debuffs_str = ''
   list_debuffs.forEach(debuff => {
-    debuffs_str += `<img src="../../../assets/passive_skills_${debuff}.svg" alt="">`
+    debuffs_str += `<img src="assets/passive_skills_${debuff}.svg" alt="">`
   })
 
   buffs.innerHTML = buffs_str

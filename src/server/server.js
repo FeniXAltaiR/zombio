@@ -1,4 +1,5 @@
 const express = require('express');
+// const cors = require('cors')
 const webpack = require('webpack');
 const webpackDevMiddleware = require('webpack-dev-middleware');
 const socketio = require('socket.io');
@@ -10,6 +11,7 @@ const webpackConfig = require('../../webpack.dev.js');
 
 // Setup an Express server
 const app = express();
+// app.use(cors())
 app.use(express.static('public'));
 
 // Server channels
