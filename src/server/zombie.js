@@ -74,13 +74,16 @@ class Zombie extends ObjectClass {
       },
       modes: {
         passive: {
-          speed: 50
+          speed: 50,
+          agressiveDistance: 500
         },
         active: {
-          speed: 200
+          speed: 200,
+          agressiveDistance: 500
         },
         returning: {
-          speed: 50
+          speed: 50,
+          agressiveDistance: 350
         }
       }
     }
@@ -128,7 +131,7 @@ class Zombie extends ObjectClass {
     this.rotate = rotate
     // active or passive behavior
     this.mode = 'passive'
-    this.agressiveDistance = 500
+    this.agressiveDistance = 0
     this.type = this.options.types[type]
     this.changingDirection = true
     this.bite = false
@@ -141,13 +144,6 @@ class Zombie extends ObjectClass {
     // Make sure the zombie stays in bounds
     this.x = Math.max(0 + Constants.PLAYER_RADIUS, Math.min(Constants.MAP_SIZE - Constants.PLAYER_RADIUS, this.x))
     this.y = Math.max(0 + Constants.PLAYER_RADIUS, Math.min(Constants.MAP_SIZE - Constants.PLAYER_RADIUS, this.y))
-
-    const inZone = this.checkLocationInZone()
-    if (inZone) {
-      this.agressiveDistance = 500
-    } else {
-      this.agressiveDistance = 350
-    }
 
     if (this.options.active_skills.debuffs.fire.value) {
       this.updateHp(-10 * dt * 5)
@@ -207,6 +203,7 @@ class Zombie extends ObjectClass {
   setMode(mode) {
     this.mode = mode
     this.speed = this.options.modes[mode].speed
+    this.agressiveDistance = this.options.modes[mode].agressiveDistance
   }
 
   resetChangingDirection() {
