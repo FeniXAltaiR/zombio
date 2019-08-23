@@ -1,7 +1,8 @@
 import { levelUp } from './networking.js'
 
 const passive = document.querySelector('.passive-skills')
-const skills = document.querySelectorAll('.passive-skills__skill')
+const skills = passive.querySelectorAll('.passive-skills__skill')
+const points = passive.querySelector('.passive-skills__points span')
 
 const setBtnEvents = () => {
   skills.forEach(skill => {
@@ -26,6 +27,7 @@ export const updatePassiveSkillsBar = me => {
   })
   
   const {level, skill_points} = me.experience
+  points.innerHTML = level - skill_points
   if (level - skill_points <= 0) {
     setPassiveSkillsBar(true)
   } else {
