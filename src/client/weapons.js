@@ -26,7 +26,7 @@ export const updateWeaponsBar = me => {
       createBtn(weapon, 'weapon')
     })
   } else if (first_skill.value === null && level >= 5) {
-    ['speedup', 'health', 'defense'].forEach(skill => {
+    ['speed', 'hp', 'defense'].forEach(skill => {
       createBtn(skill, 'skill')
     })
   } else if (['uzi', 'rifle', 'shotgun'].includes(me.weapon) && level >= 7) {
@@ -34,7 +34,7 @@ export const updateWeaponsBar = me => {
       createBtn(weapon, 'weapon')
     })
   } else if (second_skill.value === null && level >= 12) {
-    ['teleportation', 'double_bullets', 'fire_bullets'].forEach(skill => {
+    ['teleport', 'double_bullets', 'fire_bullets'].forEach(skill => {
       createBtn(skill, 'skill')
     })
   } else {

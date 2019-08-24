@@ -546,7 +546,7 @@ class Game {
     const zombie = this.zombies
       .find(closerZombie =>
         parentID !== closerZombie.id &&
-        closerZombie.distanceTo({x, y}) <= Constants.PLAYER_RADIUS + radius
+        closerZombie.distanceTo({x, y}) <= closerZombie.radius + radius
       )
 
     if (zombie) {

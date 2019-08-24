@@ -65,7 +65,7 @@ class Player extends ObjectClass {
           keyCode: 'R',
           cooldown: false
         },
-        teleportation: (skill_name => {
+        teleport: (skill_name => {
           this.x += Math.sin(this.rotate) * 750
           this.y -= Math.cos(this.rotate) * 750
           this.resetActiveSkill(skill_name, 20000)
@@ -93,7 +93,7 @@ class Player extends ObjectClass {
           }, 10000)
           this.resetActiveSkill(skill_name, 25000)
         }),
-        speedup: (skill_name => {
+        speed: (skill_name => {
           this.options.passive_skills.speed += 0.5
           this.setEffect('buff', 'speed')
           setTimeout(() => {
@@ -102,7 +102,7 @@ class Player extends ObjectClass {
           }, 5000)
           this.resetActiveSkill(skill_name, 25000)
         }),
-        health: (skill_name => {
+        hp: (skill_name => {
           this.updateHp(500)
           this.resetActiveSkill(skill_name, 25000)
         }),
@@ -329,6 +329,7 @@ class Player extends ObjectClass {
     this.icon = icon
     this.hp = this.options.parameters.hp;
     this.score = score;
+    // this.score = 500000;
     this.rotate = rotate
     this.bullets = []
     this.weapon = this.options.weapons.pistol
