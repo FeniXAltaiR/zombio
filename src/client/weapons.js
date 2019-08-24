@@ -2,17 +2,29 @@ import {updateWeapon, addNewSkill} from './networking.js'
 
 const weapons = document.querySelector('.weapons')
 
-const createBtn = (name, type) => {
-  const btn = document.createElement('button')
-  btn.innerHTML = name
+const createBtnSkill = skill => {
+  const btn = document.createElement('span')
+  const img = document.createElement('img')
+  img.src = `assets/active_skills_${skill}.svg`
   btn.onclick = e => {
-    if (type === 'weapon') {
-      updateWeapon(name)
-    } else if (type === 'skill') {
-      addNewSkill(name)
-    }
+    addNewSkill(skill)
     weapons.innerHTML = ''
   }
+  btn.classList.add('weapons__skill')
+  btn.appendChild(img)
+  weapons.appendChild(btn)
+}
+
+const createBtnWeapon = weapon => {
+  const btn = document.createElement('span')
+  const img = document.createElement('img')
+  img.src = `assets/weapon_${weapon}.svg`
+  btn.onclick = e => {
+    updateWeapon(weapon)
+    weapons.innerHTML = ''
+  }
+  btn.classList.add('weapons__weapon')
+  btn.appendChild(img)
   weapons.appendChild(btn)
 }
 
@@ -23,19 +35,19 @@ export const updateWeaponsBar = me => {
   const {first_skill, second_skill} = me.active_skills
   if (me.weapon === 'pistol' && level >= 3) {
     ['uzi', 'rifle', 'shotgun'].forEach(weapon => {
-      createBtn(weapon, 'weapon')
+      createBtnWeapon(weapon)
     })
   } else if (first_skill.value === null && level >= 5) {
     ['speed', 'hp', 'defense'].forEach(skill => {
-      createBtn(skill, 'skill')
+      createBtnSkill(skill, 'skill')
     })
   } else if (['uzi', 'rifle', 'shotgun'].includes(me.weapon) && level >= 7) {
     ['machinegun', 'sniper_rifle', 'auto_shotgun'].forEach(weapon => {
-      createBtn(weapon, 'weapon')
+      createBtnWeapon(weapon)
     })
   } else if (second_skill.value === null && level >= 12) {
     ['teleport', 'double_bullets', 'fire_bullets'].forEach(skill => {
-      createBtn(skill, 'skill')
+      createBtnSkill(skill, 'skill')
     })
   } else {
     weapons.innerHTML = ''

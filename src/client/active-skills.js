@@ -19,8 +19,6 @@ export const updateActiveSkills = me => {
     if (!img && me.active_skills[skill_name].value) {
       const skillImg = document.createElement('img')
       skillImg.src = `assets/active_skills_${me.active_skills[skill_name].value}.svg`
-      skillImg.style.height = '40px'
-      skillImg.style.width = '40px'
       nodeSkill.appendChild(skillImg)
     }
 
