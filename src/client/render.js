@@ -109,7 +109,17 @@ function renderPlayer(me, player) {
   // context.fillStyle = 'blue';
   // context.fill();
 
+  // Username
+  const nickname = player.username || 'Anonymous'
+  context.font = '16px serif';
+  context.textAlign = 'center'
+  context.fillText(
+    nickname,
+    canvasX,
+    canvasY - PLAYER_RADIUS - 8
+  );
   if (me.id !== player.id) {
+
     // Draw health bar
     context.fillStyle = 'white';
     context.fillRect(
