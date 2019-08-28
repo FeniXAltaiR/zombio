@@ -305,10 +305,12 @@ class Game {
         this.useActiveSkillZombies(zombie, findCloserPlayer)
       }
 
-      this.collisionsBetweenPlayersAndZombies(zombie)
+      if (this.shouldSendUpdate) {
+        this.collisionsBetweenPlayersAndZombies(zombie)
 
-      // Check collisions between zombies
-      this.collisionsBetweenZombies(zombie, dt)
+        // Check collisions between zombies
+        this.collisionsBetweenZombies(zombie, dt)
+      }
 
       // Check if any zombie has destroyed
       this.checkZombieIsAlive(zombie)

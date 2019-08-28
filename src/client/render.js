@@ -37,9 +37,6 @@ function render() {
   context.lineWidth = 1;
   context.strokeRect(canvas.width / 2 - me.x, canvas.height / 2 - me.y, MAP_SIZE, MAP_SIZE);
 
-  // Draw all bullets
-  bullets.forEach(renderBullet.bind(null, me));
-
   // Draw all players
   renderPlayer(me, me);
   others.forEach(renderPlayer.bind(null, me));
@@ -49,6 +46,9 @@ function render() {
 
   // Draw all zombies
   zombies.forEach(renderZombie.bind(null, me))
+
+  // Draw all bullets
+  bullets.forEach(renderBullet.bind(null, me));
 }
 
 function renderBackground(x, y) {
