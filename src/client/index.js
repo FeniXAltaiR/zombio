@@ -26,23 +26,42 @@ const skins = document.querySelector('button[data-name=skins]')
 const chooseSkin = document.querySelector('.skins')
 const agreeSkinBtn = document.querySelector('.skins__btn')
 
+// skins
+
+document.querySelectorAll('.skins__radio span').forEach(span => {
+  span.onclick = e => {
+    e.stopPropagation()
+    document.querySelectorAll('.skins__radio span').forEach(item => {
+      item.classList.remove('skins__radio--active')
+    })
+    span.classList.add('skins__radio--active')
+  }
+})
+
 const getSkinValue = () => {
-  const radios = document.querySelectorAll('.skins input[type=radio]')
+  const radios = document.querySelectorAll('.skins__radio span')
   let value
   radios.forEach(radio => {
-    if (radio.checked) {
-      value = radio.value
+    if (radio.classList.contains('skins__radio--active')) {
+      value = radio.dataset.icon
     }
   })
+  console.log(value)
   return value
 }
 
 const showStatistic = statistic => {
   const stat = document.querySelector('.play-menu__statistic')
   stat.innerHTML = ''
+  const stats = {
+    amount_bullets: 'number of bullets',
+    amount_things: 'raised things',
+    amount_zombies: 'killed monsters',
+    amount_recovery_hp: 'restore health'
+  }
   Object.keys(statistic).forEach(option => {
     const p = document.createElement('p')
-    p.innerHTML = `${option}: ${Math.round(statistic[option])}`
+    p.innerHTML = `${stats[option]}: ${Math.round(statistic[option])}`
     stat.appendChild(p)
   })
 }
@@ -79,6 +98,7 @@ Promise.all([
     setPassiveSkillsBar(false)
     setActiveSkillsHidden(false)
     setWeaponsBar(false)
+    chooseSkin.classList.add('hidden')
   };
 
   skins.onclick = () => {

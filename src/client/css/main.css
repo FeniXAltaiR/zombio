@@ -27,7 +27,8 @@ button {
 }
 
 button:hover {
-  background-color: rgb(230, 230, 230);
+  /*background-color: rgb(230, 230, 230);*/
+  background: #784882;
 }
 
 button:focus {
@@ -48,12 +49,13 @@ button:focus {
 }
 
 #play-menu {
+  background: linear-gradient(180deg, #643070 0%, #CCAACE 100%);
+  color: white;
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translateY(-50%) translateX(-50%);
-  padding: 20px 30px;
-  background-color: white;
+  padding: 30px 40px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -61,18 +63,33 @@ button:focus {
   text-align: center;
 }
 
+#play-menu h1 {
+  margin-bottom: 30px;
+}
+
 #play-menu p {
   margin-bottom: 0;
 }
 
 #play-menu input {
+  background: transparent;
+  color: white;
   font-size: 18px;
   outline: none;
   border: none;
-  border-bottom: 1px solid black;
-  margin-bottom: 5px;
+  border-bottom: 1px solid white;
+  margin-bottom: 50px;
   padding: 3px;
   text-align: center;
+}
+
+::placeholder {
+  color: white;
+}
+
+::-moz-placeholder {
+  color: white;
+  opacity: 1;
 }
 
 #play-menu input:hover {
@@ -85,6 +102,13 @@ button:focus {
   display: -ms-flex;
   display: -o-flex;
   display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.play-menu__controls button {
+  color: white;
+  text-transform: none;
 }
 
 .play-menu__statistic {
@@ -93,8 +117,10 @@ button:focus {
   display: -ms-flex;
   display: -o-flex;
   display: flex;
+  width: 100%;
+  margin: 10px 0;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
 }
 
 #leaderboard {
@@ -397,15 +423,15 @@ button:focus {
 
 .skins {
   position: fixed;
-  left: 0;
-  right: 0;
-  top: 40%;
+  left: calc(50vw - 290px);
+  top: 130px;
   display: -webkit-flex;
   display: -moz-flex;
   display: -ms-flex;
   display: -o-flex;
   display: flex;
   justify-content: center;
+  background: linear-gradient(180deg, #5F2A6B 0%, #CDABCE 100%);
 }
 
 .skins__controls {
@@ -420,8 +446,23 @@ button:focus {
   -o-flex-direction: column;
   flex-direction: column;
   align-items: center;
-  background: #eee;
   border-radius: 10px;
+}
+
+.skins__radio {
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flex;
+  display: -o-flex;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px 0;
+}
+
+.skins .skins__radio--active img {
+  background: green;
+  border-radius: 15px;
 }
 
 .skins label {
@@ -435,10 +476,25 @@ button:focus {
 .skins__btn {
   margin: 10px;
   width: 100px;
+  color: white;
 }
 
 .skins p {
   margin-bottom: 0;
+}
+
+.skins img {
+  width: 64px;
+  height: 64px;
+  background: linear-gradient(180deg, #F1E6E1 0%, #CDC6C5 100%);
+  border-radius: 8px;
+  margin: 10px 0;
+  cursor: pointer;
+}
+
+.skins img:hover {
+  /*transform: scale(1.1);*/
+  transition: all .25s ease;
 }
 
 .weapons {
