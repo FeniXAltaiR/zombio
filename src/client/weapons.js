@@ -2,6 +2,14 @@ import {updateWeapon, addNewSkill} from './networking.js'
 
 const weapons = document.querySelector('.weapons')
 
+let timeout = false
+const resetTimeout = () => {
+  timeout = true
+  setTimeout(() => {
+    timeout = false
+  }, 250)
+}
+
 const createBtnSkill = skill => {
   const btn = document.createElement('span')
   const img = document.createElement('img')
@@ -9,6 +17,7 @@ const createBtnSkill = skill => {
   btn.onclick = e => {
     addNewSkill(skill)
     weapons.innerHTML = ''
+    resetTimeout()
   }
   btn.classList.add('weapons__skill')
   btn.appendChild(img)
@@ -22,6 +31,7 @@ const createBtnWeapon = weapon => {
   btn.onclick = e => {
     updateWeapon(weapon)
     weapons.innerHTML = ''
+    resetTimeout()
   }
   btn.classList.add('weapons__weapon')
   btn.appendChild(img)
@@ -29,7 +39,7 @@ const createBtnWeapon = weapon => {
 }
 
 export const updateWeaponsBar = me => {
-  if (weapons.innerHTML) return
+  if (weapons.innerHTML || timeout) return
 
   const {level} = me.experience
   const {first_skill, second_skill} = me.active_skills

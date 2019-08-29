@@ -91,7 +91,7 @@ io.on('connection', socket => {
 // Setup the Game
 const games = {}
 
-for (let i = 0; i < 1; i++) {
+for (let i = 0; i < 50; i++) {
   const id = shortid()
   games[id] = new Game(id)
 }
