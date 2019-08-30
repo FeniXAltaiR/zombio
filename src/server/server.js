@@ -22,7 +22,7 @@ app.get('/', (req, res, next) => {
   let exist_id_channel = null
 
   function getOnlinePlayers(game) {
-    return games[game].getOnlinePlayers() < 10
+    return games[game].getOnlinePlayers() < 100
   }
 
   if (servers.length) {
@@ -57,7 +57,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 // Listen on port
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 80;
 const server = app.listen(port);
 console.log(`Server listening on port ${port}`);
 
