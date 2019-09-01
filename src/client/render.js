@@ -119,25 +119,23 @@ function renderPlayer(me, player) {
     canvasX,
     canvasY - PLAYER_RADIUS - 8
   );
-  if (me.id !== player.id) {
 
-    // Draw health bar
-    context.fillStyle = 'white';
-    context.fillRect(
-      canvasX - PLAYER_RADIUS,
-      canvasY + PLAYER_RADIUS + 8,
-      PLAYER_RADIUS * 2,
-      2,
-    );
-    context.fillStyle = 'red';
+  // Draw health bar
+  context.fillStyle = 'white';
+  context.fillRect(
+    canvasX - PLAYER_RADIUS,
+    canvasY + PLAYER_RADIUS + 8,
+    PLAYER_RADIUS * 2,
+    2,
+  );
+  context.fillStyle = 'red';
 
-    context.fillRect(
-      canvasX - PLAYER_RADIUS + PLAYER_RADIUS * 2 * player.hp / (player.passive_skills.hp * player.parameters.hp),
-      canvasY + PLAYER_RADIUS + 8,
-      PLAYER_RADIUS * 2 * (1 - player.hp / (player.passive_skills.hp * player.parameters.hp)),
-      2,
-    );
-  }
+  context.fillRect(
+    canvasX - PLAYER_RADIUS + PLAYER_RADIUS * 2 * player.hp / (player.passive_skills.hp * player.parameters.hp),
+    canvasY + PLAYER_RADIUS + 8,
+    PLAYER_RADIUS * 2 * (1 - player.hp / (player.passive_skills.hp * player.parameters.hp)),
+    2,
+  );
 }
 
 function renderBullet(me, bullet) {
