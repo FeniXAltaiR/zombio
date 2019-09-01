@@ -13,7 +13,7 @@ class Zombie extends ObjectClass {
           damage: 25,
           hp: 100,
           radius: 25,
-          speed: 215
+          speed: 200
         },
         normal: {
           name: 'normal',
@@ -113,11 +113,11 @@ class Zombie extends ObjectClass {
       },
       boss_legend: {
         increaseSpeed: (() => {
-          this.options.modes.active.speed += 50
+          this.options.modes.active.speed += 30
           this.radius -= 25
           this.abilities.use_create_fire_bullets = true
           setTimeout(() => {
-            this.options.modes.active.speed -= 50
+            this.options.modes.active.speed -= 30
             this.radius += 25
           }, 5000)
         })
