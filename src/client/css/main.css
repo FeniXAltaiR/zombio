@@ -342,8 +342,8 @@ button:focus {
 }
 
 .active-skills__skill img {
-  height: 40px;
-  width: 40px;
+  height: 60px;
+  width: 60px;
 }
 
 .active-skills__skill p {
