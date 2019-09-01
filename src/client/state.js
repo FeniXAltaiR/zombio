@@ -82,6 +82,7 @@ export function getCurrentState() {
       bullets: interpolateObjectArray(baseUpdate.bullets, next.bullets, ratio),
       zombies: interpolateObjectArray(baseUpdate.zombies, next.zombies, ratio),
       things: interpolateObjectArray(baseUpdate.things, next.things, ratio),
+      leaderboard: baseUpdate.leaderboard
     };
   }
 }

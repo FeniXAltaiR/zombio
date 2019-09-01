@@ -24,7 +24,7 @@ function setCanvasDimensions() {
 window.addEventListener('resize', debounce(40, setCanvasDimensions));
 
 function render() {
-  const { me, others, bullets, zombies, things } = getCurrentState();
+  const { me, others, bullets, zombies, things, leaderboard } = getCurrentState();
   if (!me) {
     return;
   }
@@ -38,8 +38,8 @@ function render() {
   context.strokeRect(canvas.width / 2 - me.x, canvas.height / 2 - me.y, MAP_SIZE, MAP_SIZE);
 
   // Draw all players
-  renderPlayer(me, me);
-  others.forEach(renderPlayer.bind(null, me));
+  renderPlayer(me, me, leaderboard);
+  others.forEach(renderPlayer.bind(null, me, leaderboard));
 
   // Draw all things
   things.forEach(renderThing.bind(null, me))
@@ -80,10 +80,14 @@ function renderBackground(x, y) {
 }
 
 // Renders a ship at the given coordinates
-function renderPlayer(me, player) {
-  const { x, y, direction, rotate, icon } = player;
+function renderPlayer(me, player, leaderboard) {
+  const { x, y, direction, rotate, icon, username } = player;
   const canvasX = canvas.width / 2 + x - me.x;
   const canvasY = canvas.height / 2 + y - me.y;
+  const player_position = leaderboard
+    .find(p => p.id === player.id)
+    .position
+  // const player_position = 1
   // console.log(icon)
 
   // Draw player
@@ -111,9 +115,13 @@ function renderPlayer(me, player) {
   // context.fill();
 
   // Username
-  const nickname = player.username || 'Anonymous'
+  const nickname = `#${player_position} ${username || 'Anonymous'}`
+  const username_colors = ['gold', 'silver', 'chocolate']
   context.font = '16px serif';
   context.textAlign = 'center'
+  if (player_position <= 3) {
+    context.fillStyle = username_colors[player_position - 1]
+  }
   context.fillText(
     nickname,
     canvasX,

@@ -532,7 +532,13 @@ class Game {
     return Object.values(this.players)
       .sort((p1, p2) => p2.score - p1.score)
       // .slice(0, 5)
-      .map(p => ({ id: p.id, username: p.username, score: Math.round(p.score), level: p.experience.level }));
+      .map((p, position) => ({
+        id: p.id,
+        username: p.username,
+        score: Math.round(p.score),
+        level: p.experience.level,
+        position: position + 1
+      }));
   }
 
   sendGameUpdate() {
