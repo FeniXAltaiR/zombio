@@ -38,7 +38,27 @@ class Game {
     setInterval(this.respawnThings.bind(this), 60000)
     this.options = {
       xp_levels: createXpList(),
-      things: ['hp', 'speed', 'accuracy', 'portal', 'defense', 'damage']
+      // things: ['hp', 'speed', 'accuracy', 'portal', 'defense', 'damage'],
+      things: {
+        hp: {
+          radius: 20
+        },
+        speed: {
+          radius: 20
+        },
+        accuracy: {
+          radius: 20
+        },
+        portal: {
+          radius: 28
+        },
+        defense: {
+          radius: 20
+        },
+        damage: {
+          radius: 20
+        }
+      }
     }
     this.createThings()
     this.trash = {
@@ -128,10 +148,19 @@ class Game {
   }
 
   createThing() {
-    const rand = Math.floor(Math.random() * this.options.things.length)
-    const name = this.options.things[rand]
+    const rand = Math.floor(Math.random() * Object.keys(this.options.things).length)
+    const name = Object.keys(this.options.things)[rand]
     const [x, y] = [Math.random() * Constants.MAP_SIZE, Math.random() * Constants.MAP_SIZE]
-    const thing = new Thing(x, y, {name, icon: `thing_${name}.svg`})
+    const options = {
+      name,
+      icon: `thing_${name}.svg`
+    }
+    const thing = new Thing({
+      x,
+      y,
+      radius: this.options.things[name].radius,
+      options
+    })
     this.things.push(thing)
   }
 
@@ -435,7 +464,16 @@ class Game {
       const rand = Math.random()
       if (rand > 0.95) {
         const {x, y} = zombie
-        const thing = new Thing(x, y, {name: 'hp', icon: `thing_hp.svg`})
+        const options = {
+          name: 'hp',
+          icon: `thing_hp.svg`
+        }
+        const thing = new Thing({
+          x,
+          y,
+          radius: this.options.things.hp.radius,
+          options
+        })
         this.things.push(thing)
       }
 
@@ -473,8 +511,8 @@ class Game {
 
   checkThingsToRemove(id) {
     this.things.forEach(thing => {
-      const {x, y} = thing
-      if (this.players[id].distanceTo({x, y}) <= Constants.PLAYER_RADIUS + Constants.THING_RADIUS) {
+      const {x, y, radius} = thing
+      if (this.players[id].distanceTo({x, y}) <= Constants.PLAYER_RADIUS + radius) {
         this.players[id].takeBuff(thing.options.name)
         this.trash.things_removed.push(thing.id)
       }

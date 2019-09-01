@@ -6,7 +6,7 @@ import { getCurrentState } from './state';
 
 const Constants = require('../shared/constants');
 
-const { PLAYER_RADIUS, BULLET_RADIUS, MAP_SIZE, THING_RADIUS } = Constants;
+const { PLAYER_RADIUS, BULLET_RADIUS, MAP_SIZE } = Constants;
 
 // Get the canvas graphics context
 const canvas = document.getElementById('game-canvas');
@@ -199,7 +199,7 @@ function renderZombie(me, zombie) {
 }
 
 function renderThing(me, thing) {
-  const {x, y, icon} = thing
+  const {x, y, radius, icon} = thing
   const canvasX = canvas.width / 2 + x - me.x
   const canvasY = canvas.height / 2 + y - me.y
 
@@ -207,10 +207,10 @@ function renderThing(me, thing) {
   context.translate(canvasX, canvasY)
   context.drawImage(
     getAsset(icon),
-    -THING_RADIUS,
-    -THING_RADIUS,
-    THING_RADIUS * 2,
-    THING_RADIUS * 2,
+    -radius,
+    -radius,
+    radius * 2,
+    radius * 2,
   )
   context.restore()
 }

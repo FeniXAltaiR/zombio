@@ -6,7 +6,6 @@ module.exports = Object.freeze({
 
   BULLET_RADIUS: 3,
 
-  // ZOMBIE_RADIUS: 20,
   ZOMBIE_EASY_MAX_AMOUNT: 200,
   ZOMBIE_NORMAL_MAX_AMOUNT: 140,
   ZOMBIE_HARD_MAX_AMOUNT: 100,
@@ -19,8 +18,7 @@ module.exports = Object.freeze({
 
   SCORE_BULLET_HIT: 5,
 
-  THING_AMOUNT: 500,
-  THING_RADIUS: 20,
+  THING_AMOUNT: 400,
 
   MAP_SIZE: 10000,
   MSG_TYPES: {
