@@ -718,6 +718,7 @@ class Player extends ObjectClass {
     const codes = {
       hp: () => {
         this.options.passive_skills.hp += 0.25
+        this.updateHp(this.options.parameters.hp * 0.25)
         this.options.used_skill_points.hp.value += 1
       },
       speed: () => {
