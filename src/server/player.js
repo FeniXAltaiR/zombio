@@ -787,6 +787,7 @@ class Player extends ObjectClass {
       parameters: this.options.parameters,
       used_skill_points: this.options.used_skill_points,
       icon: `player_${this.icon}.svg`,
+      username: this.username,
       weapon: this.weapon.name,
       score: this.score,
       effects: this.options.effects
