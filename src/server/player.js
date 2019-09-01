@@ -1,7 +1,6 @@
 const ObjectClass = require('./object');
 const Bullet = require('./bullet');
 const Constants = require('../shared/constants');
-// const options_player = require('./options-player')
 
 class Player extends ObjectClass {
   constructor({id, username, x, y, icon, score = 0, rotate = Math.random() * 2 * Math.PI}) {
