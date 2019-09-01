@@ -1,5 +1,5 @@
 module.exports = Object.freeze({
-  PLAYER_RADIUS: 30,
+  PLAYER_RADIUS: 28,
   PLAYER_MAX_HP: 200,
   PLAYER_SPEED: 200,
   PLAYER_FIRE_COOLDOWN: 0.1,
@@ -20,7 +20,7 @@ module.exports = Object.freeze({
   SCORE_BULLET_HIT: 5,
 
   THING_AMOUNT: 500,
-  THING_RADIUS: 15,
+  THING_RADIUS: 20,
 
   MAP_SIZE: 10000,
   MSG_TYPES: {

@@ -12,7 +12,7 @@ class Zombie extends ObjectClass {
           xp: 500,
           damage: 25,
           hp: 100,
-          radius: 20,
+          radius: 25,
           speed: 215
         },
         normal: {
@@ -20,7 +20,7 @@ class Zombie extends ObjectClass {
           xp: 1000,
           damage: 50,
           hp: 175,
-          radius: 20,
+          radius: 25,
           speed: 235
         },
         hard: {
@@ -28,7 +28,7 @@ class Zombie extends ObjectClass {
           xp: 2000,
           damage: 95,
           hp: 240,
-          radius: 20,
+          radius: 25,
           speed: 255
         },
         boss_easy: {
@@ -36,7 +36,7 @@ class Zombie extends ObjectClass {
           xp: 10000,
           damage: 150,
           hp: 1000,
-          radius: 50,
+          radius: 55,
           speed: 225
         },
         boss_normal: {
@@ -44,7 +44,7 @@ class Zombie extends ObjectClass {
           xp: 20000,
           damage: 200,
           hp: 2000,
-          radius: 60,
+          radius: 65,
           speed: 245
         },
         boss_hard: {
@@ -52,7 +52,7 @@ class Zombie extends ObjectClass {
           xp: 30000,
           damage: 250,
           hp: 3000,
-          radius: 75,
+          radius: 80,
           speed: 265
         },
         boss_legend: {
