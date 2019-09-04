@@ -18,7 +18,7 @@ module.exports = Object.freeze({
 
   SCORE_BULLET_HIT: 5,
 
-  THING_AMOUNT: 400,
+  THING_AMOUNT: 300,
 
   MAP_SIZE: 10000,
   MSG_TYPES: {

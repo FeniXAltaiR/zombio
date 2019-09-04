@@ -41,22 +41,28 @@ class Game {
       // things: ['hp', 'speed', 'accuracy', 'portal', 'defense', 'damage'],
       things: {
         hp: {
-          radius: 20
+          radius: 20,
+          amount: 55
         },
         speed: {
-          radius: 20
+          radius: 20,
+          amount: 55
         },
         accuracy: {
-          radius: 20
+          radius: 20,
+          amount: 55
         },
         portal: {
-          radius: 28
+          radius: 28,
+          amount: 25
         },
         defense: {
-          radius: 20
+          radius: 20,
+          amount: 55
         },
         damage: {
-          radius: 20
+          radius: 20,
+          amount: 55
         }
       }
     }
@@ -147,9 +153,7 @@ class Game {
     }
   }
 
-  createThing() {
-    const rand = Math.floor(Math.random() * Object.keys(this.options.things).length)
-    const name = Object.keys(this.options.things)[rand]
+  createThing(name) {
     const [x, y] = [Math.random() * Constants.MAP_SIZE, Math.random() * Constants.MAP_SIZE]
     const options = {
       name,
@@ -165,16 +169,29 @@ class Game {
   }
 
   createThings () {
-    for (let i = 0; i < Constants.THING_AMOUNT; i++) {
-      this.createThing()
-    }
+    Object.keys(this.options.things).forEach(name => {
+      for (let i = 0; i < this.options.things[name].amount; i++) {
+        this.createThing(name)
+      }
+    })
   }
 
   respawnThings() {
-    const length = this.things.length
-    for (let i = length; i < Constants.THING_AMOUNT; i++) {
-      this.createThing()
-    }
+    const thingTypes = this.things.reduce((total, thing) => {
+      const {name} = thing.options
+      if (total[name]) {
+        total[name] += 1
+        return total
+      }
+      total[name] = 1
+      return total
+    }, {})
+
+    Object.keys(thingTypes).forEach(name => {
+      for (let i = thingTypes[name]; i < this.options.things[name].amount; i++) {
+        this.createThing(name)
+      }
+    })
   }
 
   checkZombiesInRadius(x, y) {
