@@ -134,6 +134,7 @@ class Player extends ObjectClass {
           value: false,
           bonus: (() => {
             this.options.passive_skills.hp += 1
+            this.updateHp(this.options.parameters.hp * 1)
           })
         },
         boss_normal: {
