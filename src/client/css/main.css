@@ -406,6 +406,8 @@ button:focus {
 
 .effects img {
   margin: 0 5px;
+  height: 40px;
+  width: 40px;
 }
 
 .effects__buffs {
