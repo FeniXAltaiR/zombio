@@ -33,9 +33,6 @@ class Game {
     this.lastUpdateTime = Date.now()
     this.shouldSendUpdate = false
     setInterval(this.update.bind(this), 1000 / 24)
-    this.createZombies()
-    setInterval(this.respawnZombies.bind(this), 60000)
-    setInterval(this.respawnThings.bind(this), 60000)
     this.options = {
       xp_levels: createXpList(),
       // things: ['hp', 'speed', 'accuracy', 'portal', 'defense', 'damage'],
@@ -64,9 +61,42 @@ class Game {
           radius: 20,
           amount: 55
         }
+      },
+      zombies: {
+        easy: {
+          amount: 200,
+          bounds: [1, 0.75]
+        },
+        normal: {
+          amount: 140,
+          bounds: [0.75, 0.5]
+        },
+        hard: {
+          amount: 100,
+          bounds: [0.5, 0.25]
+        },
+        boss_easy: {
+          amount: 10,
+          bounds: [1, 0.75]
+        },
+        boss_normal: {
+          amount: 5,
+          bounds: [0.75, 0.5]
+        },
+        boss_hard: {
+          amount: 3,
+          bounds: [0.5, 0.25]
+        },
+        boss_legend: {
+          amount: 1,
+          bounds: [0.25, 0]
+        }
       }
     }
+    this.createZombies()
+    setInterval(this.respawnZombies.bind(this), 60000)
     this.createThings()
+    setInterval(this.respawnThings.bind(this), 60000)
     this.trash = {
       bullets_removed: [],
       zombies_removed: [],
@@ -82,34 +112,14 @@ class Game {
   }
 
   createZombies() {
-    for (let i = 0; i < Constants.ZOMBIE_EASY_MAX_AMOUNT; i++) {
-      const [x, y] = this.respawnCoords(1, 0.75, this.checkPlayersInRadius.bind(this))
-      this.createZombie(x, y, 'easy')
-    }
-    for (let i = 0; i < Constants.ZOMBIE_NORMAL_MAX_AMOUNT; i++) {
-      const [x, y] = this.respawnCoords(0.75, 0.5, this.checkPlayersInRadius.bind(this))
-      this.createZombie(x, y, 'normal')
-    }
-    for (let i = 0; i < Constants.ZOMBIE_HARD_MAX_AMOUNT; i++) {
-      const [x, y] = this.respawnCoords(0.5, 0.25, this.checkPlayersInRadius.bind(this))
-      this.createZombie(x, y, 'hard')
-    }
-    for (let i = 0; i < Constants.ZOMBIE_BOSS_EASY_MAX_AMOUNT; i++) {
-      const [x, y] = this.respawnCoords(1, 0.75, this.checkPlayersInRadius.bind(this))
-      this.createZombie(x, y, 'boss_easy')
-    }
-    for (let i = 0; i < Constants.ZOMBIE_BOSS_NORMAL_MAX_AMOUNT; i++) {
-      const [x, y] = this.respawnCoords(0.75, 0.5, this.checkPlayersInRadius.bind(this))
-      this.createZombie(x, y, 'boss_normal')
-    }
-    for (let i = 0; i < Constants.ZOMBIE_BOSS_HARD_MAX_AMOUNT; i++) {
-      const [x, y] = this.respawnCoords(0.5, 0.25, this.checkPlayersInRadius.bind(this))
-      this.createZombie(x, y, 'boss_hard')
-    }
-    for (let i = 0; i < Constants.ZOMBIE_BOSS_LEGEND_MAX_AMOUNT; i++) {
-      const [x, y] = this.respawnCoords(0.25, 0, this.checkPlayersInRadius.bind(this))
-      this.createZombie(x, y, 'boss_legend')
-    }
+    Object.keys(this.options.zombies).forEach(type => {
+      const {amount} = this.options.zombies[type]
+      const [boundsA, boundsB] = this.options.zombies[type].bounds
+      for (let i = 0; i < amount; i++) {
+        const [x, y] = this.respawnCoords(boundsA, boundsB, this.checkPlayersInRadius.bind(this))
+        this.createZombie(x, y, type)
+      }
+    })
   }
 
   respawnZombies() {
@@ -123,34 +133,14 @@ class Game {
       return total
     }, {})
 
-    for (let i = 0; i < Constants.ZOMBIE_EASY_MAX_AMOUNT - zombieTypes['easy']; i++) {
-      const [x, y] = this.respawnCoords(1, 0.75, this.checkPlayersInRadius.bind(this))
-      this.createZombie(x, y, 'easy')
-    }
-    for (let i = 0; i < Constants.ZOMBIE_NORMAL_MAX_AMOUNT - zombieTypes['normal']; i++) {
-      const [x, y] = this.respawnCoords(0.75, 0.5, this.checkPlayersInRadius.bind(this))
-      this.createZombie(x, y, 'normal')
-    }
-    for (let i = 0; i < Constants.ZOMBIE_HARD_MAX_AMOUNT - zombieTypes['hard']; i++) {
-      const [x, y] = this.respawnCoords(0.5, 0.25, this.checkPlayersInRadius.bind(this))
-      this.createZombie(x, y, 'hard')
-    }
-    for (let i = 0; i < Constants.ZOMBIE_BOSS_EASY_MAX_AMOUNT - zombieTypes['boss_easy']; i++) {
-      const [x, y] = this.respawnCoords(1, 0.75, this.checkPlayersInRadius.bind(this))
-      this.createZombie(x, y, 'boss_easy')
-    }
-    for (let i = 0; i < Constants.ZOMBIE_BOSS_NORMAL_MAX_AMOUNT - zombieTypes['boss_normal']; i++) {
-      const [x, y] = this.respawnCoords(0.75, 0.5, this.checkPlayersInRadius.bind(this))
-      this.createZombie(x, y, 'boss_normal')
-    }
-    for (let i = 0; i < Constants.ZOMBIE_BOSS_HARD_MAX_AMOUNT - zombieTypes['boss_hard']; i++) {
-      const [x, y] = this.respawnCoords(0.5, 0.25, this.checkPlayersInRadius.bind(this))
-      this.createZombie(x, y, 'boss_hard')
-    }
-    for (let i = 0; i < Constants.ZOMBIE_BOSS_LEGEND_MAX_AMOUNT - zombieTypes['boss_legend']; i++) {
-      const [x, y] = this.respawnCoords(0.25, 0, this.checkPlayersInRadius.bind(this))
-      this.createZombie(x, y, 'boss_legend')
-    }
+    Object.keys(zombieTypes).forEach(type => {
+      const {amount} = this.options.zombies[type]
+      const [boundsA, boundsB] = this.options.zombies[type].bounds
+      for (let i = zombieTypes[type]; i < amount; i++) {
+        const [x, y] = this.respawnCoords(boundsA, boundsB, this.checkPlayersInRadius.bind(this))
+        this.createZombie(x, y, type)
+      }
+    })
   }
 
   createThing(name) {
@@ -660,7 +650,7 @@ class Game {
     // Calculate time elapsed
     const now = Date.now();
     const dt = (now - this.lastUpdateTime) / 1000;
-    console.log(dt)
+    // console.log(dt)
     this.lastUpdateTime = now;
 
     // Update each bullet
