@@ -26,7 +26,17 @@ app.get('/', (req, res, next) => {
   }
 
   if (servers.length) {
-    exist_id_channel = servers.find(game => getOnlinePlayers(game))
+    exist_id_channel = servers.reduce((total, game) => {
+      if (!total && getOnlinePlayers(game)) {
+        return game
+      }
+
+      if (games[game].getOnlinePlayers() < games[total].getOnlinePlayers()) {
+        return game
+      }
+
+      return total
+    }, null)
   }
 
   if (id) {
@@ -91,7 +101,7 @@ io.on('connection', socket => {
 // Setup the Game
 const games = {}
 
-for (let i = 0; i < 30; i++) {
+for (let i = 0; i < 1; i++) {
   const id = shortid()
   games[id] = new Game(id)
 }
