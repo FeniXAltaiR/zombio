@@ -133,10 +133,10 @@ class Game {
       return total
     }, {})
 
-    Object.keys(zombieTypes).forEach(type => {
+    Object.keys(this.options.zombies).forEach(type => {
       const {amount} = this.options.zombies[type]
       const [boundsA, boundsB] = this.options.zombies[type].bounds
-      for (let i = zombieTypes[type]; i < amount; i++) {
+      for (let i = zombieTypes[type] || 0; i < amount; i++) {
         const [x, y] = this.respawnCoords(boundsA, boundsB, this.checkPlayersInRadius.bind(this))
         this.createZombie(x, y, type)
       }
@@ -177,8 +177,8 @@ class Game {
       return total
     }, {})
 
-    Object.keys(thingTypes).forEach(name => {
-      for (let i = thingTypes[name]; i < this.options.things[name].amount; i++) {
+    Object.keys(this.options.things).forEach(name => {
+      for (let i = thingTypes[name] || 0; i < this.options.things[name].amount; i++) {
         this.createThing(name)
       }
     })
