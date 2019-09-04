@@ -74,31 +74,41 @@ const getIdPlayer = () => {
   return null
 }
 
+const startGame = () => {
+  // Play!
+  play({
+    username: usernameInput.value,
+    icon: getSkinValue(),
+    last_id_player: getIdPlayer()
+  });
+  playMenu.classList.add('hidden');
+  initState();
+  startCapturingInput();
+  startRendering();
+  setLeaderboardHidden(false);
+  setExperienceHidden(false)
+  setEffectsHidden(false)
+  setHealthBarHidden(false)
+  setPassiveSkillsBar(false)
+  setActiveSkillsHidden(false)
+  setWeaponsBar(false)
+  chooseSkin.classList.add('hidden')
+}
+
 Promise.all([
   connect(onGameOver),
   downloadAssets(),
 ]).then(() => {
   playMenu.classList.remove('hidden');
   usernameInput.focus();
+  usernameInput.onkeydown = e => {
+    if (e.keyCode === 13) {
+      startGame()
+    }
+  }
+  
   playButton.onclick = () => {
-    // Play!
-    play({
-      username: usernameInput.value,
-      icon: getSkinValue(),
-      last_id_player: getIdPlayer()
-    });
-    playMenu.classList.add('hidden');
-    initState();
-    startCapturingInput();
-    startRendering();
-    setLeaderboardHidden(false);
-    setExperienceHidden(false)
-    setEffectsHidden(false)
-    setHealthBarHidden(false)
-    setPassiveSkillsBar(false)
-    setActiveSkillsHidden(false)
-    setWeaponsBar(false)
-    chooseSkin.classList.add('hidden')
+    startGame()
   };
 
   skins.onclick = () => {
