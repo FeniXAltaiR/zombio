@@ -48,6 +48,15 @@ button:focus {
   height: 100%;
 }
 
+.play-menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.75);
+}
+
 #play-menu {
   background: linear-gradient(180deg, #643070 0%, #CCAACE 100%);
   color: white;

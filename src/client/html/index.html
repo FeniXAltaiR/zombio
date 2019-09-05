@@ -42,14 +42,16 @@
 </head>
 <body>
   <canvas id="game-canvas"></canvas>
-  <div id="play-menu" class="hidden">
-    <h1>Qventio</h1>
-    <input type="text" id="username-input" placeholder="Username" />
-    <div class="play-menu__controls">
-      <button data-name="skins">Skins</button>
-      <button id="play-button">Play</button>
+  <div class="play-menu" class="hidden">
+    <div id="play-menu">
+      <h1>Qventio</h1>
+      <input type="text" id="username-input" placeholder="Username" />
+      <div class="play-menu__controls">
+        <button data-name="skins">Skins</button>
+        <button id="play-button">Play</button>
+      </div>
+      <div class="play-menu__statistic"></div>
     </div>
-    <div class="play-menu__statistic"></div>
   </div>
 
   <div class="weapons"></div>

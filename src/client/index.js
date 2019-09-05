@@ -19,7 +19,8 @@ import { setWeaponsBar } from './weapons'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './css/main.css';
 
-const playMenu = document.getElementById('play-menu');
+// const playMenu = document.getElementById('play-menu');
+const playMenu = document.querySelector('.play-menu');
 const playButton = document.getElementById('play-button');
 const usernameInput = document.getElementById('username-input');
 const skins = document.querySelector('button[data-name=skins]')
