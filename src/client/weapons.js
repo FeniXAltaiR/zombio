@@ -38,27 +38,50 @@ const createBtnWeapon = weapon => {
   weapons.appendChild(btn)
 }
 
+const createTitle = msg => {
+  const p = document.createElement('p')
+  p.classList.add('weapons__title')
+  p.innerHTML = msg
+  weapons.appendChild(p)
+}
+
 export const updateWeaponsBar = me => {
   if (weapons.innerHTML || timeout) return
 
   const {level} = me.experience
   const {first_skill, second_skill} = me.active_skills
   if (me.weapon === 'pistol' && level >= 3) {
-    ['uzi', 'rifle', 'shotgun'].forEach(weapon => {
-      createBtnWeapon(weapon)
-    })
+    createTitle('New Weapon!')
+    createBtnWeapon('uzi')
+    createBtnWeapon('rifle')
+    createBtnWeapon('shotgun')
+    // ['uzi', 'rifle', 'shotgun'].forEach(weapon => {
+    //   createBtnWeapon(weapon)
+    // })
   } else if (first_skill.value === null && level >= 5) {
-    ['speed', 'hp', 'defense'].forEach(skill => {
-      createBtnSkill(skill, 'skill')
-    })
+    createTitle('New Skill!')
+    createBtnSkill('speed')
+    createBtnSkill('hp')
+    createBtnSkill('defense')
+    // ['speed', 'hp', 'defense'].forEach(skill => {
+    //   createBtnSkill(skill)
+    // })
   } else if (['uzi', 'rifle', 'shotgun'].includes(me.weapon) && level >= 7) {
-    ['machinegun', 'sniper_rifle', 'auto_shotgun'].forEach(weapon => {
-      createBtnWeapon(weapon)
-    })
+    createTitle('New Weapon!')
+    createBtnWeapon('machinegun')
+    createBtnWeapon('sniper_rifle')
+    createBtnWeapon('auto_shotgun')
+    // ['machinegun', 'sniper_rifle', 'auto_shotgun'].forEach(weapon => {
+    //   createBtnWeapon(weapon)
+    // })
   } else if (second_skill.value === null && level >= 12) {
-    ['teleport', 'double_bullets', 'fire_bullets'].forEach(skill => {
-      createBtnSkill(skill, 'skill')
-    })
+    createTitle('New Skill!')
+    createBtnSkill('teleport')
+    createBtnSkill('double_bullets')
+    createBtnSkill('fire_bullets')
+    // ['teleport', 'double_bullets', 'fire_bullets'].forEach(skill => {
+    //   createBtnSkill(skill)
+    // })
   } else {
     weapons.innerHTML = ''
   }

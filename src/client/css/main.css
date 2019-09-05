@@ -520,6 +520,13 @@ button:focus {
   transition: all 1s ease;
 }
 
+.weapons__title {
+  text-align: center;
+  font-size: 28px;
+  color: white;
+  width: 100%;
+}
+
 .weapons__weapon {
   margin: 0 5px;
   height: 40px;
