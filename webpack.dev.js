@@ -5,4 +5,15 @@ const common = require('./webpack.common.js');
 
 module.exports = merge(common, {
   mode: 'development',
+  devServer: {
+    https: true,
+    // http2: true
+    proxy: {
+      '/socket.io': {
+        target: 'https://qvent.io',
+        changeOrigin: true,
+        wss: true
+      }
+    }
+  },
 });

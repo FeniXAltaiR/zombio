@@ -67,7 +67,8 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 // Listen on port
-const port = process.env.PORT || 80;
+// const port = process.env.PORT || 80;
+const port = process.env.NODE_ENV === 'development' ? 80 : 7000;
 const server = app.listen(port);
 console.log(`Server listening on port ${port}`);
 
