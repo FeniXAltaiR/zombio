@@ -41,18 +41,19 @@ const ASSET_NAMES = require.context('../../public/assets/', false, /\.(png|svg)$
 })
 
 const assets = {};
+console.log(assets)
 
 const downloadPromise = Promise.all(ASSET_NAMES.map(downloadAsset));
 
 function downloadAsset(assetName) {
   return new Promise(resolve => {
     const asset = new Image();
+    asset.src = `assets/${assetName}`;
     asset.onload = () => {
       // console.log(`Downloaded ${assetName}`);
       assets[assetName] = asset;
       resolve();
     };
-    asset.src = `assets/${assetName}`;
   });
 }
 
