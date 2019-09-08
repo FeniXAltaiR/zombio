@@ -25,7 +25,7 @@ const playButton = document.getElementById('play-button');
 const usernameInput = document.getElementById('username-input');
 const skins = document.querySelector('button[data-name=skins]')
 const chooseSkin = document.querySelector('.skins')
-const agreeSkinBtn = document.querySelector('.skins__btn')
+// const agreeSkinBtn = document.querySelector('.skins__btn')
 
 // skins
 
@@ -116,9 +116,9 @@ Promise.all([
     chooseSkin.classList.remove('hidden')
   }
 
-  agreeSkinBtn.onclick = () => {
-    chooseSkin.classList.add('hidden')
-  }
+  // agreeSkinBtn.onclick = () => {
+  //   chooseSkin.classList.add('hidden')
+  // }
 }).catch(console.error);
 
 function onGameOver(statistic) {

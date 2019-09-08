@@ -456,6 +456,7 @@ button:focus {
   display: flex;
   justify-content: center;
   background: linear-gradient(180deg, #5F2A6B 0%, #CDABCE 100%);
+  padding: 0 5px;
 }
 
 .skins__controls {
