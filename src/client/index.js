@@ -9,6 +9,7 @@ import { setLeaderboardHidden } from './leaderboard';
 import { setExperienceHidden } from './experience';
 import { setEffectsHidden } from './effects';
 import { setHealthBarHidden } from './health-bar';
+import { setNotifyHidden } from './notify';
 import { setPassiveSkillsBar } from './passive-skills'
 import { setActiveSkillsHidden } from './active-skills'
 import { setWeaponsBar } from './weapons'
@@ -90,6 +91,7 @@ const startGame = () => {
   setExperienceHidden(false)
   setEffectsHidden(false)
   setHealthBarHidden(false)
+  setNotifyHidden(false)
   setPassiveSkillsBar(false)
   setActiveSkillsHidden(false)
   setWeaponsBar(false)
@@ -130,6 +132,7 @@ function onGameOver(statistic) {
   setExperienceHidden(true)
   setEffectsHidden(true)
   setHealthBarHidden(true)
+  setNotifyHidden(true)
   setPassiveSkillsBar(true)
   setActiveSkillsHidden(true)
   setWeaponsBar(true)

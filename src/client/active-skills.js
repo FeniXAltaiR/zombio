@@ -16,7 +16,9 @@ export const updateActiveSkills = me => {
     const p = nodeSkill.querySelector('p')
     p.innerHTML = me.active_skills[skill_name].keyCode
     const img = nodeSkill.querySelector('img')
-    img.src = `assets/active_skills_${me.active_skills[skill_name].value}.svg`
+    if (me.active_skills[skill_name].value) {
+      img.src = `assets/active_skills_${me.active_skills[skill_name].value}.svg`
+    }
     // if (!img && me.active_skills[skill_name].value) {
     //   const skillImg = document.createElement('img')
     //   skillImg.src = `assets/active_skills_${me.active_skills[skill_name].value}.svg`

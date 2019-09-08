@@ -135,24 +135,32 @@ class Player extends ObjectClass {
           bonus: (() => {
             this.options.passive_skills.hp += 1
             this.updateHp(this.options.parameters.hp * 1)
+            this.notify.msg = 'Maximum health has increased!'
+            this.clearNotifyMsg()
           })
         },
         boss_normal: {
           value: false,
           bonus: (() => {
             this.options.passive_skills.cooldown -= 0.1
+            this.notify.msg = 'Cooldown of skills has decreased!'
+            this.clearNotifyMsg()
           })
         },
         boss_hard: {
           value: false,
           bonus: (() => {
             this.options.passive_skills.damage += 0.25
+            this.notify.msg = 'Damage of weapon has increased!'
+            this.clearNotifyMsg()
           })
         },
         boss_legend: {
           value: false,
           bonus: (() => {
             this.options.active_skills.ultra_skill.value = 'ultimate'
+            this.notify.msg = 'New skill!'
+            this.clearNotifyMsg()
           })
         }
       },
@@ -371,6 +379,12 @@ class Player extends ObjectClass {
     }
 
     return null;
+  }
+
+  clearNotifyMsg() {
+    setTimeout(() => {
+      this.notify.msg = ''
+    }, 5000)
   }
 
   updateFireCooldown(dt) {
@@ -791,7 +805,8 @@ class Player extends ObjectClass {
       username: this.username,
       weapon: this.weapon.name,
       score: this.score,
-      effects: this.options.effects
+      effects: this.options.effects,
+      notify: this.notify
     };
   }
 }

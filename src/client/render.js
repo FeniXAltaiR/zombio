@@ -124,7 +124,7 @@ function renderPlayer(me, leaderboard, player) {
   // context.fill();
 
   // Username
-  const nickname = `#${player_position} ${username || 'Anonymous'}`
+  const nickname = `${username || 'Anonymous'}`
   const username_colors = ['gold', 'silver', 'chocolate']
   context.font = '18px Roboto serif';
   context.textAlign = 'center'
