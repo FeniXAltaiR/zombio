@@ -47,6 +47,9 @@ module.exports = {
     new CopyWebpackPlugin([{
       from: './public/assets',
       to: './assets'
+    }, {
+      from: './robots.txt',
+      to: './'
     }]),
   ],
 };
