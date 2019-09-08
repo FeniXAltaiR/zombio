@@ -41,7 +41,6 @@ const ASSET_NAMES = require.context('../../public/assets/', false, /\.(png|svg)$
 })
 
 const assets = {};
-console.log(assets)
 
 const downloadPromise = Promise.all(ASSET_NAMES.map(downloadAsset));
 

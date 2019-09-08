@@ -87,8 +87,6 @@ function renderPlayer(me, leaderboard, player) {
   const player_position = leaderboard
     .find(p => p.id === player.id)
     .position
-  // const player_position = 1
-  // console.log(icon)
 
   // Draw player
   context.save();
@@ -103,6 +101,17 @@ function renderPlayer(me, leaderboard, player) {
     PLAYER_RADIUS * 2,
     PLAYER_RADIUS * 2,
   );
+
+  // if (me.id === player.id) {
+  //   console.log(-PLAYER_RADIUS / 2 - Math.cos(rotate) * 30)
+  //   context.drawImage(
+  //     getAsset('player_arrow.svg'),
+  //     -PLAYER_RADIUS / 2 + Math.sin(rotate) * 30,
+  //     -PLAYER_RADIUS / 2 - Math.cos(rotate) * 30,
+  //     PLAYER_RADIUS,
+  //     PLAYER_RADIUS,
+  //   )
+  // }
   context.restore();
 
   // Test effect
@@ -117,7 +126,7 @@ function renderPlayer(me, leaderboard, player) {
   // Username
   const nickname = `#${player_position} ${username || 'Anonymous'}`
   const username_colors = ['gold', 'silver', 'chocolate']
-  context.font = '16px serif';
+  context.font = '18px Roboto serif';
   context.textAlign = 'center'
   if (player_position <= 3) {
     context.fillStyle = username_colors[player_position - 1]

@@ -665,8 +665,8 @@ class Player extends ObjectClass {
     this.updateHp(-value)
   }
 
-  onDealtDamage() {
-    this.score += this.weapon.damage;
+  onDealtDamage(damage) {
+    this.score += Math.round(damage);
   }
 
   onKilledPlayer(xp) {

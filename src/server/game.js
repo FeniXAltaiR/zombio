@@ -64,7 +64,7 @@ class Game {
       },
       zombies: {
         easy: {
-          amount: 200,
+          amount: 180,
           bounds: [1, 0.75]
         },
         normal: {
@@ -577,7 +577,7 @@ class Game {
       player.takeBulletDamage({damage})
       player.udpateLastShot(parentID)
       if (this.players[parentID]) {
-        this.players[parentID].onDealtDamage();
+        this.players[parentID].onDealtDamage(damage);
         if (player.hp <= 0) {
           this.players[parentID].udpateLastShot(null)
           this.players[parentID].onKilledPlayer(player.score)
@@ -609,7 +609,7 @@ class Game {
       zombie.takeBulletDamage({damage})
       zombie.udpateLastShot(parentID)
       if (this.players[parentID]) {
-        this.players[parentID].onDealtDamage();
+        this.players[parentID].onDealtDamage(damage);
       }
       if (zombie.hp <= 0) {
         const xp = zombie.type.xp
