@@ -16,11 +16,12 @@ export const updateActiveSkills = me => {
     const p = nodeSkill.querySelector('p')
     p.innerHTML = me.active_skills[skill_name].keyCode
     const img = nodeSkill.querySelector('img')
-    if (!img && me.active_skills[skill_name].value) {
-      const skillImg = document.createElement('img')
-      skillImg.src = `assets/active_skills_${me.active_skills[skill_name].value}.svg`
-      nodeSkill.appendChild(skillImg)
-    }
+    img.src = `assets/active_skills_${me.active_skills[skill_name].value}.svg`
+    // if (!img && me.active_skills[skill_name].value) {
+    //   const skillImg = document.createElement('img')
+    //   skillImg.src = `assets/active_skills_${me.active_skills[skill_name].value}.svg`
+    //   nodeSkill.appendChild(skillImg)
+    // }
 
     const cooldown = getCooldown(me.active_skills[skill_name])
 
