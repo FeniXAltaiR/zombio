@@ -589,7 +589,7 @@ class Game {
       } else if (effect === 'vampire') {
         const findZombie = this.zombies.find(zomb => zomb.id === parentID)
         if (findZombie) {
-          findZombie.updateHp(damage * 2)
+          findZombie.updateHp(damage * 20)
         }
       }
     }
