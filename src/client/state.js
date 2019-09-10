@@ -110,7 +110,8 @@ function interpolateObject(object1, object2, ratio) {
       'effect',
       'effects',
       'username',
-      'notify'
+      'notify',
+      'mode'
     ].includes(key)) {
       interpolated[key] = object1[key]
     } else if (key === 'rotate') {

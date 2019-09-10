@@ -353,6 +353,7 @@ class Player extends ObjectClass {
 
   // Returns a newly created bullet, or null.
   update(dt) {
+    if (this.mode === 'dead') return
     super.update(dt);
 
     this.updateSpeed()
@@ -385,6 +386,10 @@ class Player extends ObjectClass {
     setTimeout(() => {
       this.notify.msg = ''
     }, 5000)
+  }
+
+  setMode(mode) {
+    this.mode = mode
   }
 
   updateFireCooldown(dt) {
@@ -806,7 +811,8 @@ class Player extends ObjectClass {
       weapon: this.weapon.name,
       score: this.score,
       effects: this.options.effects,
-      notify: this.notify
+      notify: this.notify,
+      mode: this.mode
     };
   }
 }

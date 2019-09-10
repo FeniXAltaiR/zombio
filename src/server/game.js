@@ -300,7 +300,7 @@ class Game {
   updateZombies(dt) {
     this.zombies.forEach(zombie => {
       const findCloserPlayer = Object.values(this.players)
-        .find(player => zombie.distanceTo({x: player.x, y: player.y}) < zombie.agressiveDistance)
+        .find(player => zombie.distanceTo({x: player.x, y: player.y}) < zombie.agressiveDistance && player.mode !== 'dead')
 
       if (findCloserPlayer) {
         zombie.setMode('active')
@@ -358,7 +358,7 @@ class Game {
   collisionsBetweenPlayersAndZombies(zombie) {
     if (zombie.bite) {
       const findCloserPlayer = Object.values(this.players)
-        .find(player => player.distanceTo({x: zombie.x, y: zombie.y}) <= Constants.PLAYER_RADIUS + zombie.radius / 1.5)
+        .find(player => player.distanceTo({x: zombie.x, y: zombie.y}) <= Constants.PLAYER_RADIUS + zombie.radius / 1.5 && player.mode !== 'dead')
 
       if (findCloserPlayer) {
         this.players[findCloserPlayer.id].takeBiteDamage(zombie.damage)
@@ -500,19 +500,23 @@ class Game {
     const player = this.players[id]
     player.updateLevel(this.options.xp_levels)
 
-    if (hp <= 0) {
+    if (hp <= 0 && player.mode !== 'dead') {
       const lastShot = player.lastShot
       if (lastShot !== null && this.players[lastShot]) {
         this.players[lastShot].udpateLastShot(null)
         this.players[lastShot].onKilledPlayer(player.score)
         this.players[lastShot].updateHp(75)
       }
-      socket.emit(Constants.MSG_TYPES.GAME_OVER, this.players[id].statistic);
-      socket.emit(Constants.MSG_TYPES.SAVE_ID_PLAYER, {
-        id,
-        score: this.players[id].score
-      });
-      this.removePlayer(socket);
+      player.setMode('dead')
+      const {statistic, score} = this.players[id]
+      setTimeout(() => {
+        socket.emit(Constants.MSG_TYPES.GAME_OVER, this.players[id].statistic);
+        socket.emit(Constants.MSG_TYPES.SAVE_ID_PLAYER, {
+          id,
+          score: this.players[id].score
+        });
+        this.removePlayer(socket);
+      }, 3500)
     }
   }
 

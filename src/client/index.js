@@ -27,6 +27,7 @@ const usernameInput = document.getElementById('username-input');
 const skins = document.querySelector('button[data-name=skins]')
 const chooseSkin = document.querySelector('.skins')
 // const agreeSkinBtn = document.querySelector('.skins__btn')
+const guide = document.querySelector('.guide')
 
 // skins
 
@@ -96,6 +97,7 @@ const startGame = () => {
   setActiveSkillsHidden(false)
   setWeaponsBar(false)
   chooseSkin.classList.add('hidden')
+  guide.classList.add('hidden')
 }
 
 Promise.all([
@@ -137,4 +139,5 @@ function onGameOver(statistic) {
   setActiveSkillsHidden(true)
   setWeaponsBar(true)
   showStatistic(statistic)
+  guide.classList.remove('hidden')
 }
