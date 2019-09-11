@@ -393,21 +393,21 @@ button:focus {
 
 .active-skills__skill[data-name="first_skill"] {
   position: fixed;
-  left: calc(50vw + 230px);
+  left: calc(50vw + 202px);
   bottom: -100px;
   transition: all 1s ease
 }
 
 .active-skills__skill[data-name="second_skill"] {
   position: fixed;
-  left: calc(50vw - 277px);
+  left: calc(50vw - 276px);
   bottom: -100px;
   transition: all 1s ease
 }
 
 .active-skills__skill[data-name="ultra_skill"] {
   position: fixed;
-  left: calc(50vw + 280px);
+  left: calc(50vw + 276px);
   bottom: -100px;
   transition: all 1s ease
 }

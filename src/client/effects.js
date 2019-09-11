@@ -7,18 +7,23 @@ export const updateEffectsBar = me => {
   const list_buffs = Object.keys(effects).filter(effect => effects[effect] > 0)
   const list_debuffs = Object.keys(effects).filter(effect => effects[effect] < 0)
 
-  let buffs_str = ''
-  list_buffs.forEach(buff => {
-    buffs_str += `<img src="assets/passive_skills_${buff}.svg" alt="">`
+  buffs.querySelectorAll('img').forEach(img => {
+    const name = img.dataset.name
+    if (list_buffs.includes(name)) {
+      img.classList.remove('hidden')
+    } else {
+      img.classList.add('hidden')
+    }
   })
 
-  let debuffs_str = ''
-  list_debuffs.forEach(debuff => {
-    debuffs_str += `<img src="assets/passive_skills_${debuff}.svg" alt="">`
+  debuffs.querySelectorAll('img').forEach(img => {
+    const name = img.dataset.name
+    if (list_debuffs.includes(name)) {
+      img.classList.remove('hidden')
+    } else {
+      img.classList.add('hidden')
+    }
   })
-
-  buffs.innerHTML = buffs_str
-  debuffs.innerHTML = debuffs_str
 }
 
 export const setEffectsHidden = hidden => {
