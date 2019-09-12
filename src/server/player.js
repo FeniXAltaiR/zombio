@@ -135,7 +135,7 @@ class Player extends ObjectClass {
           bonus: (() => {
             this.options.passive_skills.hp += 1
             this.updateHp(this.options.parameters.hp * 1)
-            this.notify.msg = 'Maximum health has increased!'
+            this.setNotifyMsg('Maximum health has increased!')
             this.clearNotifyMsg()
           })
         },
@@ -143,7 +143,7 @@ class Player extends ObjectClass {
           value: false,
           bonus: (() => {
             this.options.passive_skills.cooldown -= 0.1
-            this.notify.msg = 'Cooldown of skills has decreased!'
+            this.setNotifyMsg('Cooldown of skills has decreased!')
             this.clearNotifyMsg()
           })
         },
@@ -151,7 +151,7 @@ class Player extends ObjectClass {
           value: false,
           bonus: (() => {
             this.options.passive_skills.damage += 0.25
-            this.notify.msg = 'Damage of weapon has increased!'
+            this.setNotifyMsg('Damage of weapon has increased!')
             this.clearNotifyMsg()
           })
         },
@@ -159,7 +159,7 @@ class Player extends ObjectClass {
           value: false,
           bonus: (() => {
             this.options.active_skills.ultra_skill.value = 'ultimate'
-            this.notify.msg = 'New skill!'
+            this.setNotifyMsg('New skill!')
             this.clearNotifyMsg()
           })
         }
@@ -333,6 +333,10 @@ class Player extends ObjectClass {
       amount_zombies: 0,
       amount_recovery_hp: 0
     }
+    this.notify = {
+      msg: ''
+    },
+    this.mode = ''
     this.username = username;
     this.icon = icon
     this.hp = this.options.parameters.hp;
@@ -340,7 +344,7 @@ class Player extends ObjectClass {
     // this.score = 500000;
     this.rotate = rotate
     this.bullets = []
-    this.weapon = this.options.weapons.pistol
+    this.weapon = {...this.options.weapons.pistol}
     this.research = this.options.researches
     this.fireCooldown = 0
     this.experience = {
@@ -380,6 +384,11 @@ class Player extends ObjectClass {
     }
 
     return null;
+  }
+
+  setNotifyMsg(msg) {
+    this.notify.msg = msg
+    this.clearNotifyMsg()
   }
 
   clearNotifyMsg() {
@@ -462,7 +471,7 @@ class Player extends ObjectClass {
     const {weapons} = this.options
     if (this.research.level && level >= this.research.level && this.research[weapon_name]) {
       this.research = this.research[weapon_name]
-      this.weapon = weapons[this.research.weapon]
+      this.weapon = {...weapons[this.research.weapon]}
     }
   }
 
@@ -509,11 +518,40 @@ class Player extends ObjectClass {
     for (let i = 0; i < list.length; i++) {
       const xp = list[i]
       if (this.score < xp) {
+        const oldLevel = this.experience.level
         this.experience.level = i
+        if (oldLevel !== this.experience.level) {
+          this.udpateDamage()
+        }
         this.experience.nextLevel = xp - (list[i - 1] ? list[i - 1] : 0)
         this.experience.currentScore = this.score - list[i - 1]
         break
       }
+    }
+  }
+
+  udpateDamage() {
+    const {level} = this.experience
+    const {name} = this.weapon
+    const orig_damage = this.options.weapons[name].damage
+
+    let damage
+
+    if (level > 6) {
+      damage = orig_damage * 1.1
+    } else if (level > 13) {
+      damage = orig_damage * 1.2
+    } else if (level > 20) {
+      damage = orig_damage * 1.3
+    } else if (level > 27) {
+      damage = orig_damage * 1.5
+    } else {
+      return
+    }
+
+    if (this.weapon.damage !== damage) {
+      this.weapon.damage = damage
+      this.setNotifyMsg('Damage of weapon has increased!')
     }
   }
 
