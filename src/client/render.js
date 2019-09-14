@@ -84,11 +84,9 @@ function renderBackground(x, y) {
 // Renders a ship at the given coordinates
 function renderPlayer(me, leaderboard, player) {
   const { x, y, direction, rotate, icon, username, mode } = player;
+  const {level} = player.experience
   const canvasX = canvas.width / 2 + x - me.x;
   const canvasY = canvas.height / 2 + y - me.y;
-  const player_position = leaderboard
-    .find(p => p.id === player.id)
-    .position
 
   // Draw player
   context.save();
@@ -96,6 +94,34 @@ function renderPlayer(me, leaderboard, player) {
   // context.shadowBlur = 15;
   context.translate(canvasX, canvasY);
   context.rotate(rotate)
+
+  const getPlayerBgIcon = () => {
+    if (level > 27) {
+      return 'player_legend.svg'
+    } else if (level > 20) {
+      return 'player_hard.svg'
+    } else if (level > 13) {
+      return 'player_normal.svg'
+    } else if (level > 6) {
+      return 'player_easy.svg'
+    }
+
+    return null
+  }
+
+  const playerBgIcon = getPlayerBgIcon()
+  if (playerBgIcon) {
+    const coeff = 3
+    context.drawImage(
+      getAsset(getPlayerBgIcon()),
+      -PLAYER_RADIUS * coeff / 2,
+      -PLAYER_RADIUS * coeff / 2,
+      PLAYER_RADIUS * coeff,
+      PLAYER_RADIUS * coeff,
+    );
+  }
+
+
   context.drawImage(
     getAsset(icon),
     -PLAYER_RADIUS,
@@ -130,6 +156,10 @@ function renderPlayer(me, leaderboard, player) {
   const username_colors = ['gold', 'silver', 'chocolate']
   context.font = '18px Roboto serif';
   context.textAlign = 'center'
+
+  const player_position = leaderboard
+    .find(p => p.id === player.id)
+    .position
   if (player_position <= 3) {
     context.fillStyle = username_colors[player_position - 1]
   }

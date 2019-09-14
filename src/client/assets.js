@@ -35,10 +35,12 @@
 //   'player_man3.svg'
 // ];
 
-const ASSET_NAMES = require.context('../../public/assets/', false, /\.(png|svg)$/).keys().map(key => {
-  const file = key.replace('./', '')
-  return file
-})
+const ASSET_NAMES = require.context('../../public/assets/', false, /\.(png|svg)$/)
+  .keys()
+  .map(key => {
+    const file = key.replace('./', '')
+    return file
+  })
 
 const assets = {};
 
