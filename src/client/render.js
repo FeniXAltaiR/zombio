@@ -98,13 +98,14 @@ function renderPlayer(me, leaderboard, player) {
   const getPlayerBgIcon = () => {
     if (level > 27) {
       return 'player_legend.svg'
-    } else if (level > 20) {
-      return 'player_hard.svg'
-    } else if (level > 13) {
-      return 'player_normal.svg'
-    } else if (level > 6) {
-      return 'player_easy.svg'
     }
+    // else if (level > 20) {
+    //   return 'player_hard.svg'
+    // } else if (level > 13) {
+    //   return 'player_normal.svg'
+    // } else if (level > 6) {
+    //   return 'player_easy.svg'
+    // }
 
     return null
   }
@@ -154,26 +155,32 @@ function renderPlayer(me, leaderboard, player) {
   // Username
   const nickname = `${username || 'Anonymous'}`
   const username_colors = ['gold', 'silver', 'chocolate']
-  context.font = '18px Roboto serif';
-  context.textAlign = 'center'
-
   const player_position = leaderboard
     .find(p => p.id === player.id)
     .position
+
+  if (player_position === 1) {
+    context.font = '700 18px Roboto serif';
+  } else {
+    context.font = '400 18px Roboto serif';
+  }
+
+  context.textAlign = 'center'
+
   if (player_position <= 3) {
     context.fillStyle = username_colors[player_position - 1]
   }
   context.fillText(
     nickname,
     canvasX,
-    canvasY - PLAYER_RADIUS - 8
+    canvasY - PLAYER_RADIUS - 14
   );
 
   // Draw health bar
   context.fillStyle = 'white';
   context.fillRect(
     canvasX - PLAYER_RADIUS,
-    canvasY + PLAYER_RADIUS + 8,
+    canvasY + PLAYER_RADIUS + 14,
     PLAYER_RADIUS * 2,
     2,
   );
@@ -181,7 +188,7 @@ function renderPlayer(me, leaderboard, player) {
 
   context.fillRect(
     canvasX - PLAYER_RADIUS + PLAYER_RADIUS * 2 * player.hp / (player.passive_skills.hp * player.parameters.hp),
-    canvasY + PLAYER_RADIUS + 8,
+    canvasY + PLAYER_RADIUS + 14,
     PLAYER_RADIUS * 2 * (1 - player.hp / (player.passive_skills.hp * player.parameters.hp)),
     2,
   );

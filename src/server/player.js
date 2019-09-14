@@ -565,13 +565,14 @@ class Player extends ObjectClass {
 
     if (level > 27) {
       return 'bullet_legend.svg'
-    } else if (level > 20) {
-      return 'bullet_hard.svg'
-    } else if (level > 13) {
-      return 'bullet_normal.svg'
-    } else if (level > 6) {
-      return 'bullet_easy.svg'
     }
+    // else if (level > 20) {
+    //   return 'bullet_hard.svg'
+    // } else if (level > 13) {
+    //   return 'bullet_normal.svg'
+    // } else if (level > 6) {
+    //   return 'bullet_easy.svg'
+    // }
 
     return 'bullet.svg'
   }
