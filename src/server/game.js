@@ -413,7 +413,8 @@ class Game {
             speed: 300,
             damage: 20,
             distance: 1500,
-            effect: 'vampire'
+            effect: 'vampire',
+            icon: 'bullet_vampire.svg'
           }
           this.bullets.push(new Bullet(bullet_options))
         }
@@ -434,7 +435,8 @@ class Game {
             speed: 300,
             damage: 20,
             distance: 1500,
-            effect: 'fire'
+            effect: 'fire',
+            icon: 'bullet_fire.svg'
           }
           this.bullets.push(new Bullet(bullet_options))
           setTimeout(() => {

@@ -3,7 +3,7 @@ const ObjectClass = require('./object');
 const Constants = require('../shared/constants');
 
 class Bullet extends ObjectClass {
-  constructor({parentID, x, y, rotate, radius, speed, damage, distance, effect = null}) {
+  constructor({parentID, x, y, rotate, radius, speed, damage, distance, effect = null, icon = 'bullet.svg'}) {
     super(shortid(), x, y, rotate, speed);
     this.parentID = parentID;
     this.radius = radius
@@ -11,6 +11,7 @@ class Bullet extends ObjectClass {
     this.distance = distance
     this.destroyed = false
     this.effect = effect
+    this.icon = icon
     setTimeout(() => {
       this.destroyed = true
     }, this.distance / this.speed * 1000)
@@ -28,7 +29,8 @@ class Bullet extends ObjectClass {
     return {
       ...(super.serializeForUpdate()),
       radius: this.radius,
-      effect: this.effect
+      effect: this.effect,
+      icon: this.icon
     };
   }
 }

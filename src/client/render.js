@@ -158,22 +158,23 @@ function renderPlayer(me, leaderboard, player) {
 }
 
 function renderBullet(me, bullet) {
-  const { x, y, radius } = bullet;
+  const { x, y, radius, icon } = bullet;
   const {use_fire_bullets} = me.active_skills
 
   context.save()
   // context.filter = 'invert(50%)'
   // context.filter = 'sepia(60%)'
 
-  const getBulletIcon = () => {
-    if (bullet.effect) {
-      return `bullet_${bullet.effect}.svg`
-    }
-    return `bullet.svg`
-  }
+  // const getBulletIcon = () => {
+  //   if (bullet.effect) {
+  //     return `bullet_${bullet.effect}.svg`
+  //   }
+  //   return `bullet.svg`
+  // }
 
   context.drawImage(
-    getAsset(getBulletIcon()),
+    // getAsset(getBulletIcon()),
+    getAsset(icon),
     canvas.width / 2 + x - me.x - radius,
     canvas.height / 2 + y - me.y - radius,
     radius * 2,

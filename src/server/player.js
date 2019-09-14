@@ -117,7 +117,8 @@ class Player extends ObjectClass {
               speed: 300,
               damage: 20,
               distance: 1500,
-              effect: 'fire'
+              effect: 'fire',
+              effect: 'bullet_fire.svg'
             }
             this.bullets.push(new Bullet(bullet_options))
           }
@@ -537,14 +538,14 @@ class Player extends ObjectClass {
 
     let damage
 
-    if (level > 6) {
-      damage = orig_damage * 1.1
-    } else if (level > 13) {
-      damage = orig_damage * 1.2
+    if (level > 27) {
+      damage = orig_damage * 1.5
     } else if (level > 20) {
       damage = orig_damage * 1.3
-    } else if (level > 27) {
-      damage = orig_damage * 1.5
+    } else if (level > 13) {
+      damage = orig_damage * 1.2
+    } else if (level > 6) {
+      damage = orig_damage * 1.1
     } else {
       return
     }
@@ -553,6 +554,26 @@ class Player extends ObjectClass {
       this.weapon.damage = damage
       this.setNotifyMsg('Damage of weapon has increased!')
     }
+  }
+
+  getBulletIcon() {
+    const {level} = this.experience
+    const {use_fire_bullets} = this.options.active_skills
+    if (use_fire_bullets) {
+      return 'bullet_fire.svg'
+    }
+
+    if (level > 27) {
+      return 'bullet_legend.svg'
+    } else if (level > 20) {
+      return 'bullet_hard.svg'
+    } else if (level > 13) {
+      return 'bullet_normal.svg'
+    } else if (level > 6) {
+      return 'bullet_easy.svg'
+    }
+
+    return 'bullet.svg'
   }
 
   createBullet() {
@@ -582,7 +603,8 @@ class Player extends ObjectClass {
         speed,
         damage: modDamage,
         distance,
-        effect: getBulletEffect()
+        effect: getBulletEffect(),
+        icon: this.getBulletIcon()
       }
 
       this.fireCooldown = this.weapon.fire_cooldown
