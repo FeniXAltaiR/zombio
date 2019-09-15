@@ -13,7 +13,7 @@ class Zombie extends ObjectClass {
           damage: 25,
           hp: 100,
           radius: 25,
-          speed: 200
+          speed: 190
         },
         normal: {
           name: 'normal',
@@ -37,7 +37,7 @@ class Zombie extends ObjectClass {
           damage: 150,
           hp: 1000,
           radius: 55,
-          speed: 225
+          speed: 205
         },
         boss_normal: {
           name: 'boss_normal',
