@@ -38,9 +38,7 @@ function render() {
   context.strokeRect(canvas.width / 2 - me.x, canvas.height / 2 - me.y, MAP_SIZE, MAP_SIZE);
 
   // Draw all players
-  if (me.mode !== 'dead') {
-    renderPlayer(me, leaderboard, me);
-  }
+  renderPlayer(me, leaderboard, me);
   others.forEach(renderPlayer.bind(null, me, leaderboard));
 
   // Draw all things
@@ -87,6 +85,8 @@ function renderPlayer(me, leaderboard, player) {
   const {level} = player.experience
   const canvasX = canvas.width / 2 + x - me.x;
   const canvasY = canvas.height / 2 + y - me.y;
+
+  if (player.mode === 'dead') return
 
   // Draw player
   context.save();
