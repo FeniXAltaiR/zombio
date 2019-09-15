@@ -10,7 +10,7 @@ class Zombie extends ObjectClass {
         easy: {
           name: 'easy',
           xp: 500,
-          damage: 25,
+          damage: 10,
           hp: 100,
           radius: 25,
           speed: 190
@@ -18,15 +18,15 @@ class Zombie extends ObjectClass {
         normal: {
           name: 'normal',
           xp: 1000,
-          damage: 50,
+          damage: 25,
           hp: 175,
           radius: 25,
-          speed: 235
+          speed: 210
         },
         hard: {
           name: 'hard',
           xp: 2000,
-          damage: 95,
+          damage: 50,
           hp: 240,
           radius: 25,
           speed: 255
@@ -34,7 +34,7 @@ class Zombie extends ObjectClass {
         boss_easy: {
           name: 'boss_easy',
           xp: 10000,
-          damage: 150,
+          damage: 75,
           hp: 1000,
           radius: 55,
           speed: 205
@@ -42,26 +42,26 @@ class Zombie extends ObjectClass {
         boss_normal: {
           name: 'boss_normal',
           xp: 20000,
-          damage: 200,
+          damage: 100,
           hp: 2000,
           radius: 65,
-          speed: 245
+          speed: 225
         },
         boss_hard: {
           name: 'boss_hard',
           xp: 30000,
-          damage: 250,
+          damage: 125,
           hp: 3000,
           radius: 80,
-          speed: 265
+          speed: 245
         },
         boss_legend: {
           name: 'boss_legend',
           xp: 50000,
-          damage: 300,
+          damage: 175,
           hp: 5000,
           radius: 100,
-          speed: 275
+          speed: 255
         }
       },
       active_skills: {
