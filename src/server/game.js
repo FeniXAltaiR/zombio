@@ -508,6 +508,7 @@ class Game {
         this.players[lastShot].udpateLastShot(null)
         this.players[lastShot].onKilledPlayer(player.score)
         this.players[lastShot].updateHp(75)
+        player.lastShot = null
       }
       player.setMode('dead')
       const {statistic, score} = this.players[id]
@@ -573,7 +574,9 @@ class Game {
     const player = Object.values(this.players)
       .find(closerPlayer =>
         parentID !== closerPlayer.id &&
-        closerPlayer.distanceTo({x, y}) <= Constants.PLAYER_RADIUS + radius
+        closerPlayer.distanceTo({x, y}) <= Constants.PLAYER_RADIUS + radius &&
+        closerPlayer.hp > 0 &&
+        closerPlayer.mode !== 'dead'
       )
 
     if (player) {
@@ -588,6 +591,7 @@ class Game {
           this.players[parentID].udpateLastShot(null)
           this.players[parentID].onKilledPlayer(player.score)
           this.players[parentID].updateHp(75)
+          player.lastShot = null
         }
       }
       if (effect === 'fire') {
