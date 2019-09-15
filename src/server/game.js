@@ -537,10 +537,10 @@ class Game {
       player.setMode('dead')
       const {statistic, score} = this.players[id]
       setTimeout(() => {
-        socket.emit(Constants.MSG_TYPES.GAME_OVER, this.players[id].statistic);
+        socket.emit(Constants.MSG_TYPES.GAME_OVER, statistic);
         socket.emit(Constants.MSG_TYPES.SAVE_ID_PLAYER, {
           id,
-          score: this.players[id].score
+          score: score
         });
         this.removePlayer(socket);
       }, 3500)
