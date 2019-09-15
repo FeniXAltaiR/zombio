@@ -102,7 +102,7 @@ class Player extends ObjectClass {
           this.resetActiveSkill(skill_name, 25000)
         }),
         hp: (skill_name => {
-          this.updateHp(500)
+          this.updateHp(200)
           this.resetActiveSkill(skill_name, 25000)
         }),
         ultimate: (skill_name => {
@@ -286,7 +286,7 @@ class Player extends ObjectClass {
           fire_cooldown: 0.25,
           radius: 8,
           speed: 700,
-          damage: 35,
+          damage: 40,
           distance: 800,
           noise: 0.5
         },
@@ -322,7 +322,7 @@ class Player extends ObjectClass {
           fire_cooldown: 1,
           radius: 11,
           speed: 1000,
-          damage: 120,
+          damage: 110,
           distance: 1000,
           noise: 0
         }
