@@ -538,7 +538,7 @@ class Player extends ObjectClass {
 
     let damage
 
-    if (level > 27) {
+    if (level > 28) {
       damage = orig_damage * 1.5
     } else if (level > 20) {
       damage = orig_damage * 1.3
@@ -563,7 +563,7 @@ class Player extends ObjectClass {
       return 'bullet_fire.svg'
     }
 
-    if (level > 27) {
+    if (level > 28) {
       return 'bullet_legend.svg'
     }
     // else if (level > 20) {

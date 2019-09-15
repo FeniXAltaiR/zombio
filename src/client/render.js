@@ -96,7 +96,7 @@ function renderPlayer(me, leaderboard, player) {
   context.rotate(rotate)
 
   const getPlayerBgIcon = () => {
-    if (level > 27) {
+    if (level > 28) {
       return 'player_legend.svg'
     }
     // else if (level > 20) {
