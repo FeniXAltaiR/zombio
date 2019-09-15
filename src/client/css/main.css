@@ -166,6 +166,10 @@ button:focus {
   margin-bottom: 4px;
 }
 
+.guide__item {
+  padding: 0px 8px;
+}
+
 .guide__item img {
   width: 32px;
   height: 32px;
