@@ -118,7 +118,7 @@ class Player extends ObjectClass {
               damage: 20,
               distance: 1500,
               effect: 'fire',
-              effect: 'bullet_fire.svg'
+              icon: 'bullet_fire.svg'
             }
             this.bullets.push(new Bullet(bullet_options))
           }
