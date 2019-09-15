@@ -300,7 +300,31 @@ class Game {
   updateZombies(dt) {
     this.zombies.forEach(zombie => {
       const findCloserPlayer = Object.values(this.players)
-        .find(player => zombie.distanceTo({x: player.x, y: player.y}) < zombie.agressiveDistance && player.mode !== 'dead')
+        .reduce((closerPlayer, player) => {
+          const distanceToPlayer = zombie.distanceTo({x: player.x, y: player.y})
+
+          if (closerPlayer === null) {
+            if (
+              distanceToPlayer < zombie.agressiveDistance
+              && player.mode !== 'dead'
+            ) {
+              return player
+            }
+          }
+
+          if (closerPlayer) {
+            const distanceToCloserPlayer = zombie.distanceTo({x: closerPlayer.x, y: closerPlayer.y})
+            if (
+              distanceToPlayer < zombie.agressiveDistance
+              && player.mode !== 'dead'
+              && distanceToPlayer < distanceToCloserPlayer
+            ) {
+              return player
+            }
+          }
+
+          return closerPlayer
+        }, null)
 
       if (findCloserPlayer) {
         zombie.setMode('active')
