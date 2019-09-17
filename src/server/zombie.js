@@ -75,15 +75,15 @@ class Zombie extends ObjectClass {
       modes: {
         passive: {
           speed: 50,
-          agressiveDistance: 500
+          agressiveDistance: 400
         },
         active: {
           speed: 200,
-          agressiveDistance: 500
+          agressiveDistance: 400
         },
         returning: {
           speed: 50,
-          agressiveDistance: 350
+          agressiveDistance: 300
         }
       }
     }
