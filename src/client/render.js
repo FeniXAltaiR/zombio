@@ -132,7 +132,6 @@ function renderPlayer(me, leaderboard, player) {
   );
 
   // if (me.id === player.id) {
-  //   console.log(-PLAYER_RADIUS / 2 - Math.cos(rotate) * 30)
   //   context.drawImage(
   //     getAsset('player_arrow.svg'),
   //     -PLAYER_RADIUS / 2 + Math.sin(rotate) * 30,

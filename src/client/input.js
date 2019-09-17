@@ -42,7 +42,7 @@ const values_keys = {
   68: [1, 0]
 }
 
-function onKeyDownInput (e) {
+function onKeyDownInput(e) {
   if (e.keyCode === 116) {
     return
   }
@@ -56,6 +56,7 @@ function onKeyDownInput (e) {
     return
   }
 
+  // A, D, S, W
   if (![65, 68, 83, 87].includes(e.keyCode)) {
     e.preventDefault()
     return
@@ -69,24 +70,42 @@ function onKeyDownInput (e) {
   setDirection()
 }
 
-function onKeyUpInput (e) {
-  keys = keys.filter(key => key !== e.keyCode)
-  setDirection()
+let timeoutOnKeyUpInput = null
+let keysToRemove = []
+function onKeyUpInput(e) {
+  clearTimeout(timeoutOnKeyUpInput)
+    if ([65, 68].includes(e.keyCode)) {
+      keysToRemove = keysToRemove.filter(key => ![65, 68].includes(e.keyCode))
+      keysToRemove.push(e.keyCode)
+    } else if ([83, 87].includes(e.keyCode)) {
+      keysToRemove = keysToRemove.filter(key => ![83, 87].includes(e.keyCode))
+      keysToRemove.push(e.keyCode)
+    }
+    keys = keys.filter(key => !keysToRemove.includes(key))
+  
+  timeoutOnKeyUpInput = setTimeout(() => {
+    setDirection()
+  }, 20)
 }
 
-function setDirection () {
+let oldDir = null
+function setDirection() {
   let [x, y] = [0, 0]
 
   keys.forEach(key => {
     const [valueX, valueY] = values_keys[key]
+    oldDir = [valueX, valueY]
     x += valueX
     y += valueY
   })
 
-  const dir = Math.atan2(x, y)
   if (!keys.length) {
+    const [valueX, valueY] = oldDir
+    x += valueX
+    y += valueY
     updateDirection(null)
   } else {
+    const dir = Math.atan2(x, y)
     updateDirection(dir)
   }
 }

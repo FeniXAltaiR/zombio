@@ -4,7 +4,7 @@ const Constants = require('../shared/constants');
 
 class Player extends ObjectClass {
   constructor({id, username, x, y, icon, score = 0, rotate = Math.random() * 2 * Math.PI}) {
-    super(id, x, y, null, Constants.PLAYER_SPEED);
+    super(id, x, y, null, 0);
     this.options = {
       parameters: {
         hp: Constants.PLAYER_MAX_HP,
@@ -361,8 +361,7 @@ class Player extends ObjectClass {
     if (this.mode === 'dead') return
     super.update(dt);
 
-    this.updateSpeed()
-    // console.log(Object.entries(this.options.effects));
+    this.updateSpeed(dt)
 
     // Make sure the player stays in bounds
     this.x = Math.max(0 + Constants.PLAYER_RADIUS, Math.min(Constants.MAP_SIZE - Constants.PLAYER_RADIUS, this.x));
@@ -770,8 +769,13 @@ class Player extends ObjectClass {
     return this.experience.level - this.experience.skill_points
   }
 
-  updateSpeed() {
-    this.speed = this.options.parameters.speed * (this.options.passive_skills.speed + this.options.zones_effects.speed)
+  updateSpeed(dt) {
+    const max_speed = this.options.parameters.speed * (this.options.passive_skills.speed + this.options.zones_effects.speed)
+    if (this.direction === null) {
+      this.speed = Math.max(0, Math.min(max_speed, this.speed - dt * max_speed))
+    } else {
+      this.speed = Math.max(0, Math.min(max_speed, this.speed + dt * max_speed))
+    }
   }
 
   updateHp(value) {
@@ -804,7 +808,6 @@ class Player extends ObjectClass {
       },
       speed: () => {
         this.options.passive_skills.speed += 0.1
-        this.updateSpeed()
         this.options.used_skill_points.speed.value += 1
       },
       accuracy: () => {

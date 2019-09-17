@@ -8,15 +8,23 @@ class Object {
     this.direction = dir;
     this.speed = speed;
     this.lastShot = null
+    this.oldDirection = {
+      x: null,
+      y: null
+    }
   }
 
   update(dt) {
     if (this.direction === null) {
-      return
+      const {x, y} = this.oldDirection
+      this.x += dt * this.speed * x
+      this.y -= dt * this.speed * y
+    } else {
+      this.oldDirection.x = Math.sin(this.direction)
+      this.oldDirection.y = Math.cos(this.direction)
+      this.x += dt * this.speed * this.oldDirection.x
+      this.y -= dt * this.speed * this.oldDirection.y
     }
-    
-    this.x += dt * this.speed * Math.sin(this.direction);
-    this.y -= dt * this.speed * Math.cos(this.direction);
   }
 
   distanceTo(object) {

@@ -141,6 +141,8 @@ class Zombie extends ObjectClass {
   update(dt) {
     super.update(dt)
 
+    this.updateSpeed(dt)
+
     // Make sure the zombie stays in bounds
     this.x = Math.max(0 + Constants.PLAYER_RADIUS, Math.min(Constants.MAP_SIZE - Constants.PLAYER_RADIUS, this.x))
     this.y = Math.max(0 + Constants.PLAYER_RADIUS, Math.min(Constants.MAP_SIZE - Constants.PLAYER_RADIUS, this.y))
@@ -150,6 +152,15 @@ class Zombie extends ObjectClass {
     }
 
     this.useActiveSkill()
+  }
+
+  updateSpeed(dt) {
+    const max_speed = this.options.modes[this.mode].speed
+    if (this.direction === null) {
+      this.speed = Math.max(0, Math.min(max_speed, this.speed - dt * max_speed))
+    } else {
+      this.speed = Math.max(0, Math.min(max_speed, this.speed + dt * max_speed))
+    }
   }
 
   checkLocationInZone() {

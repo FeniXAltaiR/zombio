@@ -49,7 +49,6 @@ const getSkinValue = () => {
       value = radio.dataset.icon
     }
   })
-  console.log(value)
   return value
 }
 
