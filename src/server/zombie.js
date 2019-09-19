@@ -13,7 +13,7 @@ class Zombie extends ObjectClass {
           damage: 10,
           hp: 100,
           radius: 25,
-          speed: 190
+          speed: 285
         },
         normal: {
           name: 'normal',
@@ -21,7 +21,7 @@ class Zombie extends ObjectClass {
           damage: 25,
           hp: 175,
           radius: 25,
-          speed: 210
+          speed: 315
         },
         hard: {
           name: 'hard',
@@ -29,7 +29,7 @@ class Zombie extends ObjectClass {
           damage: 50,
           hp: 240,
           radius: 25,
-          speed: 255
+          speed: 360
         },
         boss_easy: {
           name: 'boss_easy',
@@ -37,7 +37,7 @@ class Zombie extends ObjectClass {
           damage: 75,
           hp: 1000,
           radius: 55,
-          speed: 205
+          speed: 305
         },
         boss_normal: {
           name: 'boss_normal',
@@ -45,7 +45,7 @@ class Zombie extends ObjectClass {
           damage: 100,
           hp: 2000,
           radius: 65,
-          speed: 225
+          speed: 335
         },
         boss_hard: {
           name: 'boss_hard',
@@ -53,7 +53,7 @@ class Zombie extends ObjectClass {
           damage: 125,
           hp: 3000,
           radius: 80,
-          speed: 245
+          speed: 365
         },
         boss_legend: {
           name: 'boss_legend',
@@ -61,7 +61,7 @@ class Zombie extends ObjectClass {
           damage: 175,
           hp: 5000,
           radius: 100,
-          speed: 255
+          speed: 380
         }
       },
       active_skills: {
@@ -74,15 +74,15 @@ class Zombie extends ObjectClass {
       },
       modes: {
         passive: {
-          speed: 50,
+          speed: 75,
           agressiveDistance: 400
         },
         active: {
-          speed: 200,
+          speed: 300,
           agressiveDistance: 400
         },
         returning: {
-          speed: 50,
+          speed: 75,
           agressiveDistance: 300
         }
       }
@@ -113,11 +113,11 @@ class Zombie extends ObjectClass {
       },
       boss_legend: {
         increaseSpeed: (() => {
-          this.options.modes.active.speed += 30
+          this.options.modes.active.speed += 45
           this.radius -= 25
           this.abilities.use_create_fire_bullets = true
           setTimeout(() => {
-            this.options.modes.active.speed -= 30
+            this.options.modes.active.speed -= 45
             this.radius += 25
           }, 5000)
         })

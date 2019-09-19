@@ -8,7 +8,7 @@ class Player extends ObjectClass {
     this.options = {
       parameters: {
         hp: Constants.PLAYER_MAX_HP,
-        speed: 200
+        speed: 300
       },
       used_skill_points: {
         hp: {
@@ -114,7 +114,7 @@ class Player extends ObjectClass {
               y: this.y - Math.cos(this.rotate + (Math.PI / (amount_bullets / 2) * i)) * (Constants.PLAYER_RADIUS + 25),
               rotate: this.rotate + (Math.PI / (amount_bullets / 2) * i),
               radius: 12,
-              speed: 300,
+              speed: 450,
               damage: 20,
               distance: 1500,
               effect: 'fire',
@@ -267,7 +267,7 @@ class Player extends ObjectClass {
           name: 'pistol',
           fire_cooldown: 0.45,
           radius: 8,
-          speed: 500,
+          speed: 750,
           damage: 25,
           distance: 400,
           noise: 0.3
@@ -276,7 +276,7 @@ class Player extends ObjectClass {
           name: 'uzi',
           fire_cooldown: 0.75,
           radius: 8,
-          speed: 600,
+          speed: 900,
           damage: 20,
           distance: 500,
           noise: 0.4
@@ -285,7 +285,7 @@ class Player extends ObjectClass {
           name: 'machinegun',
           fire_cooldown: 0.25,
           radius: 8,
-          speed: 700,
+          speed: 1050,
           damage: 40,
           distance: 800,
           noise: 0.5
@@ -294,7 +294,7 @@ class Player extends ObjectClass {
           name: 'shotgun',
           fire_cooldown: 0.8,
           radius: 11,
-          speed: 400,
+          speed: 600,
           damage: 25,
           distance: 400,
           noise: 0
@@ -303,7 +303,7 @@ class Player extends ObjectClass {
           name: 'auto_shotgun',
           fire_cooldown: 0.65,
           radius: 11,
-          speed: 400,
+          speed: 600,
           damage: 30,
           distance: 500,
           noise: 0
@@ -312,7 +312,7 @@ class Player extends ObjectClass {
           name: 'rifle',
           fire_cooldown: 0.35,
           radius: 10,
-          speed: 600,
+          speed: 900,
           damage: 35,
           distance: 700,
           noise: 0.2
@@ -321,7 +321,7 @@ class Player extends ObjectClass {
           name: 'sniper_rifle',
           fire_cooldown: 1,
           radius: 11,
-          speed: 1000,
+          speed: 1500,
           damage: 110,
           distance: 1000,
           noise: 0
