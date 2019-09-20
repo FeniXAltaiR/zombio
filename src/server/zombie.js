@@ -92,27 +92,27 @@ class Zombie extends ObjectClass {
       use_create_vampire_bullets: false,
       use_create_fire_bullets: false,
       boss_easy: {
-        increaseRadius: (() => {
+        increaseRadius: () => {
           this.radius = 80
           this.damage += 20
           setTimeout(() => {
             this.radius = 50
             this.damage -= 20
           }, 5000)
-        })
+        }
       },
       boss_normal: {
-        teleportation: (() => {
+        teleportation: () => {
           this.abilities.use_teleport = true
-        })
+        }
       },
       boss_hard: {
-        createBullets: (() => {
+        createBullets: () => {
           this.abilities.use_create_vampire_bullets = true
-        })
+        }
       },
       boss_legend: {
-        increaseSpeed: (() => {
+        increaseSpeed: () => {
           this.options.modes.active.speed += 45
           this.radius -= 25
           this.abilities.use_create_fire_bullets = true
@@ -120,7 +120,7 @@ class Zombie extends ObjectClass {
             this.options.modes.active.speed -= 45
             this.radius += 25
           }, 5000)
-        })
+        }
       }
     }
     this.use_ability = true

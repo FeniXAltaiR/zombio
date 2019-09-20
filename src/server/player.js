@@ -133,43 +133,43 @@ class Player extends ObjectClass {
       killed_bosses: {
         boss_easy: {
           value: false,
-          bonus: (() => {
+          bonus: () => {
             this.options.passive_skills.hp += 1
             this.updateHp(this.options.parameters.hp * 1)
             this.setNotifyMsg('Maximum health has increased!')
             this.clearNotifyMsg()
-          })
+          }
         },
         boss_normal: {
           value: false,
-          bonus: (() => {
+          bonus: () => {
             this.options.passive_skills.cooldown -= 0.1
             this.setNotifyMsg('Cooldown of skills has decreased!')
             this.clearNotifyMsg()
-          })
+          }
         },
         boss_hard: {
           value: false,
-          bonus: (() => {
+          bonus: () => {
             this.options.passive_skills.damage += 0.25
             this.setNotifyMsg('Damage of weapon has increased!')
             this.clearNotifyMsg()
-          })
+          }
         },
         boss_legend: {
           value: false,
-          bonus: (() => {
+          bonus: () => {
             this.options.active_skills.ultra_skill.value = 'ultimate'
             this.setNotifyMsg('New skill!')
             this.clearNotifyMsg()
-          })
+          }
         }
       },
       buffs: {
-        hp: (() => {
+        hp: () => {
           this.updateHp(100)
-        }),
-        speed: (() => {
+        },
+        speed: () => {
           this.options.passive_skills.speed += 0.25
           this.setEffect('buff', 'speed')
 
@@ -177,8 +177,8 @@ class Player extends ObjectClass {
             this.options.passive_skills.speed -= 0.25
             this.setEffect('debuff', 'speed')
           }, 5000)
-        }),
-        accuracy: (() => {
+        },
+        accuracy: () => {
           const {accuracy} = this.options.passive_skills
           let diff = 0.5
 
@@ -194,20 +194,20 @@ class Player extends ObjectClass {
             this.options.passive_skills.accuracy += diff
             this.setEffect('debuff', 'accuracy')
           }, 5000)
-        }),
-        portal: (() => {
+        },
+        portal: () => {
           this.x = Constants.MAP_SIZE * Math.random()
           this.y = Constants.MAP_SIZE * Math.random()
-        }),
-        defense: (() => {
+        },
+        defense: () => {
           this.options.passive_skills.defense -= 0.25
           this.setEffect('buff', 'defense')
           setTimeout(() => {
             this.options.passive_skills.defense += 0.25
             this.setEffect('debuff', 'defense')
           }, 5000)
-        }),
-        damage: (() => {
+        },
+        damage: () => {
           this.options.passive_skills.damage += 0.25
           this.setEffect('buff', 'damage')
 
@@ -215,7 +215,17 @@ class Player extends ObjectClass {
             this.options.passive_skills.damage -= 0.25
             this.setEffect('debuff', 'damage')
           }, 5000)
-        })
+        },
+        fire: () => {
+          const {fire} = this.options.active_skills.debuffs
+          fire.value = true
+          this.setEffect('debuff', 'hp', 5)
+          clearTimeout(fire.timeout)
+          fire.timeout = setTimeout(() => {
+            fire.value = false
+            this.setEffect('buff', 'hp', 5)
+          }, 1000)
+        }
       },
       effects: {
       },
@@ -760,9 +770,11 @@ class Player extends ObjectClass {
 
   takeBuff(name) {
     const buff = this.options.buffs[name]
-    buff()
-    this.score += 250
-    this.updateStatistic('amount_things', 1)
+    if (buff) {
+      buff()
+      this.score += 250
+      this.updateStatistic('amount_things', 1)
+    }
   }
 
   leftSkillPoints() {
@@ -841,15 +853,15 @@ class Player extends ObjectClass {
     this.rotate = rotate
   }
 
-  setEffect(type, name) {
+  setEffect(type, name, value = 1) {
     if (!this.options.effects[name]) {
       this.options.effects[name] = 0
     }
 
     if (type === 'buff') {
-      this.options.effects[name] += 1
+      this.options.effects[name] += value
     } else if (type === 'debuff') {
-      this.options.effects[name] -= 1
+      this.options.effects[name] -= value
     }
   }
 

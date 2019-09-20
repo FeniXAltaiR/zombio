@@ -60,6 +60,10 @@ class Game {
         damage: {
           radius: 20,
           amount: 55
+        },
+        fire: {
+          radius: 25,
+          amount: 55
         }
       },
       zombies: {
@@ -667,6 +671,16 @@ class Game {
     }
   }
 
+  checkBulletPassingThroughFire(bullet, things_fire) {
+    const {x, y} = bullet
+    things_fire.forEach(fire => {
+      if (fire.distanceTo({x, y}) < bullet.radius + fire.radius) {
+        bullet.effect = 'fire'
+        bullet.icon = 'bullet_fire.svg'
+      }
+    })
+  }
+
   updateBullet(bullet, dt) {
     if (bullet.update(dt)) {
       this.trash.bullets_removed.push(bullet.id);
@@ -688,9 +702,12 @@ class Game {
     this.lastUpdateTime = now;
 
     // Update each bullet
+    const things_fire = this.things.filter(thing => thing.options.name === 'fire')
+
     this.bullets.forEach(bullet => {
       this.checkBulletShootPlayers(bullet)
       this.checkBulletShootZombies(bullet)
+      this.checkBulletPassingThroughFire(bullet, things_fire)
       this.updateBullet(bullet, dt)
     })
 
