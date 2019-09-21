@@ -1,0 +1,40 @@
+.experience {
+  position: fixed;
+  display: flex;
+  bottom: -100px;
+  -webkit-flex-direction: column;
+  -moz-flex-direction: column;
+  -ms-flex-direction: column;
+  -o-flex-direction: column;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 0px;
+  transition: all 1s ease;
+}
+
+.experience .experience__score {
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flex;
+  display: -o-flex;
+  display: flex;
+  justify-content: space-between;
+  width: 350px;
+  font-size: 20px;
+}
+
+.experience .experience__current {
+  border: 1px solid rgba(0, 0, 0, .9);
+  border-radius: 15px;
+  width: 350px;
+  height: 25px;
+  display: flex;
+  justify-content: center;
+}
+
+.experience p {
+  font-weight: bold;
+  color: #cccccc;
+  margin-bottom: 0;
+}

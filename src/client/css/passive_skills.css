@@ -1,0 +1,100 @@
+.passive-skills {
+  position: fixed;
+  width: 170px;
+  bottom: 10px;
+  right: -160px;
+  /* right: 10px; */
+  transition: all 1s ease
+}
+
+.passive-skills__skill {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-top: 5px;
+  padding-top: 6px;
+  -webkit-background-size: contain;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center right;
+  min-height: 45px;
+}
+
+.passive-skills__points {
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flex;
+  display: -o-flex;
+  display: flex;
+  justify-content: flex-end;
+  margin-right: 20px;
+  font-size: 20px;
+  color: white;
+}
+
+.passive-skills__points span {
+  padding: 2px 10px;
+  border-radius: 5px;
+  background: linear-gradient(355.31deg, rgba(186, 118, 189, 0.46) 0.11%, rgba(128, 69, 137, 0.780876) 58.14%, #592365 97.77%);
+}
+
+.passive-skills__skill[data-name="hp"] {
+  background-image: url('/assets/bg_passive_hp.png');
+}
+
+.passive-skills__skill[data-name="speed"] {
+  background-image: url('/assets/bg_passive_speed.png');
+}
+
+.passive-skills__skill[data-name="defense"] {
+  background-image: url('/assets/bg_passive_defense.png');
+}
+
+.passive-skills__skill[data-name="cooldown"] {
+  background-image: url('/assets/bg_passive_cooldown.png');
+}
+
+.passive-skills__skill span {
+  min-width: 30px;
+  color: white;
+  font-size: 20px;
+  margin-top: 3px;
+}
+
+.passive-skills__skill img {
+  height: 35px;
+  width: 35px;
+  margin-top: 5px;
+  margin-right: 17px;
+  margin-left: 19px;
+  transition: all .25s ease;
+  cursor: pointer;
+}
+
+.passive-skills__skill img:hover {
+  transform: scale(1.1);
+}
+
+.passive-skills__skill--red {
+  background: red;
+}
+
+.passive-skills__skill--violet {
+  background: violet
+}
+
+.passive-skills__skill--blue {
+  background: blue
+}
+
+.passive-skills__skill--greenyellow {
+  background: greenyellow
+}
+
+.passive-skills__skill--lightblue {
+  background: #7F92FF
+}
+
+.passive-skills__skill--gray {
+  background: #ccc
+}

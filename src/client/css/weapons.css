@@ -1,0 +1,38 @@
+.weapons {
+  position: fixed;
+  bottom: -100px;
+  left: 10px;
+  z-index: 5;
+  transition: all 1s ease;
+}
+
+.weapons__title {
+  text-align: center;
+  font-size: 28px;
+  color: white;
+  width: 100%;
+}
+
+.weapons__weapon {
+  margin: 0 5px;
+  height: 40px;
+  width: 64px;
+}
+
+.weapons__weapon img:hover {
+  transform: scale(1.1);
+  cursor: pointer;
+  transition: all .5s ease;
+}
+
+.weapons__skill {
+  margin: 0 5px;
+  height: 40px;
+  width: 40px;
+}
+
+.weapons__skill img:hover {
+  transform: scale(1.1);
+  cursor: pointer;
+  transition: all .5s ease;
+}

@@ -54,29 +54,16 @@ function render() {
 function renderBackground(x, y) {
   context.fillStyle = 'black'
   context.fillRect(0, 0, canvas.width, canvas.height)
-  if (getAsset('map2.svg')) {
+  const map = getAsset('map2.svg')
+  if (map) {
     context.drawImage(
-      getAsset('map2.svg'),
+      map,
       canvas.width / 2 - x,
       canvas.height / 2 - y,
       MAP_SIZE,
       MAP_SIZE
     )
   }
-
-  // context.strokeStyle = 'rgba(0, 0, 0, .2)'
-  // for (let i = 0; i < MAP_SIZE; i += 50) {
-  //   for (let k = 0; k < MAP_SIZE; k += 50) {
-  //     if (
-  //       x - i < (canvas.width / 2 + 100) &&
-  //       x - i > -(canvas.width / 2 + 100) &&
-  //       y - k < (canvas.height / 2 + 100) &&
-  //       y - k > -(canvas.height / 2 + 100)
-  //     ) {
-  //       context.strokeRect(canvas.width / 2 - x + i, canvas.height / 2 - y + k, 50, 50)
-  //     }
-  //   }
-  // }
 }
 
 // Renders a ship at the given coordinates

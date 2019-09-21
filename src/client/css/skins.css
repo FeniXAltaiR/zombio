@@ -1,0 +1,76 @@
+.skins {
+  position: fixed;
+  left: calc(50vw - 290px);
+  top: 130px;
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flex;
+  display: -o-flex;
+  display: flex;
+  justify-content: center;
+  background: linear-gradient(180deg, #5F2A6B 0%, #CDABCE 100%);
+  padding: 0 5px;
+}
+
+.skins__controls {
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flex;
+  display: -o-flex;
+  display: flex;
+  -webkit-flex-direction: column;
+  -moz-flex-direction: column;
+  -ms-flex-direction: column;
+  -o-flex-direction: column;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 10px;
+}
+
+.skins__radio {
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flex;
+  display: -o-flex;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px 0;
+}
+
+.skins .skins__radio--active img {
+  background: #6D9C00;
+  border-radius: 15px;
+}
+
+.skins label {
+  margin: 0 10px;
+}
+
+.skins input {
+  margin-left: 15px;
+}
+
+.skins__btn {
+  margin: 10px;
+  width: 100px;
+  color: white;
+}
+
+.skins p {
+  margin-bottom: 0;
+}
+
+.skins img {
+  width: 64px;
+  height: 64px;
+  background: linear-gradient(180deg, #F1E6E1 0%, #CDC6C5 100%);
+  border-radius: 8px;
+  margin: 10px 0;
+  cursor: pointer;
+}
+
+.skins img:hover {
+  /*transform: scale(1.1);*/
+  transition: all .25s ease;
+}

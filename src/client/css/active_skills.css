@@ -1,0 +1,54 @@
+.active-skills {
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flex;
+  display: -o-flex;
+  display: flex;
+  position: fixed;
+  bottom: 10px;
+}
+
+.active-skills__skill {
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flex;
+  display: -o-flex;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 5px;
+}
+
+.active-skills__skill img {
+  height: 64px;
+  width: 64px;
+}
+
+.active-skills__skill p {
+  margin-bottom: 5px;
+}
+
+.active-skills__skill[data-name="first_skill"] {
+  position: fixed;
+  left: calc(50vw + 202px);
+  bottom: -100px;
+  transition: all 1s ease
+}
+
+.active-skills__skill[data-name="second_skill"] {
+  position: fixed;
+  left: calc(50vw - 276px);
+  bottom: -100px;
+  transition: all 1s ease
+}
+
+.active-skills__skill[data-name="ultra_skill"] {
+  position: fixed;
+  left: calc(50vw + 276px);
+  bottom: -100px;
+  transition: all 1s ease
+}
+
+.active-skills__cooldown {
+  opacity: .25
+}

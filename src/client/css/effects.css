@@ -1,0 +1,40 @@
+.effects {
+  min-width: 180px;
+  position: fixed;
+  /* top: 10px; */
+  top: -100px;
+  left: 100px;
+  transition: all 1s ease
+}
+
+.effects img {
+  margin: 0 5px;
+  height: 40px;
+  width: 40px;
+}
+
+.effects__buffs {
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flex;
+  display: -o-flex;
+  display: flex;
+  align-items: flex-end;
+  padding-left: 20px;
+  background-image: url('/assets/effects_buffs.svg');
+  background-repeat: no-repeat;
+  height: 50px
+}
+
+.effects__debuffs {
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flex;
+  display: -o-flex;
+  display: flex;
+  align-items: flex-end;
+  padding-left: 20px;
+  background-image: url('/assets/effects_debuffs.svg');
+  background-repeat: no-repeat;
+  height: 50px
+}
