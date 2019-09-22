@@ -6,9 +6,11 @@
 @import url('../css/health_bar.css');
 @import url('../css/leaderboard.css');
 @import url('../css/notification.css');
+@import url('../css/passive_skills.css');
 @import url('../css/play_menu.css');
 @import url('../css/skins.css');
 @import url('../css/weapons.css');
+@import url('../css/contact.css');
 
 html, body {
   margin: 0;
@@ -16,11 +18,6 @@ html, body {
   overflow: hidden;
   overscroll-behavior: none;
   background-color: black;
-
-  -moz-user-select: none; /* Mozilla Firefox */
-  -ms-user-select: none; /* Internet Explorer (не поддерживается) */
-  -o-user-select: none; /* Opera Presto (не поддерживается) */
-  -webkit-user-select: none; /* Google Chrome, Opera Next, Safari */
 }
 
 hr {
@@ -59,8 +56,19 @@ button:focus {
   justify-content: space-between;
 }
 
+.justify-center {
+  justify-content: center;
+}
+
 .hidden {
   display: none !important;
+}
+
+.select-none {
+  -moz-user-select: none; /* Mozilla Firefox */
+  -ms-user-select: none; /* Internet Explorer (не поддерживается) */
+  -o-user-select: none; /* Opera Presto (не поддерживается) */
+  -webkit-user-select: none; /* Google Chrome, Opera Next, Safari */
 }
 
 #game-canvas {

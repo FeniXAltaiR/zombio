@@ -2,7 +2,7 @@
 <html>
 <head>
   <title>Qvent.io</title>
-  <meta name="description" content="The multiplayer io-game with skills, parameters, monsterts, bosses and more. Join to us!"/>
+  <meta name="description" content="Qventio - a multiplayer io-game with skills, parameters, monsterts, bosses and more. Join to us!"/>
   <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
   <meta content="utf-8" http-equiv="encoding">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -106,7 +106,7 @@
     </div>
   </div>
 
-  <div class="weapons"></div>
+  <div class="weapons select-none"></div>
   
   <div class="skins">
     <div class="skins__controls">
@@ -122,7 +122,7 @@
       </div>
     </div>
   </div>
-  <div id="leaderboard" class="">
+  <div id="leaderboard" class="select-none">
     <table>
       <tr>
         <th></th>
@@ -145,14 +145,14 @@
     </div>
   </div>
 
-  <div class="experience">
+  <div class="experience select-none">
     <div class="experience__score">
     </div>
     <div class="experience__current">
       <p></p>
     </div>
   </div>
-  <div class="passive-skills">
+  <div class="passive-skills select-none">
     <div class="passive-skills__points">
       <span></span>
     </div>
@@ -173,13 +173,13 @@
       <img src="assets/passive_skills_cooldown.svg" alt="">
     </div>
   </div>
-  <div class="health-bar">
+  <div class="health-bar select-none">
     <span></span>
   </div>
 
-  <div class="notification"></div>
+  <div class="notification select-none"></div>
 
-  <div class="active-skills hidden">
+  <div class="active-skills select-none hidden">
     <span class="active-skills__skill" data-name="first_skill">
       <p></p>
       <img src="" alt="">
@@ -193,7 +193,7 @@
       <img src="" alt="">
     </span>
   </div>
-  <div class="effects">
+  <div class="effects select-none">
     <div class="effects__buffs">
       <img class="hidden" data-name="hp" src="assets/passive_skills_hp.svg" alt="">
       <img class="hidden" data-name="speed" src="assets/passive_skills_speed.svg" alt="">
@@ -208,6 +208,18 @@
       <img class="hidden" data-name="accuracy" src="assets/passive_skills_accuracy.svg" alt="">
       <img class="hidden" data-name="damage" src="assets/passive_skills_damage.svg" alt="">
     </div>
+  </div>
+
+  <div class="contact flex justify-center">
+    <div class="contact__modal hidden">
+      <div>
+        <p><span>Email:</span> gameoveran@yandex.ru</p>
+        <p><span>Github:</span> <a href="https://github.com/FeniXAltaiR">https://github.com/FeniXAltaiR</a></p>
+        <hr>
+        <button class="contact__btn">Close</button>
+      </div>
+    </div>
+    <span>Contact</span>
   </div>
 </body>
 </html>

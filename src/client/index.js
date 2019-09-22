@@ -1,5 +1,3 @@
-// Learn more about this file at:
-// https://victorzhou.com/blog/build-an-io-game-part-1/#3-client-entrypoints
 import { connect, play } from './networking';
 import { startRendering, stopRendering } from './render';
 import { startCapturingInput, stopCapturingInput, clearKeys } from './input';
@@ -28,6 +26,20 @@ const skins = document.querySelector('button[data-name=skins]')
 const chooseSkin = document.querySelector('.skins')
 // const agreeSkinBtn = document.querySelector('.skins__btn')
 const guide = document.querySelector('.guide')
+
+// contact
+const contact = document.querySelector('.contact')
+const contact_modal = document.querySelector('.contact__modal')
+const contact_btn = document.querySelector('.contact__btn')
+
+contact.onclick = e => {
+  contact_modal.classList.remove('hidden')
+}
+
+contact_btn.onclick = e => {
+  e.stopPropagation()
+  contact_modal.classList.add('hidden')
+}
 
 // skins
 
@@ -97,6 +109,7 @@ const startGame = () => {
   setWeaponsBar(false)
   chooseSkin.classList.add('hidden')
   guide.classList.add('hidden')
+  contact.classList.add('hidden')
 }
 
 Promise.all([
@@ -118,10 +131,6 @@ Promise.all([
   skins.onclick = () => {
     chooseSkin.classList.remove('hidden')
   }
-
-  // agreeSkinBtn.onclick = () => {
-  //   chooseSkin.classList.add('hidden')
-  // }
 }).catch(console.error);
 
 function onGameOver(statistic) {
@@ -139,4 +148,5 @@ function onGameOver(statistic) {
   setWeaponsBar(true)
   showStatistic(statistic)
   guide.classList.remove('hidden')
+  contact.classList.remove('hidden')
 }
