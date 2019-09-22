@@ -45,6 +45,10 @@
   text-align: center;
 }
 
+.contact__modal p {
+  margin-bottom: 4px;
+}
+
 .contact__modal span {
   font-weight: bold;
 }

@@ -31,8 +31,9 @@ const guide = document.querySelector('.guide')
 const contact = document.querySelector('.contact')
 const contact_modal = document.querySelector('.contact__modal')
 const contact_btn = document.querySelector('.contact__btn')
+const contact_span = document.querySelector('.contact > span')
 
-contact.onclick = e => {
+contact_span.onclick = e => {
   contact_modal.classList.remove('hidden')
 }
 
