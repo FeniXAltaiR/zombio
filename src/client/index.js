@@ -42,6 +42,9 @@ contact_btn.onclick = e => {
   contact_modal.classList.add('hidden')
 }
 
+// share
+const share = document.querySelector('.share')
+
 // skins
 
 document.querySelectorAll('.skins__radio span').forEach(span => {
@@ -111,6 +114,7 @@ const startGame = () => {
   chooseSkin.classList.add('hidden')
   guide.classList.add('hidden')
   contact.classList.add('hidden')
+  share.classList.add('hidden')
 }
 
 Promise.all([
@@ -150,4 +154,5 @@ function onGameOver(statistic) {
   showStatistic(statistic)
   guide.classList.remove('hidden')
   contact.classList.remove('hidden')
+  share.classList.remove('hidden')
 }
