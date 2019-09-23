@@ -3,6 +3,7 @@ const express = require('express');
 const webpack = require('webpack');
 const webpackDevMiddleware = require('webpack-dev-middleware');
 const socketio = require('socket.io');
+const fs = require('fs')
 
 const Constants = require('../shared/constants');
 const Game = require('./game');
@@ -96,6 +97,7 @@ io.on('connection', socket => {
   socket.on(Constants.MSG_TYPES.ADD_NEW_SKILL, addNewSkill);
   socket.on(Constants.MSG_TYPES.USE_ACTIVE_SKILL, useActiveSkill);
   socket.on(Constants.MSG_TYPES.SAVE_ID_PLAYER, saveIdToStorage);
+  socket.on(Constants.MSG_TYPES.SEND_REVIEW, sendReview)
   socket.on('disconnect', onDisconnect);
 });
 
@@ -155,4 +157,8 @@ function addNewSkill(skill) {
 
 function useActiveSkill(skill) {
   games[id_channel].useActiveSkill(this, skill)
+}
+
+function sendReview(review) {
+  fs.appendFileSync(`${__dirname.replace('server', '')}shared/review.txt`, `${review}-;\n`);
 }

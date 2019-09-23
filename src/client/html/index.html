@@ -236,6 +236,31 @@
       data-image="assets/share.png"
     ></div>
   </div>
+
+  <div class="review">
+    <div class="review__modal hidden">
+      <div>
+        <h4>Thank you for your review</h4>
+        <hr>
+        <button class="review__close">Close</button>
+      </div>
+    </div>
+
+    <p>Review</p>
+    <div class="review__select">
+      <select>
+        <option value="bug" selected>bug</option>
+        <option value="advice">advice</option>
+      </select>
+    </div>
+    <div>
+      <textarea placeholder="bug or advice" name="review" cols="20" rows="8"></textarea>
+    </div>
+    <div class="review__send flex justify-center">
+      <button>Send</button>
+    </div>
+  </div>
+
   <!-- <script src="https://yastatic.net/es5-shims/0.0.2/es5-shims.min.js"></script> -->
   <script src="https://yastatic.net/share2/share.js" async="async"></script>
 </body>

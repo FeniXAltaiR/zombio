@@ -1,4 +1,4 @@
-import { connect, play } from './networking';
+import { connect, play, sendReview } from './networking';
 import { startRendering, stopRendering } from './render';
 import { startCapturingInput, stopCapturingInput, clearKeys } from './input';
 import { downloadAssets } from './assets';
@@ -45,8 +45,30 @@ contact_btn.onclick = e => {
 // share
 const share = document.querySelector('.share')
 
-// skins
+// review
+const review = document.querySelector('.review')
+const review_modal = document.querySelector('.review__modal')
+const review_close = document.querySelector('.review__close')
+const review_send = document.querySelector('.review__send')
 
+review_send.onclick = e => {
+  const review_select = document.querySelector('.review select')
+  const review_textarea = document.querySelector('.review textarea')
+  const review_str = `${review_select.value}:${review_textarea.value}`
+
+  if (!review_textarea.value) return
+  review_textarea.value = ''
+
+  review_modal.classList.remove('hidden')
+  sendReview(review_str)
+}
+
+review_close.onclick = e => {
+  e.stopPropagation()
+  review_modal.classList.add('hidden')
+}
+
+// skins
 document.querySelectorAll('.skins__radio span').forEach(span => {
   span.onclick = e => {
     e.stopPropagation()
@@ -115,6 +137,7 @@ const startGame = () => {
   guide.classList.add('hidden')
   contact.classList.add('hidden')
   share.classList.add('hidden')
+  review.classList.add('hidden')
 }
 
 Promise.all([
@@ -155,4 +178,5 @@ function onGameOver(statistic) {
   guide.classList.remove('hidden')
   contact.classList.remove('hidden')
   share.classList.remove('hidden')
+  review.classList.remove('hidden')
 }

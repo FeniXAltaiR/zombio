@@ -1,0 +1,53 @@
+.review {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  background: linear-gradient(355.31deg, rgba(186, 118, 189, 0.46) 0.11%, rgba(128, 69, 137, 0.780876) 58.14%, #592365 97.77%);
+  border-radius: 5px;
+  padding: 4px 8px;
+}
+
+.review p {
+  text-align: center;
+  margin-bottom: 4px;
+  font-size: 20px;
+  color: white;
+}
+
+.review__select select {
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+.review__send button {
+  color: white;
+}
+
+.review__modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.75);
+}
+
+.review__modal > div {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translateY(-50%) translateX(-50%);
+  padding: 15px 20px;
+  background: linear-gradient(180deg, #5F2A6B 0%, #CDABCE 100%);
+  border-radius: 5px;
+  text-align: center;
+  color: white;
+}
+
+.review__modal p {
+  margin-bottom: 4px;
+}
+
+.review__modal button {
+  color: white;
+}

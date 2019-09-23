@@ -15,6 +15,7 @@ module.exports = Object.freeze({
     ADD_NEW_SKILL: 'new_skill',
     USE_ACTIVE_SKILL: 'active_skill',
     GAME_OVER: 'dead',
-    SAVE_ID_PLAYER: 'save_id_player'
+    SAVE_ID_PLAYER: 'save_id_player',
+    SEND_REVIEW: 'send_review'
   },
 });

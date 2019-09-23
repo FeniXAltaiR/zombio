@@ -72,3 +72,7 @@ export const addNewSkill = skill => {
 export const useActiveSkill = skill => {
   socket.emit(Constants.MSG_TYPES.USE_ACTIVE_SKILL, skill)
 }
+
+export const sendReview = review => {
+  socket.emit(Constants.MSG_TYPES.SEND_REVIEW, review)
+}
