@@ -2,15 +2,15 @@ const Constants = require('../shared/constants')
 
 class Object {
   constructor(id, x, y, dir, speed) {
-    this.id = id;
-    this.x = x;
-    this.y = y;
-    this.direction = dir;
-    this.speed = speed;
+    this.id = id
+    this.x = x
+    this.y = y
+    this.direction = dir
+    this.speed = speed
     this.lastShot = null
     this.oldDirection = {
       x: null,
-      y: null
+      y: null,
     }
   }
 
@@ -28,21 +28,21 @@ class Object {
   }
 
   distanceTo(object) {
-    const dx = this.x - object.x;
-    const dy = this.y - object.y;
-    return Math.sqrt(dx * dx + dy * dy);
+    const dx = this.x - object.x
+    const dy = this.y - object.y
+    return Math.sqrt(dx * dx + dy * dy)
   }
 
   getZoneBounds(boundsA, boundsB) {
     if (
-      this.x > 0 &&
-      this.x < Constants.MAP_SIZE * boundsA &&
-      this.y > Constants.MAP_SIZE * boundsB &&
-      this.y < Constants.MAP_SIZE * boundsA ||
-      this.y > 0 &&
-      this.y < Constants.MAP_SIZE * boundsA &&
-      this.x > Constants.MAP_SIZE * boundsB &&
-      this.x < Constants.MAP_SIZE * boundsA
+      (this.x > 0 &&
+        this.x < Constants.MAP_SIZE * boundsA &&
+        this.y > Constants.MAP_SIZE * boundsB &&
+        this.y < Constants.MAP_SIZE * boundsA) ||
+      (this.y > 0 &&
+        this.y < Constants.MAP_SIZE * boundsA &&
+        this.x > Constants.MAP_SIZE * boundsB &&
+        this.x < Constants.MAP_SIZE * boundsA)
     ) {
       return true
     }
@@ -50,7 +50,7 @@ class Object {
   }
 
   setDirection(dir) {
-    this.direction = dir;
+    this.direction = dir
   }
 
   udpateLastShot(id) {
@@ -62,8 +62,8 @@ class Object {
       id: this.id,
       x: this.x,
       y: this.y,
-    };
+    }
   }
 }
 
-module.exports = Object;
+module.exports = Object

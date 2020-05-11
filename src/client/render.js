@@ -1,45 +1,50 @@
 // Learn more about this file at:
 // https://victorzhou.com/blog/build-an-io-game-part-1/#5-client-rendering
-import { debounce } from 'throttle-debounce';
-import { getAsset } from './assets';
-import { getCurrentState } from './state';
+import {debounce} from 'throttle-debounce'
+import {getAsset} from './assets'
+import {getCurrentState} from './state'
 
-const Constants = require('../shared/constants');
+const Constants = require('../shared/constants')
 
-const { PLAYER_RADIUS, MAP_SIZE } = Constants;
+const {PLAYER_RADIUS, MAP_SIZE} = Constants
 
 // Get the canvas graphics context
-const canvas = document.getElementById('game-canvas');
-const context = canvas.getContext('2d', {alpha: false});
-setCanvasDimensions();
+const canvas = document.getElementById('game-canvas')
+const context = canvas.getContext('2d', {alpha: false})
+setCanvasDimensions()
 
 function setCanvasDimensions() {
   // On small screens (e.g. phones), we want to "zoom out" so players can still see at least
   // 800 in-game units of width.
-  const scaleRatio = Math.max(1, 800 / window.innerWidth);
-  canvas.width = scaleRatio * window.innerWidth;
-  canvas.height = scaleRatio * window.innerHeight;
+  const scaleRatio = Math.max(1, 800 / window.innerWidth)
+  canvas.width = scaleRatio * window.innerWidth
+  canvas.height = scaleRatio * window.innerHeight
 }
 
-window.addEventListener('resize', debounce(40, setCanvasDimensions));
+window.addEventListener('resize', debounce(40, setCanvasDimensions))
 
 function render() {
-  const { me, others, bullets, zombies, things, leaderboard } = getCurrentState();
+  const {me, others, bullets, zombies, things, leaderboard} = getCurrentState()
   if (!me) {
-    return;
+    return
   }
 
   // Draw background
-  renderBackground(me.x, me.y);
+  renderBackground(me.x, me.y)
 
   // Draw boundaries
-  context.strokeStyle = 'black';
-  context.lineWidth = 1;
-  context.strokeRect(canvas.width / 2 - me.x, canvas.height / 2 - me.y, MAP_SIZE, MAP_SIZE);
+  context.strokeStyle = 'black'
+  context.lineWidth = 1
+  context.strokeRect(
+    canvas.width / 2 - me.x,
+    canvas.height / 2 - me.y,
+    MAP_SIZE,
+    MAP_SIZE
+  )
 
   // Draw all players
-  renderPlayer(me, leaderboard, me);
-  others.forEach(renderPlayer.bind(null, me, leaderboard));
+  renderPlayer(me, leaderboard, me)
+  others.forEach(renderPlayer.bind(null, me, leaderboard))
 
   // Draw all things
   things.forEach(renderThing.bind(null, me))
@@ -48,7 +53,7 @@ function render() {
   zombies.forEach(renderZombie.bind(null, me))
 
   // Draw all bullets
-  bullets.forEach(renderBullet.bind(null, me));
+  bullets.forEach(renderBullet.bind(null, me))
 }
 
 function renderBackground(x, y) {
@@ -68,18 +73,18 @@ function renderBackground(x, y) {
 
 // Renders a ship at the given coordinates
 function renderPlayer(me, leaderboard, player) {
-  const { x, y, direction, rotate, icon, username, mode } = player;
+  const {x, y, direction, rotate, icon, username, mode} = player
   const {level} = player.experience
-  const canvasX = canvas.width / 2 + x - me.x;
-  const canvasY = canvas.height / 2 + y - me.y;
+  const canvasX = canvas.width / 2 + x - me.x
+  const canvasY = canvas.height / 2 + y - me.y
 
   if (player.mode === 'dead') return
 
   // Draw player
-  context.save();
+  context.save()
   // context.shadowColor = 'red';
   // context.shadowBlur = 15;
-  context.translate(canvasX, canvasY);
+  context.translate(canvasX, canvasY)
   context.rotate(rotate)
 
   const getPlayerBgIcon = () => {
@@ -102,21 +107,20 @@ function renderPlayer(me, leaderboard, player) {
     const coeff = 3
     context.drawImage(
       getAsset(getPlayerBgIcon()),
-      -PLAYER_RADIUS * coeff / 2,
-      -PLAYER_RADIUS * coeff / 2,
+      (-PLAYER_RADIUS * coeff) / 2,
+      (-PLAYER_RADIUS * coeff) / 2,
       PLAYER_RADIUS * coeff,
-      PLAYER_RADIUS * coeff,
-    );
+      PLAYER_RADIUS * coeff
+    )
   }
-
 
   context.drawImage(
     getAsset(icon),
     -PLAYER_RADIUS,
     -PLAYER_RADIUS,
     PLAYER_RADIUS * 2,
-    PLAYER_RADIUS * 2,
-  );
+    PLAYER_RADIUS * 2
+  )
 
   // if (me.id === player.id) {
   //   context.drawImage(
@@ -127,7 +131,7 @@ function renderPlayer(me, leaderboard, player) {
   //     PLAYER_RADIUS,
   //   )
   // }
-  context.restore();
+  context.restore()
 
   // Test effect
   // context.fillStyle = 'rgba(255, 255, 255, 0.1)';
@@ -141,14 +145,12 @@ function renderPlayer(me, leaderboard, player) {
   // Username
   const nickname = `${username || 'Anonymous'}`
   const username_colors = ['gold', 'silver', 'chocolate']
-  const player_position = leaderboard
-    .find(p => p.id === player.id)
-    .position
+  const player_position = leaderboard.find((p) => p.id === player.id).position
 
   if (player_position === 1) {
-    context.font = '700 18px Roboto serif';
+    context.font = '700 18px Roboto serif'
   } else {
-    context.font = '400 18px Roboto serif';
+    context.font = '400 18px Roboto serif'
   }
 
   context.textAlign = 'center'
@@ -156,32 +158,33 @@ function renderPlayer(me, leaderboard, player) {
   if (player_position <= 3) {
     context.fillStyle = username_colors[player_position - 1]
   }
-  context.fillText(
-    nickname,
-    canvasX,
-    canvasY - PLAYER_RADIUS - 14
-  );
+  context.fillText(nickname, canvasX, canvasY - PLAYER_RADIUS - 14)
 
   // Draw health bar
-  context.fillStyle = 'white';
+  context.fillStyle = 'white'
   context.fillRect(
     canvasX - PLAYER_RADIUS,
     canvasY + PLAYER_RADIUS + 14,
     PLAYER_RADIUS * 2,
-    2,
-  );
-  context.fillStyle = 'red';
+    2
+  )
+  context.fillStyle = 'red'
 
   context.fillRect(
-    canvasX - PLAYER_RADIUS + PLAYER_RADIUS * 2 * player.hp / (player.passive_skills.hp * player.parameters.hp),
+    canvasX -
+      PLAYER_RADIUS +
+      (PLAYER_RADIUS * 2 * player.hp) /
+        (player.passive_skills.hp * player.parameters.hp),
     canvasY + PLAYER_RADIUS + 14,
-    PLAYER_RADIUS * 2 * (1 - player.hp / (player.passive_skills.hp * player.parameters.hp)),
-    2,
-  );
+    PLAYER_RADIUS *
+      2 *
+      (1 - player.hp / (player.passive_skills.hp * player.parameters.hp)),
+    2
+  )
 }
 
 function renderBullet(me, bullet) {
-  const { x, y, radius, icon } = bullet;
+  const {x, y, radius, icon} = bullet
   const {use_fire_bullets} = me.active_skills
 
   context.save()
@@ -201,44 +204,44 @@ function renderBullet(me, bullet) {
     canvas.width / 2 + x - me.x - radius,
     canvas.height / 2 + y - me.y - radius,
     radius * 2,
-    radius * 2,
-  );
-  
+    radius * 2
+  )
+
   context.restore()
 }
 
 function renderZombie(me, zombie) {
   const {x, y, direction, hp, max_hp, rotate, icon} = zombie
-  const canvasX = canvas.width / 2 + x - me.x;
-  const canvasY = canvas.height / 2 + y - me.y;
+  const canvasX = canvas.width / 2 + x - me.x
+  const canvasY = canvas.height / 2 + y - me.y
 
   context.save()
-  context.translate(canvasX, canvasY);
+  context.translate(canvasX, canvasY)
   context.rotate(rotate)
   context.drawImage(
     getAsset(icon),
     -zombie.radius,
     -zombie.radius,
     zombie.radius * 2,
-    zombie.radius * 2,
+    zombie.radius * 2
   )
   context.restore()
 
   // Draw health bar
-  context.fillStyle = 'white';
+  context.fillStyle = 'white'
   context.fillRect(
     canvasX - zombie.radius,
     canvasY + zombie.radius + 8,
     zombie.radius * 2,
-    2,
-  );
-  context.fillStyle = 'red';
+    2
+  )
+  context.fillStyle = 'red'
   context.fillRect(
-    canvasX - zombie.radius + zombie.radius * 2 * zombie.hp / zombie.max_hp,
+    canvasX - zombie.radius + (zombie.radius * 2 * zombie.hp) / zombie.max_hp,
     canvasY + zombie.radius + 8,
     zombie.radius * 2 * (1 - zombie.hp / zombie.max_hp),
-    2,
-  );
+    2
+  )
 }
 
 function renderThing(me, thing) {
@@ -248,21 +251,15 @@ function renderThing(me, thing) {
 
   context.save()
   context.translate(canvasX, canvasY)
-  context.drawImage(
-    getAsset(icon),
-    -radius,
-    -radius,
-    radius * 2,
-    radius * 2,
-  )
+  context.drawImage(getAsset(icon), -radius, -radius, radius * 2, radius * 2)
   context.restore()
 }
 
 function renderMainMenu() {
-  const t = Date.now() / 7500;
-  const x = MAP_SIZE / 2 + 800 * Math.cos(t);
-  const y = MAP_SIZE / 2 + 800 * Math.sin(t);
-  renderBackground(x, y);
+  const t = Date.now() / 7500
+  const x = MAP_SIZE / 2 + 800 * Math.cos(t)
+  const y = MAP_SIZE / 2 + 800 * Math.sin(t)
+  renderBackground(x, y)
 }
 
 let renderInterval = stopRendering()

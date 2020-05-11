@@ -1,11 +1,11 @@
 const healthBar = document.querySelector('.health-bar')
 const span = healthBar.querySelector('span')
-const Constants = require('../shared/constants');
+const Constants = require('../shared/constants')
 
-export const updateHealthBar = me => {
+export const updateHealthBar = (me) => {
   const {hp} = me
   const max_hp = me.parameters.hp * me.passive_skills.hp
-  const percent = hp * 100 / max_hp
+  const percent = (hp * 100) / max_hp
   healthBar.style['background-image'] = `linear-gradient(
     0deg,
     #AA0300 0%,
@@ -21,7 +21,7 @@ export const updateHealthBar = me => {
   }
 }
 
-export const setHealthBarHidden = hidden => {
+export const setHealthBarHidden = (hidden) => {
   if (hidden) {
     // healthBar.classList.add('hidden');
     healthBar.style.left = '-100px'

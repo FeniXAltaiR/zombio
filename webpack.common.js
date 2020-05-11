@@ -1,9 +1,9 @@
 // Learn more about this file at:
 // https://victorzhou.com/blog/build-an-io-game-part-1/#2-builds--project-setup
-const path = require('path');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CopyWebpackPlugin= require('copy-webpack-plugin')
+const path = require('path')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 module.exports = {
   entry: {
@@ -19,7 +19,7 @@ module.exports = {
         test: /\.js$/,
         exclude: /node_modules/,
         use: {
-          loader: "babel-loader",
+          loader: 'babel-loader',
           options: {
             presets: ['@babel/preset-env'],
           },
@@ -44,12 +44,15 @@ module.exports = {
       filename: 'index.html',
       template: 'src/client/html/index.html',
     }),
-    new CopyWebpackPlugin([{
-      from: './public/assets',
-      to: './assets'
-    }, {
-      from: './robots.txt',
-      to: './'
-    }]),
+    new CopyWebpackPlugin([
+      {
+        from: './public/assets',
+        to: './assets',
+      },
+      {
+        from: './robots.txt',
+        to: './',
+      },
+    ]),
   ],
-};
+}

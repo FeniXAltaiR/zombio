@@ -4,7 +4,7 @@
   /* top: 10px; */
   top: -100px;
   left: 100px;
-  transition: all 1s ease
+  transition: all 1s ease;
 }
 
 .effects img {
@@ -23,7 +23,7 @@
   padding-left: 20px;
   background-image: url('/assets/effects_buffs.svg');
   background-repeat: no-repeat;
-  height: 50px
+  height: 50px;
 }
 
 .effects__debuffs {
@@ -36,5 +36,5 @@
   padding-left: 20px;
   background-image: url('/assets/effects_debuffs.svg');
   background-repeat: no-repeat;
-  height: 50px
+  height: 50px;
 }

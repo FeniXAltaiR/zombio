@@ -1,55 +1,54 @@
 // Learn more about this file at:
 // https://victorzhou.com/blog/build-an-io-game-part-1/#4-client-networking
-import io from 'socket.io-client';
-import { throttle } from 'throttle-debounce';
-import { processGameUpdate } from './state';
+import io from 'socket.io-client'
+import {throttle} from 'throttle-debounce'
+import {processGameUpdate} from './state'
 
-const Constants = require('../shared/constants');
+const Constants = require('../shared/constants')
 
-const socket = io(`wss://${window.location.host}`, {
+const socket = io(`ws://${window.location.host}`, {
   reconnection: false,
-  transports: ['websocket']
-});
-const connectedPromise = new Promise(resolve => {
+  transports: ['websocket'],
+})
+const connectedPromise = new Promise((resolve) => {
   socket.on('connect', () => {
-    console.log('Connected to server!');
-    resolve();
-  });
-});
+    console.log('Connected to server!')
+    resolve()
+  })
+})
 
 const saveIdToLocalStorage = ({id, score}) => {
   localStorage.setItem('id_player', id)
   socket.emit(Constants.MSG_TYPES.SAVE_ID_PLAYER, {
     id,
-    score
+    score,
   })
 }
 
-export const connect = onGameOver => (
+export const connect = (onGameOver) =>
   connectedPromise.then(() => {
     // Register callbacks
-    socket.on(Constants.MSG_TYPES.GAME_UPDATE, processGameUpdate);
-    socket.on(Constants.MSG_TYPES.GAME_OVER, onGameOver);
-    socket.on(Constants.MSG_TYPES.SAVE_ID_PLAYER, saveIdToLocalStorage);
+    socket.on(Constants.MSG_TYPES.GAME_UPDATE, processGameUpdate)
+    socket.on(Constants.MSG_TYPES.GAME_OVER, onGameOver)
+    socket.on(Constants.MSG_TYPES.SAVE_ID_PLAYER, saveIdToLocalStorage)
     socket.on('disconnect', () => {
-      console.log('Disconnected from server.');
-      document.getElementById('disconnect-modal').classList.remove('hidden');
+      console.log('Disconnected from server.')
+      document.getElementById('disconnect-modal').classList.remove('hidden')
       document.getElementById('reconnect-button').onclick = () => {
-        window.location.reload();
-      };
-    });
+        window.location.reload()
+      }
+    })
   })
-);
 
-export const play = options => {
-  socket.emit(Constants.MSG_TYPES.JOIN_GAME, options);
-};
+export const play = (options) => {
+  socket.emit(Constants.MSG_TYPES.JOIN_GAME, options)
+}
 
-export const updateDirection = throttle(20, dir => {
-  socket.emit(Constants.MSG_TYPES.INPUT, dir);
-});
+export const updateDirection = throttle(20, (dir) => {
+  socket.emit(Constants.MSG_TYPES.INPUT, dir)
+})
 
-export const changeRotate = throttle(20, rotate => {
+export const changeRotate = throttle(20, (rotate) => {
   socket.emit(Constants.MSG_TYPES.ROTATE, rotate)
 })
 
@@ -57,22 +56,22 @@ export const createBullet = () => {
   socket.emit(Constants.MSG_TYPES.CLICK)
 }
 
-export const levelUp = code => {
+export const levelUp = (code) => {
   socket.emit(Constants.MSG_TYPES.LEVEL_UP, code)
 }
 
-export const updateWeapon = weapon => {
+export const updateWeapon = (weapon) => {
   socket.emit(Constants.MSG_TYPES.UPDATE_WEAPON, weapon)
 }
 
-export const addNewSkill = skill => {
+export const addNewSkill = (skill) => {
   socket.emit(Constants.MSG_TYPES.ADD_NEW_SKILL, skill)
 }
 
-export const useActiveSkill = skill => {
+export const useActiveSkill = (skill) => {
   socket.emit(Constants.MSG_TYPES.USE_ACTIVE_SKILL, skill)
 }
 
-export const sendReview = review => {
+export const sendReview = (review) => {
   socket.emit(Constants.MSG_TYPES.SEND_REVIEW, review)
 }

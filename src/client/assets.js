@@ -29,35 +29,36 @@
 //   'passive_skills_cooldown.svg',
 //   'passive_skills_damage.svg',
 //   'passive_skills_accuracy.svg',
-  
+
 //   'player_man1.svg',
 //   'player_man2.svg',
 //   'player_man3.svg'
 // ];
 
-const ASSET_NAMES = require.context('../../public/assets/', false, /\.(png|svg)$/)
+const ASSET_NAMES = require
+  .context('../../public/assets/', false, /\.(png|svg)$/)
   .keys()
-  .map(key => {
+  .map((key) => {
     const file = key.replace('./', '')
     return file
   })
 
-const assets = {};
+const assets = {}
 
-const downloadPromise = Promise.all(ASSET_NAMES.map(downloadAsset));
+const downloadPromise = Promise.all(ASSET_NAMES.map(downloadAsset))
 
 function downloadAsset(assetName) {
-  return new Promise(resolve => {
-    const asset = new Image();
-    asset.src = `assets/${assetName}`;
+  return new Promise((resolve) => {
+    const asset = new Image()
+    asset.src = `assets/${assetName}`
     asset.onload = () => {
       // console.log(`Downloaded ${assetName}`);
-      assets[assetName] = asset;
-      resolve();
-    };
-  });
+      assets[assetName] = asset
+      resolve()
+    }
+  })
 }
 
-export const downloadAssets = () => downloadPromise;
+export const downloadAssets = () => downloadPromise
 
-export const getAsset = assetName => assets[assetName];
+export const getAsset = (assetName) => assets[assetName]

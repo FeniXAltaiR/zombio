@@ -1,14 +1,22 @@
-const ObjectClass = require('./object');
-const Bullet = require('./bullet');
-const Constants = require('../shared/constants');
+const ObjectClass = require('./object')
+const Bullet = require('./bullet')
+const Constants = require('../shared/constants')
 
 class Player extends ObjectClass {
-  constructor({id, username, x, y, icon, score = 0, rotate = Math.random() * 2 * Math.PI}) {
-    super(id, x, y, null, 0);
+  constructor({
+    id,
+    username,
+    x,
+    y,
+    icon,
+    score = 0,
+    rotate = Math.random() * 2 * Math.PI,
+  }) {
+    super(id, x, y, null, 0)
     this.options = {
       parameters: {
         hp: 300,
-        speed: 300
+        speed: 300,
       },
       used_skill_points: {
         hp: {
@@ -30,7 +38,7 @@ class Player extends ObjectClass {
         cooldown: {
           value: 0,
           color: 'greenyellow',
-        }
+        },
       },
       passive_skills: {
         speed: 1,
@@ -38,7 +46,7 @@ class Player extends ObjectClass {
         accuracy: 1,
         defense: 1,
         damage: 1,
-        cooldown: 1
+        cooldown: 1,
       },
       active_skills: {
         use_double_bullets: false,
@@ -46,44 +54,44 @@ class Player extends ObjectClass {
         debuffs: {
           fire: {
             value: false,
-            timeout: null
-          }
+            timeout: null,
+          },
         },
         first_skill: {
           value: null,
           keyCode: 'E',
-          cooldown: false
+          cooldown: false,
         },
         second_skill: {
           value: null,
           keyCode: 'Q',
-          cooldown: false
+          cooldown: false,
         },
         ultra_skill: {
           value: null,
           keyCode: 'R',
-          cooldown: false
+          cooldown: false,
         },
-        teleport: (skill_name => {
+        teleport: (skill_name) => {
           this.x += Math.sin(this.rotate) * 750
           this.y -= Math.cos(this.rotate) * 750
           this.resetActiveSkill(skill_name, 20000)
-        }),
-        double_bullets: (skill_name => {
+        },
+        double_bullets: (skill_name) => {
           this.options.active_skills.use_double_bullets = true
           setTimeout(() => {
             this.options.active_skills.use_double_bullets = false
           }, 10000)
           this.resetActiveSkill(skill_name, 30000)
-        }),
-        fire_bullets: (skill_name => {
+        },
+        fire_bullets: (skill_name) => {
           this.options.active_skills.use_fire_bullets = true
           setTimeout(() => {
             this.options.active_skills.use_fire_bullets = false
           }, 10000)
           this.resetActiveSkill(skill_name, 30000)
-        }),
-        defense: (skill_name => {
+        },
+        defense: (skill_name) => {
           this.options.passive_skills.defense -= 0.35
           this.setEffect('buff', 'defense')
           setTimeout(() => {
@@ -91,8 +99,8 @@ class Player extends ObjectClass {
             this.setEffect('debuff', 'defense')
           }, 10000)
           this.resetActiveSkill(skill_name, 25000)
-        }),
-        speed: (skill_name => {
+        },
+        speed: (skill_name) => {
           this.options.passive_skills.speed += 0.5
           this.setEffect('buff', 'speed')
           setTimeout(() => {
@@ -100,35 +108,41 @@ class Player extends ObjectClass {
             this.setEffect('debuff', 'speed')
           }, 5000)
           this.resetActiveSkill(skill_name, 25000)
-        }),
-        hp: (skill_name => {
+        },
+        hp: (skill_name) => {
           this.updateHp(200)
           this.resetActiveSkill(skill_name, 25000)
-        }),
-        ultimate: (skill_name => {
+        },
+        ultimate: (skill_name) => {
           const amount_bullets = 36
           for (let i = 0; i < amount_bullets; i++) {
             const bullet_options = {
               parentID: this.id,
-              x: this.x + Math.sin(this.rotate + (Math.PI / (amount_bullets / 2) * i)) * (Constants.PLAYER_RADIUS + 25),
-              y: this.y - Math.cos(this.rotate + (Math.PI / (amount_bullets / 2) * i)) * (Constants.PLAYER_RADIUS + 25),
-              rotate: this.rotate + (Math.PI / (amount_bullets / 2) * i),
+              x:
+                this.x +
+                Math.sin(this.rotate + (Math.PI / (amount_bullets / 2)) * i) *
+                  (Constants.PLAYER_RADIUS + 25),
+              y:
+                this.y -
+                Math.cos(this.rotate + (Math.PI / (amount_bullets / 2)) * i) *
+                  (Constants.PLAYER_RADIUS + 25),
+              rotate: this.rotate + (Math.PI / (amount_bullets / 2)) * i,
               radius: 12,
               speed: 450,
               damage: 20,
               distance: 1500,
               effect: 'fire',
-              icon: 'bullet_fire.svg'
+              icon: 'bullet_fire.svg',
             }
             this.bullets.push(new Bullet(bullet_options))
           }
           this.resetActiveSkill(skill_name, 30000)
-        })
+        },
       },
       zones_effects: {
         hp: 0,
         speed: 0,
-        defense: 0
+        defense: 0,
       },
       killed_bosses: {
         boss_easy: {
@@ -138,7 +152,7 @@ class Player extends ObjectClass {
             this.updateHp(this.options.parameters.hp * 1)
             this.setNotifyMsg('Maximum health has increased!')
             this.clearNotifyMsg()
-          }
+          },
         },
         boss_normal: {
           value: false,
@@ -146,7 +160,7 @@ class Player extends ObjectClass {
             this.options.passive_skills.cooldown -= 0.1
             this.setNotifyMsg('Cooldown of skills has decreased!')
             this.clearNotifyMsg()
-          }
+          },
         },
         boss_hard: {
           value: false,
@@ -154,7 +168,7 @@ class Player extends ObjectClass {
             this.options.passive_skills.damage += 0.25
             this.setNotifyMsg('Damage of weapon has increased!')
             this.clearNotifyMsg()
-          }
+          },
         },
         boss_legend: {
           value: false,
@@ -162,8 +176,8 @@ class Player extends ObjectClass {
             this.options.active_skills.ultra_skill.value = 'ultimate'
             this.setNotifyMsg('New skill!')
             this.clearNotifyMsg()
-          }
-        }
+          },
+        },
       },
       buffs: {
         hp: () => {
@@ -225,52 +239,51 @@ class Player extends ObjectClass {
             fire.value = false
             this.setEffect('buff', 'hp', 5)
           }, 1000)
-        }
+        },
       },
-      effects: {
-      },
+      effects: {},
       researches: {
         weapon: 'pistol',
         level: 3,
-        'uzi': {
+        uzi: {
           weapon: 'uzi',
           level: 7,
-          'machinegun': {
+          machinegun: {
             weapon: 'machinegun',
           },
-          'sniper_rifle': {
-            weapon: 'sniper_rifle'
+          sniper_rifle: {
+            weapon: 'sniper_rifle',
           },
-          'auto_shotgun': {
-            weapon: 'auto_shotgun'
-          }
+          auto_shotgun: {
+            weapon: 'auto_shotgun',
+          },
         },
-        'rifle': {
+        rifle: {
           weapon: 'rifle',
           level: 7,
-          'machinegun': {
+          machinegun: {
             weapon: 'machinegun',
           },
-          'sniper_rifle': {
-            weapon: 'sniper_rifle'
+          sniper_rifle: {
+            weapon: 'sniper_rifle',
           },
-          'auto_shotgun': {
-            weapon: 'auto_shotgun'
-          }
+          auto_shotgun: {
+            weapon: 'auto_shotgun',
+          },
         },
-        'shotgun': {
+        shotgun: {
           weapon: 'shotgun',
           level: 7,
-          'machinegun': {
+          machinegun: {
             weapon: 'machinegun',
           },
-          'sniper_rifle': {
-            weapon: 'sniper_rifle'
+          sniper_rifle: {
+            weapon: 'sniper_rifle',
           },
-          'auto_shotgun': {
-            weapon: 'auto_shotgun'
-          }
-        }
+          auto_shotgun: {
+            weapon: 'auto_shotgun',
+          },
+        },
       },
       weapons: {
         pistol: {
@@ -280,7 +293,7 @@ class Player extends ObjectClass {
           speed: 750,
           damage: 25,
           distance: 400,
-          noise: 0.3
+          noise: 0.3,
         },
         uzi: {
           name: 'uzi',
@@ -289,7 +302,7 @@ class Player extends ObjectClass {
           speed: 900,
           damage: 20,
           distance: 500,
-          noise: 0.4
+          noise: 0.4,
         },
         machinegun: {
           name: 'machinegun',
@@ -298,7 +311,7 @@ class Player extends ObjectClass {
           speed: 1050,
           damage: 40,
           distance: 800,
-          noise: 0.5
+          noise: 0.5,
         },
         shotgun: {
           name: 'shotgun',
@@ -307,7 +320,7 @@ class Player extends ObjectClass {
           speed: 600,
           damage: 25,
           distance: 400,
-          noise: 0
+          noise: 0,
         },
         auto_shotgun: {
           name: 'auto_shotgun',
@@ -316,7 +329,7 @@ class Player extends ObjectClass {
           speed: 600,
           damage: 30,
           distance: 500,
-          noise: 0
+          noise: 0,
         },
         rifle: {
           name: 'rifle',
@@ -325,7 +338,7 @@ class Player extends ObjectClass {
           speed: 900,
           damage: 35,
           distance: 700,
-          noise: 0.2
+          noise: 0.2,
         },
         sniper_rifle: {
           name: 'sniper_rifle',
@@ -334,25 +347,25 @@ class Player extends ObjectClass {
           speed: 1500,
           damage: 110,
           distance: 1000,
-          noise: 0
-        }
-      }
+          noise: 0,
+        },
+      },
     }
     this.statistic = {
       amount_bullets: 0,
       amount_things: 0,
       amount_zombies: 0,
-      amount_recovery_hp: 0
+      amount_recovery_hp: 0,
     }
-    this.notify = {
-      msg: ''
-    },
-    this.mode = ''
-    this.username = username;
+    ;(this.notify = {
+      msg: '',
+    }),
+      (this.mode = '')
+    this.username = username
     this.icon = icon
-    this.hp = this.options.parameters.hp;
+    this.hp = this.options.parameters.hp
     this.score = score;
-    // this.score = 500000;
+    // this.score = 1890000
     this.rotate = rotate
     this.bullets = []
     this.weapon = {...this.options.weapons.pistol}
@@ -362,20 +375,26 @@ class Player extends ObjectClass {
       level: 1,
       nextLevel: 0,
       skill_points: 1,
-      currentScore: 0
+      currentScore: 0,
     }
   }
 
   // Returns a newly created bullet, or null.
   update(dt) {
     if (this.mode === 'dead') return
-    super.update(dt);
+    super.update(dt)
 
     this.updateSpeed(dt)
 
     // Make sure the player stays in bounds
-    this.x = Math.max(0 + Constants.PLAYER_RADIUS, Math.min(Constants.MAP_SIZE - Constants.PLAYER_RADIUS, this.x));
-    this.y = Math.max(0 + Constants.PLAYER_RADIUS, Math.min(Constants.MAP_SIZE - Constants.PLAYER_RADIUS, this.y));
+    this.x = Math.max(
+      0 + Constants.PLAYER_RADIUS,
+      Math.min(Constants.MAP_SIZE - Constants.PLAYER_RADIUS, this.x)
+    )
+    this.y = Math.max(
+      0 + Constants.PLAYER_RADIUS,
+      Math.min(Constants.MAP_SIZE - Constants.PLAYER_RADIUS, this.y)
+    )
 
     // Check player, where he is
     this.checkZonePlayer(dt)
@@ -393,7 +412,7 @@ class Player extends ObjectClass {
       return newBullets
     }
 
-    return null;
+    return null
   }
 
   setNotifyMsg(msg) {
@@ -440,20 +459,20 @@ class Player extends ObjectClass {
     }
 
     const zones = {
-      green: (dt => {
+      green: (dt) => {
         this.options.zones_effects.hp = 1
         this.updateHp(dt)
-      }),
-      yellow: (dt => {
+      },
+      yellow: (dt) => {
         this.options.zones_effects.speed = -0.25
-      }),
-      violet: (dt => {
+      },
+      violet: (dt) => {
         this.options.zones_effects.defense = -0.25
-      }),
-      red: (dt => {
+      },
+      red: (dt) => {
         this.options.zones_effects.hp = -1
         this.updateHp(-dt)
-      })
+      },
     }
 
     resetZonesEffects()
@@ -461,16 +480,13 @@ class Player extends ObjectClass {
     if (this.getZoneBounds(1, 0.75)) {
       zones.green(dt)
       this.setEffect('buff', 'hp')
-    }
-    else if (this.getZoneBounds(0.75, 0.5)) {
+    } else if (this.getZoneBounds(0.75, 0.5)) {
       zones.yellow(dt)
       this.setEffect('debuff', 'speed')
-    }
-    else if (this.getZoneBounds(0.5, 0.25)) {
+    } else if (this.getZoneBounds(0.5, 0.25)) {
       zones.violet(dt)
       this.setEffect('debuff', 'defense')
-    }
-    else if (this.getZoneBounds(0.25, 0)) {
+    } else if (this.getZoneBounds(0.25, 0)) {
       zones.red(dt)
       this.setEffect('debuff', 'hp')
     }
@@ -479,7 +495,11 @@ class Player extends ObjectClass {
   updateWeapon(weapon_name) {
     const {level} = this.experience
     const {weapons} = this.options
-    if (this.research.level && level >= this.research.level && this.research[weapon_name]) {
+    if (
+      this.research.level &&
+      level >= this.research.level &&
+      this.research[weapon_name]
+    ) {
       this.research = this.research[weapon_name]
       this.weapon = {...weapons[this.research.weapon]}
     }
@@ -498,12 +518,15 @@ class Player extends ObjectClass {
     const skills = {
       '69': 'first_skill',
       '81': 'second_skill',
-      '82': 'ultra_skill'
+      '82': 'ultra_skill',
     }
     const skill_name = skills[skill]
     const active_skills = this.options.active_skills
     const active_skill = active_skills[active_skills[skill_name].value]
-    if (this.options.active_skills[skill_name].cooldown === false && active_skills[skill_name].value !== null) {
+    if (
+      this.options.active_skills[skill_name].cooldown === false &&
+      active_skills[skill_name].value !== null
+    ) {
       active_skill(skill_name)
     }
   }
@@ -595,7 +618,10 @@ class Player extends ObjectClass {
       const {radius, speed, damage, distance, noise} = this.weapon
       const modDamage = damage * this.options.passive_skills.damage
       const getRotate = () => {
-        return this.rotate + ((Math.random() - 0.5) * (noise * this.options.passive_skills.accuracy))
+        return (
+          this.rotate +
+          (Math.random() - 0.5) * (noise * this.options.passive_skills.accuracy)
+        )
       }
       const getBulletEffect = () => {
         const {use_fire_bullets} = this.options.active_skills
@@ -614,7 +640,7 @@ class Player extends ObjectClass {
         damage: modDamage,
         distance,
         effect: getBulletEffect(),
-        icon: this.getBulletIcon()
+        icon: this.getBulletIcon(),
       }
 
       this.fireCooldown = this.weapon.fire_cooldown
@@ -627,18 +653,18 @@ class Player extends ObjectClass {
                 ...bullet_options,
                 x: this.x + Math.cos(this.rotate) * Constants.PLAYER_RADIUS,
                 y: this.y + Math.sin(this.rotate) * Constants.PLAYER_RADIUS,
-                rotate: this.rotate + rotate
+                rotate: this.rotate + rotate,
               }),
               new Bullet({
                 ...bullet_options,
                 x: this.x - Math.cos(this.rotate) * Constants.PLAYER_RADIUS,
                 y: this.y - Math.sin(this.rotate) * Constants.PLAYER_RADIUS,
-                rotate: this.rotate + rotate
-              }),
+                rotate: this.rotate + rotate,
+              })
             )
           }, [])
         } else {
-          this.bullets = rotates.map(rotate => {
+          this.bullets = rotates.map((rotate) => {
             return new Bullet({
               ...bullet_options,
               rotate: this.rotate + rotate,
@@ -654,18 +680,18 @@ class Player extends ObjectClass {
                 ...bullet_options,
                 x: this.x + Math.cos(this.rotate) * Constants.PLAYER_RADIUS,
                 y: this.y + Math.sin(this.rotate) * Constants.PLAYER_RADIUS,
-                rotate: this.rotate + rotate
+                rotate: this.rotate + rotate,
               }),
               new Bullet({
                 ...bullet_options,
                 x: this.x - Math.cos(this.rotate) * Constants.PLAYER_RADIUS,
                 y: this.y - Math.sin(this.rotate) * Constants.PLAYER_RADIUS,
-                rotate: this.rotate + rotate
-              }),
+                rotate: this.rotate + rotate,
+              })
             )
           }, [])
         } else {
-          this.bullets = rotates.map(rotate => {
+          this.bullets = rotates.map((rotate) => {
             return new Bullet({
               ...bullet_options,
               rotate: this.rotate + rotate,
@@ -681,24 +707,26 @@ class Player extends ObjectClass {
                   ...bullet_options,
                   x: this.x + Math.cos(this.rotate) * Constants.PLAYER_RADIUS,
                   y: this.y + Math.sin(this.rotate) * Constants.PLAYER_RADIUS,
-                  rotate: getRotate()
+                  rotate: getRotate(),
                 }),
                 new Bullet({
                   ...bullet_options,
                   x: this.x - Math.cos(this.rotate) * Constants.PLAYER_RADIUS,
                   y: this.y - Math.sin(this.rotate) * Constants.PLAYER_RADIUS,
-                  rotate: getRotate()
-                })
+                  rotate: getRotate(),
+                }),
               ]
             }, i * 100)
           }
         } else {
           for (let i = 0; i < 3; i++) {
             setTimeout(() => {
-              this.bullets.push(new Bullet({
-                ...bullet_options,
-                rotate: getRotate()
-              }))
+              this.bullets.push(
+                new Bullet({
+                  ...bullet_options,
+                  rotate: getRotate(),
+                })
+              )
             }, i * 100)
           }
         }
@@ -709,20 +737,22 @@ class Player extends ObjectClass {
               ...bullet_options,
               x: this.x + Math.cos(this.rotate) * Constants.PLAYER_RADIUS,
               y: this.y + Math.sin(this.rotate) * Constants.PLAYER_RADIUS,
-              rotate: getRotate()
+              rotate: getRotate(),
             }),
             new Bullet({
               ...bullet_options,
               x: this.x - Math.cos(this.rotate) * Constants.PLAYER_RADIUS,
               y: this.y - Math.sin(this.rotate) * Constants.PLAYER_RADIUS,
-              rotate: getRotate()
-            })
+              rotate: getRotate(),
+            }),
           ]
         } else {
-          this.bullets.push(new Bullet({
-            ...bullet_options,
-            rotate: getRotate()
-          }))
+          this.bullets.push(
+            new Bullet({
+              ...bullet_options,
+              rotate: getRotate(),
+            })
+          )
         }
       }
 
@@ -755,7 +785,7 @@ class Player extends ObjectClass {
   }
 
   onDealtDamage(damage) {
-    this.score += Math.round(damage);
+    this.score += Math.round(damage)
   }
 
   onKilledPlayer(xp) {
@@ -782,7 +812,9 @@ class Player extends ObjectClass {
   }
 
   updateSpeed(dt) {
-    const max_speed = this.options.parameters.speed * (this.options.passive_skills.speed + this.options.zones_effects.speed)
+    const max_speed =
+      this.options.parameters.speed *
+      (this.options.passive_skills.speed + this.options.zones_effects.speed)
     if (this.direction === null) {
       this.speed = Math.max(0, Math.min(max_speed, this.speed - dt * max_speed))
     } else {
@@ -795,7 +827,10 @@ class Player extends ObjectClass {
     if (this.hp + value > this.options.parameters.hp * hp) {
       this.hp = this.options.parameters.hp * hp
       if (value >= 0) {
-        this.updateStatistic('amount_recovery_hp', this.options.parameters.hp * hp - this.hp)
+        this.updateStatistic(
+          'amount_recovery_hp',
+          this.options.parameters.hp * hp - this.hp
+        )
       }
     } else {
       this.hp += value
@@ -810,7 +845,7 @@ class Player extends ObjectClass {
       '49': 'hp',
       '50': 'speed',
       '51': 'defense',
-      '52': 'cooldown'
+      '52': 'cooldown',
     }
     const codes = {
       hp: () => {
@@ -833,7 +868,7 @@ class Player extends ObjectClass {
       cooldown: () => {
         this.options.passive_skills.cooldown -= 0.05
         this.options.used_skill_points.cooldown.value += 1
-      }
+      },
     }
     const skill = skills[code] || code
 
@@ -867,7 +902,7 @@ class Player extends ObjectClass {
 
   serializeForUpdate() {
     return {
-      ...(super.serializeForUpdate()),
+      ...super.serializeForUpdate(),
       direction: this.direction,
       hp: this.hp,
       rotate: this.rotate,
@@ -878,7 +913,7 @@ class Player extends ObjectClass {
         first_skill: this.options.active_skills.first_skill,
         second_skill: this.options.active_skills.second_skill,
         ultra_skill: this.options.active_skills.ultra_skill,
-        use_fire_bullets: this.options.active_skills.use_fire_bullets
+        use_fire_bullets: this.options.active_skills.use_fire_bullets,
       },
       parameters: this.options.parameters,
       used_skill_points: this.options.used_skill_points,
@@ -888,9 +923,9 @@ class Player extends ObjectClass {
       score: this.score,
       effects: this.options.effects,
       notify: this.notify,
-      mode: this.mode
-    };
+      mode: this.mode,
+    }
   }
 }
 
-module.exports = Player;
+module.exports = Player

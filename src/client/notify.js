@@ -1,11 +1,11 @@
 const notification = document.querySelector('.notification')
 
-export const updateNotify = me => {
+export const updateNotify = (me) => {
   const {notify} = me
   notification.innerHTML = notify.msg
 }
 
-export const setNotifyHidden = hidden => {
+export const setNotifyHidden = (hidden) => {
   if (hidden) {
     // notification.classList.add('hidden');
     notification.style.top = '-100px'

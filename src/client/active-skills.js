@@ -1,17 +1,17 @@
 const activeSkills = document.querySelector('.active-skills')
 const skills = activeSkills.querySelectorAll('.active-skills__skill')
 
-const getCooldown = skill => {
+const getCooldown = (skill) => {
   if (skill.cooldown) {
     return true
   }
   return false
 }
 
-export const updateActiveSkills = me => {
+export const updateActiveSkills = (me) => {
   const {first_skill, second_skill, ultra_skill} = me.active_skills
 
-  skills.forEach(nodeSkill => {
+  skills.forEach((nodeSkill) => {
     const skill_name = nodeSkill.dataset.name
     const p = nodeSkill.querySelector('p')
     p.innerHTML = me.active_skills[skill_name].keyCode
@@ -43,12 +43,12 @@ export const updateActiveSkills = me => {
   })
 }
 
-export const setActiveSkillsHidden = hidden => {
+export const setActiveSkillsHidden = (hidden) => {
   if (hidden) {
-    activeSkills.classList.add('hidden');
+    activeSkills.classList.add('hidden')
     activeSkills.style.bottom = '-100px'
   } else {
-    activeSkills.classList.remove('hidden');
+    activeSkills.classList.remove('hidden')
     activeSkills.style.bottom = '10px'
   }
 }

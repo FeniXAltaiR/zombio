@@ -28,27 +28,27 @@
   margin-bottom: 5px;
 }
 
-.active-skills__skill[data-name="first_skill"] {
+.active-skills__skill[data-name='first_skill'] {
   position: fixed;
   left: calc(50vw + 202px);
   bottom: -100px;
-  transition: all 1s ease
+  transition: all 1s ease;
 }
 
-.active-skills__skill[data-name="second_skill"] {
+.active-skills__skill[data-name='second_skill'] {
   position: fixed;
   left: calc(50vw - 276px);
   bottom: -100px;
-  transition: all 1s ease
+  transition: all 1s ease;
 }
 
-.active-skills__skill[data-name="ultra_skill"] {
+.active-skills__skill[data-name='ultra_skill'] {
   position: fixed;
   left: calc(50vw + 276px);
   bottom: -100px;
-  transition: all 1s ease
+  transition: all 1s ease;
 }
 
 .active-skills__cooldown {
-  opacity: .25
+  opacity: 0.25;
 }

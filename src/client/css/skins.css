@@ -8,7 +8,7 @@
   display: -o-flex;
   display: flex;
   justify-content: center;
-  background: linear-gradient(180deg, #5F2A6B 0%, #CDABCE 100%);
+  background: linear-gradient(180deg, #5f2a6b 0%, #cdabce 100%);
   padding: 0 5px;
 }
 
@@ -39,7 +39,7 @@
 }
 
 .skins .skins__radio--active img {
-  background: #6D9C00;
+  background: #6d9c00;
   border-radius: 15px;
 }
 
@@ -64,7 +64,7 @@
 .skins img {
   width: 64px;
   height: 64px;
-  background: linear-gradient(180deg, #F1E6E1 0%, #CDC6C5 100%);
+  background: linear-gradient(180deg, #f1e6e1 0%, #cdc6c5 100%);
   border-radius: 8px;
   margin: 10px 0;
   cursor: pointer;
@@ -72,5 +72,5 @@
 
 .skins img:hover {
   /*transform: scale(1.1);*/
-  transition: all .25s ease;
+  transition: all 0.25s ease;
 }

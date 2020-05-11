@@ -2,7 +2,12 @@
   position: fixed;
   top: calc(50vh - 240px);
   left: calc(50vw + 200px);
-  background: linear-gradient(355.31deg, rgba(186, 118, 189, 0.46) 0.11%, rgba(128, 69, 137, 0.780876) 58.14%, #592365 97.77%);
+  background: linear-gradient(
+    355.31deg,
+    rgba(186, 118, 189, 0.46) 0.11%,
+    rgba(128, 69, 137, 0.780876) 58.14%,
+    #592365 97.77%
+  );
   border-radius: 5px;
   color: white;
   padding: 10px;
@@ -11,7 +16,7 @@
 .guide h2 {
   text-align: center;
   padding-bottom: 4px;
-  border-bottom: 1px solid rgba(0, 0, 0, .2)
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
 }
 
 .guide__item--main {

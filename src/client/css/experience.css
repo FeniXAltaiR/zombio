@@ -25,7 +25,7 @@
 }
 
 .experience .experience__current {
-  border: 1px solid rgba(0, 0, 0, .9);
+  border: 1px solid rgba(0, 0, 0, 0.9);
   border-radius: 15px;
   width: 350px;
   height: 25px;

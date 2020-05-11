@@ -1,15 +1,15 @@
-const Constants = require('../shared/constants');
-const Player = require('./player');
-const Bullet = require('./bullet');
-const Zombie = require('./zombie');
-const Thing = require('./thing');
-const Collisions = require('./collisions');
+const Constants = require('../shared/constants')
+const Player = require('./player')
+const Bullet = require('./bullet')
+const Zombie = require('./zombie')
+const Thing = require('./thing')
+const Collisions = require('./collisions')
 
 const {
   applyCollisionsPlayers,
   applyCollisionsZombies,
   applyCollisionsPlayersAndZombies,
-  applyCollisionsPlayersAndThings
+  applyCollisionsPlayersAndThings,
 } = Collisions
 
 const createXpList = () => {
@@ -35,67 +35,66 @@ class Game {
     setInterval(this.update.bind(this), 1000 / 24)
     this.options = {
       xp_levels: createXpList(),
-      // things: ['hp', 'speed', 'accuracy', 'portal', 'defense', 'damage'],
       things: {
         hp: {
           radius: 20,
-          amount: 55
+          amount: 55,
         },
         speed: {
           radius: 20,
-          amount: 55
+          amount: 55,
         },
         accuracy: {
           radius: 20,
-          amount: 55
+          amount: 55,
         },
         portal: {
           radius: 28,
-          amount: 25
+          amount: 25,
         },
         defense: {
           radius: 20,
-          amount: 55
+          amount: 55,
         },
         damage: {
           radius: 20,
-          amount: 55
+          amount: 55,
         },
         fire: {
           radius: 25,
-          amount: 55
-        }
+          amount: 55,
+        },
       },
       zombies: {
         easy: {
           amount: 180,
-          bounds: [1, 0.75]
+          bounds: [1, 0.75],
         },
         normal: {
           amount: 140,
-          bounds: [0.75, 0.5]
+          bounds: [0.75, 0.5],
         },
         hard: {
           amount: 100,
-          bounds: [0.5, 0.25]
+          bounds: [0.5, 0.25],
         },
         boss_easy: {
           amount: 10,
-          bounds: [1, 0.75]
+          bounds: [1, 0.75],
         },
         boss_normal: {
           amount: 5,
-          bounds: [0.75, 0.5]
+          bounds: [0.75, 0.5],
         },
         boss_hard: {
           amount: 3,
-          bounds: [0.5, 0.25]
+          bounds: [0.5, 0.25],
         },
         boss_legend: {
           amount: 1,
-          bounds: [0.25, 0]
-        }
-      }
+          bounds: [0.25, 0],
+        },
+      },
     }
     this.createZombies()
     setInterval(this.respawnZombies.bind(this), 60000)
@@ -104,23 +103,27 @@ class Game {
     this.trash = {
       bullets_removed: [],
       zombies_removed: [],
-      things_removed: []
+      things_removed: [],
     }
     // tests
-    this.operations = 0
+    // this.operations = 0
   }
 
-  createZombie (x, y, type) {
+  createZombie(x, y, type) {
     const zombie = new Zombie(x, y, type)
     this.zombies.push(zombie)
   }
 
   createZombies() {
-    Object.keys(this.options.zombies).forEach(type => {
+    Object.keys(this.options.zombies).forEach((type) => {
       const {amount} = this.options.zombies[type]
       const [boundsA, boundsB] = this.options.zombies[type].bounds
       for (let i = 0; i < amount; i++) {
-        const [x, y] = this.respawnCoords(boundsA, boundsB, this.checkPlayersInRadius.bind(this))
+        const [x, y] = this.respawnCoords(
+          boundsA,
+          boundsB,
+          this.checkPlayersInRadius.bind(this)
+        )
         this.createZombie(x, y, type)
       }
     })
@@ -137,33 +140,40 @@ class Game {
       return total
     }, {})
 
-    Object.keys(this.options.zombies).forEach(type => {
+    Object.keys(this.options.zombies).forEach((type) => {
       const {amount} = this.options.zombies[type]
       const [boundsA, boundsB] = this.options.zombies[type].bounds
       for (let i = zombieTypes[type] || 0; i < amount; i++) {
-        const [x, y] = this.respawnCoords(boundsA, boundsB, this.checkPlayersInRadius.bind(this))
+        const [x, y] = this.respawnCoords(
+          boundsA,
+          boundsB,
+          this.checkPlayersInRadius.bind(this)
+        )
         this.createZombie(x, y, type)
       }
     })
   }
 
   createThing(name) {
-    const [x, y] = [Math.random() * Constants.MAP_SIZE, Math.random() * Constants.MAP_SIZE]
+    const [x, y] = [
+      Math.random() * Constants.MAP_SIZE,
+      Math.random() * Constants.MAP_SIZE,
+    ]
     const options = {
       name,
-      icon: `thing_${name}.svg`
+      icon: `thing_${name}.svg`,
     }
     const thing = new Thing({
       x,
       y,
       radius: this.options.things[name].radius,
-      options
+      options,
     })
     this.things.push(thing)
   }
 
-  createThings () {
-    Object.keys(this.options.things).forEach(name => {
+  createThings() {
+    Object.keys(this.options.things).forEach((name) => {
       for (let i = 0; i < this.options.things[name].amount; i++) {
         this.createThing(name)
       }
@@ -181,24 +191,32 @@ class Game {
       return total
     }, {})
 
-    Object.keys(this.options.things).forEach(name => {
-      for (let i = thingTypes[name] || 0; i < this.options.things[name].amount; i++) {
+    Object.keys(this.options.things).forEach((name) => {
+      for (
+        let i = thingTypes[name] || 0;
+        i < this.options.things[name].amount;
+        i++
+      ) {
         this.createThing(name)
       }
     })
   }
 
   checkZombiesInRadius(x, y) {
-    const findZombieInZone = this.zombies.find(zombie => zombie.distanceTo({x, y}) < 250)
+    const findZombieInZone = this.zombies.find(
+      (zombie) => zombie.distanceTo({x, y}) < 250
+    )
     return findZombieInZone
   }
 
   checkPlayersInRadius(x, y) {
-    const findPlayerInZone = Object.values(this.players).find(player => player.distanceTo({x, y}) < 250)
+    const findPlayerInZone = Object.values(this.players).find(
+      (player) => player.distanceTo({x, y}) < 250
+    )
     return findPlayerInZone
   }
 
-  respawnCoords (boundsA, boundsB, checkFn) {
+  respawnCoords(boundsA, boundsB, checkFn) {
     const rand = Math.random()
     let x
     let y
@@ -219,18 +237,22 @@ class Game {
   }
 
   addPlayer(socket, options) {
-    this.sockets[socket.id] = socket;
+    this.sockets[socket.id] = socket
 
-    const [x, y] = this.respawnCoords(1, 0.75, this.checkZombiesInRadius.bind(this))
+    const [x, y] = this.respawnCoords(
+      1,
+      0.75,
+      this.checkZombiesInRadius.bind(this)
+    )
     const {username, icon, score} = options
-    
+
     this.players[socket.id] = new Player({
       id: socket.id,
       username,
       x,
       y,
       icon,
-      score
+      score,
     })
   }
 
@@ -238,11 +260,11 @@ class Game {
     const player = this.players[socket.id]
     if (player) {
       this.watchers[socket.id] = {
-        score: player.score
+        score: player.score,
       }
     }
-    delete this.sockets[socket.id];
-    delete this.players[socket.id];
+    delete this.sockets[socket.id]
+    delete this.players[socket.id]
   }
 
   disconnectPlayer(socket) {
@@ -254,7 +276,7 @@ class Game {
 
   handleInput(socket, dir) {
     if (this.players[socket.id]) {
-      this.players[socket.id].setDirection(dir);
+      this.players[socket.id].setDirection(dir)
     }
   }
 
@@ -302,47 +324,56 @@ class Game {
 
   // Update zombies
   updateZombies(dt) {
-    this.zombies.forEach(zombie => {
-      const findCloserPlayer = Object.values(this.players)
-        .reduce((closerPlayer, player) => {
+    this.zombies.forEach((zombie) => {
+      const findCloserPlayer = Object.values(this.players).reduce(
+        (closerPlayer, player) => {
           const distanceToPlayer = zombie.distanceTo({x: player.x, y: player.y})
 
           if (closerPlayer === null) {
             if (
-              distanceToPlayer < zombie.agressiveDistance
-              && player.mode !== 'dead'
+              distanceToPlayer < zombie.agressiveDistance &&
+              player.mode !== 'dead'
             ) {
               return player
             }
           }
 
           if (closerPlayer) {
-            const distanceToCloserPlayer = zombie.distanceTo({x: closerPlayer.x, y: closerPlayer.y})
+            const distanceToCloserPlayer = zombie.distanceTo({
+              x: closerPlayer.x,
+              y: closerPlayer.y,
+            })
             if (
-              distanceToPlayer < zombie.agressiveDistance
-              && player.mode !== 'dead'
-              && distanceToPlayer < distanceToCloserPlayer
+              distanceToPlayer < zombie.agressiveDistance &&
+              player.mode !== 'dead' &&
+              distanceToPlayer < distanceToCloserPlayer
             ) {
               return player
             }
           }
 
           return closerPlayer
-        }, null)
+        },
+        null
+      )
 
       if (findCloserPlayer) {
         zombie.setMode('active')
-      } else if (zombie.checkLocationInZone() === false && zombie.mode !== 'returning' && zombie.changingDirection) {
+      } else if (
+        zombie.checkLocationInZone() === false &&
+        zombie.mode !== 'returning' &&
+        zombie.changingDirection
+      ) {
         zombie.setMode('returning')
         let x, y
         if (['easy', 'boss_easy'].includes(zombie.type.name)) {
-          [x, y] = this.respawnCoords(1, 0.75, false)
+          ;[x, y] = this.respawnCoords(1, 0.75, false)
         } else if (['normal', 'boss_normal'].includes(zombie.type.name)) {
-          [x, y] = this.respawnCoords(0.75, 0.5, false)
+          ;[x, y] = this.respawnCoords(0.75, 0.5, false)
         } else if (['hard', 'boss_hard'].includes(zombie.type.name)) {
-          [x, y] = this.respawnCoords(0.5, 0.25, false)
+          ;[x, y] = this.respawnCoords(0.5, 0.25, false)
         } else if (['boss_legend'].includes(zombie.type.name)) {
-          [x, y] = this.respawnCoords(0.25, 0, false)
+          ;[x, y] = this.respawnCoords(0.25, 0, false)
         }
         const dir = Math.atan2(x - zombie.x, zombie.y - y)
         zombie.setDirection(dir)
@@ -353,7 +384,10 @@ class Game {
       }
 
       if (zombie.mode === 'active' && findCloserPlayer) {
-        const dir = Math.atan2(findCloserPlayer.x - zombie.x, zombie.y - findCloserPlayer.y)
+        const dir = Math.atan2(
+          findCloserPlayer.x - zombie.x,
+          zombie.y - findCloserPlayer.y
+        )
         zombie.setDirection(dir)
         zombie.changeRotate(dir)
       }
@@ -385,8 +419,12 @@ class Game {
 
   collisionsBetweenPlayersAndZombies(zombie) {
     if (zombie.bite) {
-      const findCloserPlayer = Object.values(this.players)
-        .find(player => player.distanceTo({x: zombie.x, y: zombie.y}) <= Constants.PLAYER_RADIUS + zombie.radius / 1.5 && player.mode !== 'dead')
+      const findCloserPlayer = Object.values(this.players).find(
+        (player) =>
+          player.distanceTo({x: zombie.x, y: zombie.y}) <=
+            Constants.PLAYER_RADIUS + zombie.radius / 1.5 &&
+          player.mode !== 'dead'
+      )
 
       if (findCloserPlayer) {
         this.players[findCloserPlayer.id].takeBiteDamage(zombie.damage)
@@ -396,18 +434,23 @@ class Game {
   }
 
   collisionsBetweenZombies(zombie, dt) {
-    const findCloserZombie = this.zombies
-      .find(
-        secondZombie =>
-          zombie.distanceTo({x: secondZombie.x, y: secondZombie.y}) < zombie.radius + secondZombie.radius &&
-          secondZombie.id !== zombie.id
-      )
+    const findCloserZombie = this.zombies.find(
+      (secondZombie) =>
+        zombie.distanceTo({x: secondZombie.x, y: secondZombie.y}) <
+          zombie.radius + secondZombie.radius && secondZombie.id !== zombie.id
+    )
 
     if (findCloserZombie) {
-      const dir = Math.atan2(zombie.x - findCloserZombie.x, findCloserZombie.y - zombie.y)
+      const dir = Math.atan2(
+        zombie.x - findCloserZombie.x,
+        findCloserZombie.y - zombie.y
+      )
       zombie.setDirection(dir)
       findCloserZombie.setDirection(-dir)
-      if (['passive', 'returning'].includes(zombie.mode) || ['passive', 'returning'].includes(findCloserZombie.mode) ) {
+      if (
+        ['passive', 'returning'].includes(zombie.mode) ||
+        ['passive', 'returning'].includes(findCloserZombie.mode)
+      ) {
         zombie.changeRotate(dir)
         findCloserZombie.changeRotate(-dir)
         zombie.setMode('passive')
@@ -434,15 +477,21 @@ class Game {
         for (let i = 0; i < amount_bullets; i++) {
           const bullet_options = {
             parentID: zombie.id,
-            x: zombie.x + Math.sin(zombie.rotate + (Math.PI / (amount_bullets / 2) * i)) * (zombie.radius + 25),
-            y: zombie.y - Math.cos(zombie.rotate + (Math.PI / (amount_bullets / 2) * i)) * (zombie.radius + 25),
-            rotate: zombie.rotate + (Math.PI / (amount_bullets / 2) * i),
+            x:
+              zombie.x +
+              Math.sin(zombie.rotate + (Math.PI / (amount_bullets / 2)) * i) *
+                (zombie.radius + 25),
+            y:
+              zombie.y -
+              Math.cos(zombie.rotate + (Math.PI / (amount_bullets / 2)) * i) *
+                (zombie.radius + 25),
+            rotate: zombie.rotate + (Math.PI / (amount_bullets / 2)) * i,
             radius: 12,
             speed: 300,
             damage: 20,
             distance: 1500,
             effect: 'vampire',
-            icon: 'bullet_vampire.svg'
+            icon: 'bullet_vampire.svg',
           }
           this.bullets.push(new Bullet(bullet_options))
         }
@@ -456,23 +505,45 @@ class Game {
         for (let i = 0; i < amount_bullets; i++) {
           const bullet_options = {
             parentID: zombie.id,
-            x: zombie.x + Math.sin(zombie.rotate + (Math.PI / (amount_bullets / 2) * i)) * (zombie.radius + 25),
-            y: zombie.y - Math.cos(zombie.rotate + (Math.PI / (amount_bullets / 2) * i)) * (zombie.radius + 25),
-            rotate: zombie.rotate + (Math.PI / (amount_bullets / 2) * i),
+            x:
+              zombie.x +
+              Math.sin(zombie.rotate + (Math.PI / (amount_bullets / 2)) * i) *
+                (zombie.radius + 25),
+            y:
+              zombie.y -
+              Math.cos(zombie.rotate + (Math.PI / (amount_bullets / 2)) * i) *
+                (zombie.radius + 25),
+            rotate: zombie.rotate + (Math.PI / (amount_bullets / 2)) * i,
             radius: 15,
             speed: 300,
             damage: 20,
             distance: 1500,
             effect: 'fire',
-            icon: 'bullet_fire.svg'
+            icon: 'bullet_fire.svg',
           }
           this.bullets.push(new Bullet(bullet_options))
           setTimeout(() => {
-            this.bullets.push(new Bullet({
-              ...bullet_options,
-              x: zombie.x + Math.sin(zombie.rotate + (Math.PI / (amount_bullets / 2) * i) + (Math.PI / 6)) * (zombie.radius + 25),
-              y: zombie.y - Math.cos(zombie.rotate + (Math.PI / (amount_bullets / 2) * i) + (Math.PI / 6)) * (zombie.radius + 25),
-            }))
+            this.bullets.push(
+              new Bullet({
+                ...bullet_options,
+                x:
+                  zombie.x +
+                  Math.sin(
+                    zombie.rotate +
+                      (Math.PI / (amount_bullets / 2)) * i +
+                      Math.PI / 6
+                  ) *
+                    (zombie.radius + 25),
+                y:
+                  zombie.y -
+                  Math.cos(
+                    zombie.rotate +
+                      (Math.PI / (amount_bullets / 2)) * i +
+                      Math.PI / 6
+                  ) *
+                    (zombie.radius + 25),
+              })
+            )
           }, 300)
         }
         zombie.resetActiveSkill('use_create_fire_bullets')
@@ -481,7 +552,7 @@ class Game {
 
     if (zombie.mode === 'active') {
       const boss_type = zombie.type.name
-      
+
       if (boss_type === 'boss_normal') {
         boss_normal()
       }
@@ -503,13 +574,13 @@ class Game {
         const {x, y} = zombie
         const options = {
           name: 'hp',
-          icon: `thing_hp.svg`
+          icon: `thing_hp.svg`,
         }
         const thing = new Thing({
           x,
           y,
           radius: this.options.things.hp.radius,
-          options
+          options,
         })
         this.things.push(thing)
       }
@@ -541,20 +612,23 @@ class Game {
       player.setMode('dead')
       const {statistic, score} = this.players[id]
       setTimeout(() => {
-        socket.emit(Constants.MSG_TYPES.GAME_OVER, statistic);
+        socket.emit(Constants.MSG_TYPES.GAME_OVER, statistic)
         socket.emit(Constants.MSG_TYPES.SAVE_ID_PLAYER, {
           id,
-          score: score
-        });
-        this.removePlayer(socket);
+          score: score,
+        })
+        this.removePlayer(socket)
       }, 3500)
     }
   }
 
   checkThingsToRemove(id) {
-    this.things.forEach(thing => {
+    this.things.forEach((thing) => {
       const {x, y, radius} = thing
-      if (this.players[id].distanceTo({x, y}) <= Constants.PLAYER_RADIUS + radius) {
+      if (
+        this.players[id].distanceTo({x, y}) <=
+        Constants.PLAYER_RADIUS + radius
+      ) {
         this.players[id].takeBuff(thing.options.name)
         this.trash.things_removed.push(thing.id)
       }
@@ -564,48 +638,53 @@ class Game {
   createBullets(id, dt) {
     const newBullets = this.players[id].update(dt)
     if (newBullets) {
-      newBullets.forEach(newBullet => {
+      newBullets.forEach((newBullet) => {
         this.bullets.push(newBullet)
       })
     }
   }
 
   getLeaderboard() {
-    return Object.values(this.players)
-      .sort((p1, p2) => p2.score - p1.score)
-      // .slice(0, 5)
-      .map((p, position) => ({
-        id: p.id,
-        username: p.username,
-        score: Math.round(p.score),
-        level: p.experience.level,
-        position: position + 1
-      }));
+    return (
+      Object.values(this.players)
+        .sort((p1, p2) => p2.score - p1.score)
+        // .slice(0, 5)
+        .map((p, position) => ({
+          id: p.id,
+          username: p.username,
+          score: Math.round(p.score),
+          level: p.experience.level,
+          position: position + 1,
+        }))
+    )
   }
 
   sendGameUpdate() {
     if (this.shouldSendUpdate) {
-      const leaderboard = this.getLeaderboard();
-      Object.keys(this.sockets).forEach(id_socket => {
+      const leaderboard = this.getLeaderboard()
+      Object.keys(this.sockets).forEach((id_socket) => {
         const socket = this.sockets[id_socket]
         const {x, y, id} = this.players[id_socket]
-        socket.emit(Constants.MSG_TYPES.GAME_UPDATE, this.createUpdate({x, y, id}, leaderboard));
+        socket.emit(
+          Constants.MSG_TYPES.GAME_UPDATE,
+          this.createUpdate({x, y, id}, leaderboard)
+        )
       })
-      this.shouldSendUpdate = false;
+      this.shouldSendUpdate = false
     } else {
-      this.shouldSendUpdate = true;
+      this.shouldSendUpdate = true
     }
   }
 
   // Update bullets
   checkBulletShootPlayers({x, y, parentID, damage, radius, effect, id}) {
-    const player = Object.values(this.players)
-      .find(closerPlayer =>
+    const player = Object.values(this.players).find(
+      (closerPlayer) =>
         parentID !== closerPlayer.id &&
         closerPlayer.distanceTo({x, y}) <= Constants.PLAYER_RADIUS + radius &&
         closerPlayer.hp > 0 &&
         closerPlayer.mode !== 'dead'
-      )
+    )
 
     if (player) {
       if (damage < player.hp) {
@@ -614,7 +693,7 @@ class Game {
       player.takeBulletDamage({damage})
       player.udpateLastShot(parentID)
       if (this.players[parentID]) {
-        this.players[parentID].onDealtDamage(damage);
+        this.players[parentID].onDealtDamage(damage)
         if (player.hp <= 0) {
           this.players[parentID].udpateLastShot(null)
           this.players[parentID].onKilledPlayer(player.score)
@@ -625,7 +704,7 @@ class Game {
       if (effect === 'fire') {
         player.activeDebuff('fire')
       } else if (effect === 'vampire') {
-        const findZombie = this.zombies.find(zomb => zomb.id === parentID)
+        const findZombie = this.zombies.find((zomb) => zomb.id === parentID)
         if (findZombie) {
           findZombie.updateHp(damage * 20)
         }
@@ -634,11 +713,11 @@ class Game {
   }
 
   checkBulletShootZombies({x, y, parentID, damage, radius, effect, id}) {
-    const zombie = this.zombies
-      .find(closerZombie =>
+    const zombie = this.zombies.find(
+      (closerZombie) =>
         parentID !== closerZombie.id &&
         closerZombie.distanceTo({x, y}) <= closerZombie.radius + radius
-      )
+    )
 
     if (zombie) {
       if (damage < zombie.hp) {
@@ -647,14 +726,18 @@ class Game {
       zombie.takeBulletDamage({damage})
       zombie.udpateLastShot(parentID)
       if (this.players[parentID]) {
-        this.players[parentID].onDealtDamage(damage);
+        this.players[parentID].onDealtDamage(damage)
       }
       if (zombie.hp <= 0) {
         const xp = zombie.type.xp
         if (this.players[parentID]) {
           zombie.udpateLastShot(null)
           this.players[parentID].onKilledZombie(xp)
-          if (['boss_easy', 'boss_normal', 'boss_hard', 'boss_legend'].includes(zombie.type.name)) {
+          if (
+            ['boss_easy', 'boss_normal', 'boss_hard', 'boss_legend'].includes(
+              zombie.type.name
+            )
+          ) {
             this.players[parentID].activeBossBonus(zombie.type.name)
           }
         }
@@ -663,7 +746,7 @@ class Game {
       if (effect === 'fire') {
         zombie.activeDebuff('fire')
       } else if (effect === 'vampire') {
-        const findZombie = this.zombies.find(zomb => zomb.id === parentID)
+        const findZombie = this.zombies.find((zomb) => zomb.id === parentID)
         if (findZombie) {
           findZombie.updateHp(damage * 2)
         }
@@ -673,7 +756,7 @@ class Game {
 
   checkBulletPassingThroughFire(bullet, things_fire) {
     const {x, y} = bullet
-    things_fire.forEach(fire => {
+    things_fire.forEach((fire) => {
       if (fire.distanceTo({x, y}) < bullet.radius + fire.radius) {
         bullet.effect = 'fire'
         bullet.icon = 'bullet_fire.svg'
@@ -683,28 +766,36 @@ class Game {
 
   updateBullet(bullet, dt) {
     if (bullet.update(dt)) {
-      this.trash.bullets_removed.push(bullet.id);
+      this.trash.bullets_removed.push(bullet.id)
     }
   }
 
   // Update trash
   clearTrash() {
-    this.bullets = this.bullets.filter(bullet => !this.trash.bullets_removed.includes(bullet.id))
-    this.things = this.things.filter(thing => !this.trash.things_removed.includes(thing.id))
-    this.zombies = this.zombies.filter(zombie => !this.trash.zombies_removed.includes(zombie.id))
+    this.bullets = this.bullets.filter(
+      (bullet) => !this.trash.bullets_removed.includes(bullet.id)
+    )
+    this.things = this.things.filter(
+      (thing) => !this.trash.things_removed.includes(thing.id)
+    )
+    this.zombies = this.zombies.filter(
+      (zombie) => !this.trash.zombies_removed.includes(zombie.id)
+    )
   }
 
   update() {
     // Calculate time elapsed
-    const now = Date.now();
-    const dt = (now - this.lastUpdateTime) / 1000;
+    const now = Date.now()
+    const dt = (now - this.lastUpdateTime) / 1000
     // console.log(dt)
-    this.lastUpdateTime = now;
+    this.lastUpdateTime = now
 
     // Update each bullet
-    const things_fire = this.things.filter(thing => thing.options.name === 'fire')
+    const things_fire = this.things.filter(
+      (thing) => thing.options.name === 'fire'
+    )
 
-    this.bullets.forEach(bullet => {
+    this.bullets.forEach((bullet) => {
       this.checkBulletShootPlayers(bullet)
       this.checkBulletShootZombies(bullet)
       this.checkBulletPassingThroughFire(bullet, things_fire)
@@ -712,7 +803,7 @@ class Game {
     })
 
     // Update each player
-    Object.keys(this.sockets).forEach(id_socket => {
+    Object.keys(this.sockets).forEach((id_socket) => {
       const socket = this.sockets[id_socket]
       const player = this.players[id_socket]
       const {x, y, id, hp} = player
@@ -720,7 +811,7 @@ class Game {
       this.createBullets(id, dt)
       this.checkThingsToRemove(id)
       this.checkPlayerIsAlive(socket, {hp, id})
-    });
+    })
 
     // Update each zombie
     this.updateZombies(dt)
@@ -730,29 +821,29 @@ class Game {
   }
 
   createUpdate({x, y, id}, leaderboard) {
-    const nearbyPlayers = Object.values(this.players).filter(p => {
+    const nearbyPlayers = Object.values(this.players).filter((p) => {
       return p.id !== id && p.distanceTo({x, y}) <= 1500
     })
-    const nearbyBullets = this.bullets.filter(b => {
+    const nearbyBullets = this.bullets.filter((b) => {
       return b.distanceTo({x, y}) <= 1500
     })
-    const nearbyZombies = this.zombies.filter(z => {
+    const nearbyZombies = this.zombies.filter((z) => {
       return z.distanceTo({x, y}) <= 1500
     })
-    const nearbyThings = this.things.filter(t => {
+    const nearbyThings = this.things.filter((t) => {
       return t.distanceTo({x, y}) <= 1500
     })
 
     return {
       t: Date.now(),
       me: this.players[id].serializeForUpdate(),
-      others: nearbyPlayers.map(p => p.serializeForUpdate()),
-      bullets: nearbyBullets.map(b => b.serializeForUpdate()),
-      zombies: nearbyZombies.map(z => z.serializeForUpdate()),
-      things: nearbyThings.map(t => t.serializeForUpdate()),
+      others: nearbyPlayers.map((p) => p.serializeForUpdate()),
+      bullets: nearbyBullets.map((b) => b.serializeForUpdate()),
+      zombies: nearbyZombies.map((z) => z.serializeForUpdate()),
+      things: nearbyThings.map((t) => t.serializeForUpdate()),
       leaderboard,
-    };
+    }
   }
 }
 
-module.exports = Game;
+module.exports = Game

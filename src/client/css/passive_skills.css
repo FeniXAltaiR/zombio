@@ -4,7 +4,7 @@
   bottom: 10px;
   right: -160px;
   /* right: 10px; */
-  transition: all 1s ease
+  transition: all 1s ease;
 }
 
 .passive-skills__skill {
@@ -35,22 +35,27 @@
 .passive-skills__points span {
   padding: 2px 10px;
   border-radius: 5px;
-  background: linear-gradient(355.31deg, rgba(186, 118, 189, 0.46) 0.11%, rgba(128, 69, 137, 0.780876) 58.14%, #592365 97.77%);
+  background: linear-gradient(
+    355.31deg,
+    rgba(186, 118, 189, 0.46) 0.11%,
+    rgba(128, 69, 137, 0.780876) 58.14%,
+    #592365 97.77%
+  );
 }
 
-.passive-skills__skill[data-name="hp"] {
+.passive-skills__skill[data-name='hp'] {
   background-image: url('/assets/bg_passive_hp.png');
 }
 
-.passive-skills__skill[data-name="speed"] {
+.passive-skills__skill[data-name='speed'] {
   background-image: url('/assets/bg_passive_speed.png');
 }
 
-.passive-skills__skill[data-name="defense"] {
+.passive-skills__skill[data-name='defense'] {
   background-image: url('/assets/bg_passive_defense.png');
 }
 
-.passive-skills__skill[data-name="cooldown"] {
+.passive-skills__skill[data-name='cooldown'] {
   background-image: url('/assets/bg_passive_cooldown.png');
 }
 
@@ -67,7 +72,7 @@
   margin-top: 5px;
   margin-right: 17px;
   margin-left: 19px;
-  transition: all .25s ease;
+  transition: all 0.25s ease;
   cursor: pointer;
 }
 
@@ -80,21 +85,21 @@
 }
 
 .passive-skills__skill--violet {
-  background: violet
+  background: violet;
 }
 
 .passive-skills__skill--blue {
-  background: blue
+  background: blue;
 }
 
 .passive-skills__skill--greenyellow {
-  background: greenyellow
+  background: greenyellow;
 }
 
 .passive-skills__skill--lightblue {
-  background: #7F92FF
+  background: #7f92ff;
 }
 
 .passive-skills__skill--gray {
-  background: #ccc
+  background: #ccc;
 }

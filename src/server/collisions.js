@@ -1,25 +1,17 @@
-const Constants = require('../shared/constants');
+const Constants = require('../shared/constants')
 
 // Returns an array of bullets to be destroyed.
-function applyCollisionsPlayers(players, bullets, zombies) {
+function applyCollisionsPlayers(players, bullets, zombies) {}
 
-}
+function applyCollisionsZombies(zombies, bullets, players) {}
 
-function applyCollisionsZombies(zombies, bullets, players) {
-  
-}
+function applyCollisionsPlayersAndZombies(players, zombies) {}
 
-function applyCollisionsPlayersAndZombies(players, zombies) {
-
-}
-
-function applyCollisionsPlayersAndThings(players, things) {
-
-}
+function applyCollisionsPlayersAndThings(players, things) {}
 
 module.exports = {
   applyCollisionsPlayers,
   applyCollisionsZombies,
   applyCollisionsPlayersAndZombies,
-  applyCollisionsPlayersAndThings
+  applyCollisionsPlayersAndThings,
 }

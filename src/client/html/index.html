@@ -1,267 +1,394 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Qvent.io</title>
-  <meta name="description" content="Qventio - a multiplayer io-game with skills, parameters, monsterts, bosses and more. Join to us!"/>
-  <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
-  <meta content="utf-8" http-equiv="encoding">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <link rel="icon" href="assets/favicon.svg" sizes="any" type="image/svg+xml">
-  <meta property="description" content="Qventio - multiplayer game">
-  <meta property="og:title" content="Qvent.io">
-  <meta property="og:description" content="Qventio - multiplayer game">
-  <meta property="og:image" content="/assets/icon1200.png">
-  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-58664433-3"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
+  <head>
+    <title>Qvent.io</title>
+    <meta
+      name="description"
+      content="Qventio - a multiplayer io-game with skills, parameters, monsterts, bosses and more. Join to us!"
+    />
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type" />
+    <meta content="utf-8" http-equiv="encoding" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <link
+      rel="icon"
+      href="assets/favicon.svg"
+      sizes="any"
+      type="image/svg+xml"
+    />
+    <meta property="description" content="Qventio - multiplayer game" />
+    <meta property="og:title" content="Qvent.io" />
+    <meta property="og:description" content="Qventio - multiplayer game" />
+    <meta property="og:image" content="/assets/icon1200.png" />
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=UA-58664433-3"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || []
+      function gtag() {
+        dataLayer.push(arguments)
+      }
+      gtag('js', new Date())
 
-    gtag('config', 'UA-58664433-3');
-  </script>
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-  <script>
-    (adsbygoogle = window.adsbygoogle || []).push({
-      google_ad_client: "ca-pub-3947416439266490",
-      enable_page_level_ads: true
-    });
-  </script>
-  <!-- Yandex.Metrika counter -->
-  <script type="text/javascript" >
-     (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
-     m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
-     (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+      gtag('config', 'UA-58664433-3')
+    </script>
+    <script
+      async
+      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"
+    ></script>
+    <script>
+      ;(adsbygoogle = window.adsbygoogle || []).push({
+        google_ad_client: 'ca-pub-3947416439266490',
+        enable_page_level_ads: true,
+      })
+    </script>
+    <!-- Yandex.Metrika counter -->
+    <script type="text/javascript">
+      ;(function (m, e, t, r, i, k, a) {
+        m[i] =
+          m[i] ||
+          function () {
+            ;(m[i].a = m[i].a || []).push(arguments)
+          }
+        m[i].l = 1 * new Date()
+        ;(k = e.createElement(t)),
+          (a = e.getElementsByTagName(t)[0]),
+          (k.async = 1),
+          (k.src = r),
+          a.parentNode.insertBefore(k, a)
+      })(
+        window,
+        document,
+        'script',
+        'https://mc.yandex.ru/metrika/tag.js',
+        'ym'
+      )
 
-     ym(55179031, "init", {
-          clickmap:true,
-          trackLinks:true,
-          accurateTrackBounce:true
-     });
-  </script>
-  <noscript><div><img src="https://mc.yandex.ru/watch/55179031" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
-  <!-- /Yandex.Metrika counter -->
-</head>
-<body>
-  <canvas id="game-canvas"></canvas>
-  <div class="play-menu" class="hidden">
-    <div id="play-menu">
-      <h1>Qventio</h1>
-      <input type="text" id="username-input" placeholder="Username" />
-      <div class="play-menu__controls">
-        <button data-name="skins">Skins</button>
-        <button id="play-button">Play</button>
+      ym(55179031, 'init', {
+        clickmap: true,
+        trackLinks: true,
+        accurateTrackBounce: true,
+      })
+    </script>
+    <noscript
+      ><div>
+        <img
+          src="https://mc.yandex.ru/watch/55179031"
+          style="position: absolute; left: -9999px;"
+          alt=""
+        /></div
+    ></noscript>
+    <!-- /Yandex.Metrika counter -->
+  </head>
+  <body>
+    <canvas id="game-canvas"></canvas>
+    <div class="play-menu" class="hidden">
+      <div id="play-menu">
+        <h1>Qventio</h1>
+        <input type="text" id="username-input" placeholder="Username" />
+        <div class="play-menu__controls">
+          <button data-name="skins">Skins</button>
+          <button id="play-button">Play</button>
+        </div>
+        <div class="play-menu__statistic"></div>
       </div>
-      <div class="play-menu__statistic"></div>
     </div>
-  </div>
 
-  <div class="guide">
-    <h2>Controls</h2>
-    <div class="guide__item--main guide__item">
-      <img src="assets/guide_mouse.svg" alt="">
-      <span>Fire</span>
-    </div>
-    <div class="guide__item--main guide__item">
-      <span>WASD - </span>
-      <span>Move</span>
-    </div>
-    <h2>Parameters, effects</h2>
-    <div class="guide__item guide__item--effects">
-      <img src="assets/guide_buffs.svg" alt="">
-      <span>Positive effects</span>
-    </div>
-    <div class="guide__item guide__item--effects">
-      <img src="assets/guide_debuffs.svg" alt="">
-      <span>Negative effects</span>
-    </div>
-    <div class="flex justify-space-between">
-      <div class="guide__item">
-        <img src="assets/passive_skills_hp.svg" alt="">
-        <span>Hp (key 1)</span>
+    <div class="guide">
+      <h2>Controls</h2>
+      <div class="guide__item--main guide__item">
+        <img src="assets/guide_mouse.svg" alt="" />
+        <span>Fire</span>
       </div>
-      <div class="guide__item">
-        <span>Speed (key 2)</span>
-        <img src="assets/passive_skills_speed.svg" alt="">
+      <div class="guide__item--main guide__item">
+        <span>WASD - </span>
+        <span>Move</span>
+      </div>
+      <h2>Parameters, effects</h2>
+      <div class="guide__item guide__item--effects">
+        <img src="assets/guide_buffs.svg" alt="" />
+        <span>Positive effects</span>
+      </div>
+      <div class="guide__item guide__item--effects">
+        <img src="assets/guide_debuffs.svg" alt="" />
+        <span>Negative effects</span>
+      </div>
+      <div class="flex justify-space-between">
+        <div class="guide__item">
+          <img src="assets/passive_skills_hp.svg" alt="" />
+          <span>Hp (key 1)</span>
+        </div>
+        <div class="guide__item">
+          <span>Speed (key 2)</span>
+          <img src="assets/passive_skills_speed.svg" alt="" />
+        </div>
+      </div>
+      <div class="flex justify-space-between">
+        <div class="guide__item">
+          <img src="assets/passive_skills_defense.svg" alt="" />
+          <span>Defense (key 3)</span>
+        </div>
+        <div class="guide__item">
+          <span>Cooldown (key 4)</span>
+          <img src="assets/passive_skills_cooldown.svg" alt="" />
+        </div>
+      </div>
+      <div class="flex justify-space-between">
+        <div class="guide__item">
+          <img src="assets/thing_accuracy.svg" alt="" />
+          <span>Accuracy</span>
+        </div>
+        <div class="guide__item">
+          <span>Portal</span>
+          <img src="assets/thing_portal.svg" alt="" />
+        </div>
       </div>
     </div>
-    <div class="flex justify-space-between">
-      <div class="guide__item">
-        <img src="assets/passive_skills_defense.svg" alt="">
-        <span>Defense (key 3)</span>
-      </div>
-      <div class="guide__item">
-        <span>Cooldown (key 4)</span>
-        <img src="assets/passive_skills_cooldown.svg" alt="">
-      </div>
-    </div>
-    <div class="flex justify-space-between">
-      <div class="guide__item">
-        <img src="assets/thing_accuracy.svg" alt="">
-        <span>Accuracy</span>
-      </div>
-      <div class="guide__item">
-        <span>Portal</span>
-        <img src="assets/thing_portal.svg" alt="">
-      </div>
-    </div>
-  </div>
 
-  <div class="weapons select-none"></div>
-  
-  <div class="skins">
-    <div class="skins__controls">
-      <div class="skins__radio">
-        <span data-icon="1" class="skins__radio--active"><img src="assets/player_1.svg" alt=""></span>
-        <span data-icon="2"><img src="assets/player_2.svg" alt=""></span>
-        <span data-icon="3"><img src="assets/player_3.svg" alt=""></span>
-        <span data-icon="4"><img src="assets/player_4.svg" alt=""></span>
-        <span data-icon="5"><img src="assets/player_5.svg" alt=""></span>
-        <span data-icon="6"><img src="assets/player_6.svg" alt=""></span>
-        <span data-icon="7"><img src="assets/player_7.svg" alt=""></span>
-        <span data-icon="8"><img src="assets/player_8.svg" alt=""></span>
+    <div class="weapons select-none"></div>
+
+    <div class="skins">
+      <div class="skins__controls">
+        <div class="skins__radio">
+          <span data-icon="1" class="skins__radio--active"
+            ><img src="assets/player_1.svg" alt=""
+          /></span>
+          <span data-icon="2"><img src="assets/player_2.svg" alt="" /></span>
+          <span data-icon="3"><img src="assets/player_3.svg" alt="" /></span>
+          <span data-icon="4"><img src="assets/player_4.svg" alt="" /></span>
+          <span data-icon="5"><img src="assets/player_5.svg" alt="" /></span>
+          <span data-icon="6"><img src="assets/player_6.svg" alt="" /></span>
+          <span data-icon="7"><img src="assets/player_7.svg" alt="" /></span>
+          <span data-icon="8"><img src="assets/player_8.svg" alt="" /></span>
+        </div>
       </div>
     </div>
-  </div>
-  <div id="leaderboard" class="select-none">
-    <table>
-      <tr>
-        <th></th>
-        <th>Name</th>
-        <th>Score</th>
-      </tr>
-      <tr><td></td><td></td><td></td></tr>
-      <tr><td></td><td></td><td></td></tr>
-      <tr><td></td><td></td><td></td></tr>
-      <tr><td></td><td></td><td></td></tr>
-      <tr><td></td><td></td><td></td></tr>
-      <tr><td></td><td></td><td></td></tr>
-    </table>
-  </div>
-  <div id="disconnect-modal" class="hidden">
-    <div>
-      <h2>Disconnected from Server </h2>
-      <hr />
-      <button id="reconnect-button">Reconnect</button>
+    <div id="leaderboard" class="select-none">
+      <table>
+        <tr>
+          <th></th>
+          <th>Name</th>
+          <th>Score</th>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+      </table>
     </div>
-  </div>
+    <div id="disconnect-modal" class="hidden">
+      <div>
+        <h2>Disconnected from Server</h2>
+        <hr />
+        <button id="reconnect-button">Reconnect</button>
+      </div>
+    </div>
 
-  <div class="experience select-none">
-    <div class="experience__score">
+    <div class="experience select-none">
+      <div class="experience__score"></div>
+      <div class="experience__current">
+        <p></p>
+      </div>
     </div>
-    <div class="experience__current">
-      <p></p>
+    <div class="passive-skills select-none">
+      <div class="passive-skills__points">
+        <span></span>
+      </div>
+      <div class="passive-skills__skill" data-name="hp">
+        <span>0/7</span>
+        <img src="assets/passive_skills_hp.svg" alt="" />
+      </div>
+      <div class="passive-skills__skill" data-name="speed">
+        <span>0/7</span>
+        <img src="assets/passive_skills_speed.svg" alt="" />
+      </div>
+      <div class="passive-skills__skill" data-name="defense">
+        <span>0/7</span>
+        <img src="assets/passive_skills_defense.svg" alt="" />
+      </div>
+      <div class="passive-skills__skill" data-name="cooldown">
+        <span>0/7</span>
+        <img src="assets/passive_skills_cooldown.svg" alt="" />
+      </div>
     </div>
-  </div>
-  <div class="passive-skills select-none">
-    <div class="passive-skills__points">
+    <div class="health-bar select-none">
       <span></span>
     </div>
-    <div class="passive-skills__skill" data-name="hp">
-      <span>0/7</span>
-      <img src="assets/passive_skills_hp.svg" alt="">
-    </div>
-    <div class="passive-skills__skill" data-name="speed">
-      <span>0/7</span>
-      <img src="assets/passive_skills_speed.svg" alt="">
-    </div>
-    <div class="passive-skills__skill" data-name="defense">
-      <span>0/7</span>
-      <img src="assets/passive_skills_defense.svg" alt="">
-    </div>
-    <div class="passive-skills__skill" data-name="cooldown">
-      <span>0/7</span>
-      <img src="assets/passive_skills_cooldown.svg" alt="">
-    </div>
-  </div>
-  <div class="health-bar select-none">
-    <span></span>
-  </div>
 
-  <div class="notification select-none"></div>
+    <div class="notification select-none"></div>
 
-  <div class="active-skills select-none hidden">
-    <span class="active-skills__skill" data-name="first_skill">
-      <p></p>
-      <img src="" alt="">
-    </span>
-    <span class="active-skills__skill" data-name="second_skill">
-      <p></p>
-      <img src="" alt="">
-    </span>
-    <span class="active-skills__skill" data-name="ultra_skill">
-      <p></p>
-      <img src="" alt="">
-    </span>
-  </div>
-  <div class="effects select-none">
-    <div class="effects__buffs">
-      <img class="hidden" data-name="hp" src="assets/passive_skills_hp.svg" alt="">
-      <img class="hidden" data-name="speed" src="assets/passive_skills_speed.svg" alt="">
-      <img class="hidden" data-name="defense" src="assets/passive_skills_defense.svg" alt="">
-      <img class="hidden" data-name="accuracy" src="assets/passive_skills_accuracy.svg" alt="">
-      <img class="hidden" data-name="damage" src="assets/passive_skills_damage.svg" alt="">
+    <div class="active-skills select-none hidden">
+      <span class="active-skills__skill" data-name="first_skill">
+        <p></p>
+        <img src="" alt="" />
+      </span>
+      <span class="active-skills__skill" data-name="second_skill">
+        <p></p>
+        <img src="" alt="" />
+      </span>
+      <span class="active-skills__skill" data-name="ultra_skill">
+        <p></p>
+        <img src="" alt="" />
+      </span>
     </div>
-    <div class="effects__debuffs">
-      <img class="hidden" data-name="hp" src="assets/passive_skills_hp.svg" alt="">
-      <img class="hidden" data-name="speed" src="assets/passive_skills_speed.svg" alt="">
-      <img class="hidden" data-name="defense" src="assets/passive_skills_defense.svg" alt="">
-      <img class="hidden" data-name="accuracy" src="assets/passive_skills_accuracy.svg" alt="">
-      <img class="hidden" data-name="damage" src="assets/passive_skills_damage.svg" alt="">
-    </div>
-  </div>
-
-  <div class="contact flex justify-center">
-    <div class="contact__modal hidden">
-      <div>
-        <h4>This game developed by Oleg Sazonov</h4>
-        <p><span>Email:</span> gameoveran@yandex.ru</p>
-        <p><span>Github:</span> <a href="https://github.com/FeniXAltaiR">https://github.com/FeniXAltaiR</a></p>
-        <hr>
-        <button class="contact__btn">Close</button>
+    <div class="effects select-none">
+      <div class="effects__buffs">
+        <img
+          class="hidden"
+          data-name="hp"
+          src="assets/passive_skills_hp.svg"
+          alt=""
+        />
+        <img
+          class="hidden"
+          data-name="speed"
+          src="assets/passive_skills_speed.svg"
+          alt=""
+        />
+        <img
+          class="hidden"
+          data-name="defense"
+          src="assets/passive_skills_defense.svg"
+          alt=""
+        />
+        <img
+          class="hidden"
+          data-name="accuracy"
+          src="assets/passive_skills_accuracy.svg"
+          alt=""
+        />
+        <img
+          class="hidden"
+          data-name="damage"
+          src="assets/passive_skills_damage.svg"
+          alt=""
+        />
       </div>
-    </div>
-    <span>Contact</span>
-  </div>
-
-  <!-- Share -->
-  <div class="share">
-    <p>Share link</p>
-    <div
-      class="ya-share2"
-      data-services="vkontakte,facebook,twitter,telegram,whatsapp,collections,odnoklassniki,moimir,reddit"
-      data-description="Qventio - a multiplayer io-game with skills, parameters, monsterts, bosses and more. Join to us!"
-      data-hashtags:twitter="qventio,game,online,io"
-      data-title="Qventio"
-      data-url="https://qvent.io"
-      data-image="assets/share.png"
-    ></div>
-  </div>
-
-  <div class="review">
-    <div class="review__modal hidden">
-      <div>
-        <h4>Thank you for your review</h4>
-        <hr>
-        <button class="review__close">Close</button>
+      <div class="effects__debuffs">
+        <img
+          class="hidden"
+          data-name="hp"
+          src="assets/passive_skills_hp.svg"
+          alt=""
+        />
+        <img
+          class="hidden"
+          data-name="speed"
+          src="assets/passive_skills_speed.svg"
+          alt=""
+        />
+        <img
+          class="hidden"
+          data-name="defense"
+          src="assets/passive_skills_defense.svg"
+          alt=""
+        />
+        <img
+          class="hidden"
+          data-name="accuracy"
+          src="assets/passive_skills_accuracy.svg"
+          alt=""
+        />
+        <img
+          class="hidden"
+          data-name="damage"
+          src="assets/passive_skills_damage.svg"
+          alt=""
+        />
       </div>
     </div>
 
-    <p>Review</p>
-    <div class="review__select">
-      <select>
-        <option value="bug" selected>bug</option>
-        <option value="advice">advice</option>
-      </select>
+    <div class="contact flex justify-center">
+      <div class="contact__modal hidden">
+        <div>
+          <h4>This game developed by Oleg Sazonov</h4>
+          <p><span>Email:</span> gameoveran@yandex.ru</p>
+          <p>
+            <span>Github:</span>
+            <a href="https://github.com/FeniXAltaiR"
+              >https://github.com/FeniXAltaiR</a
+            >
+          </p>
+          <hr />
+          <button class="contact__btn">Close</button>
+        </div>
+      </div>
+      <span>Contact</span>
     </div>
-    <div>
-      <textarea placeholder="bug or advice" name="review" cols="20" rows="8"></textarea>
-    </div>
-    <div class="review__send flex justify-center">
-      <button>Send</button>
-    </div>
-  </div>
 
-  <!-- <script src="https://yastatic.net/es5-shims/0.0.2/es5-shims.min.js"></script> -->
-  <script src="https://yastatic.net/share2/share.js" async="async"></script>
-</body>
+    <!-- Share -->
+    <div class="share">
+      <p>Share link</p>
+      <div
+        class="ya-share2"
+        data-services="vkontakte,facebook,twitter,telegram,whatsapp,collections,odnoklassniki,moimir,reddit"
+        data-description="Qventio - a multiplayer io-game with skills, parameters, monsterts, bosses and more. Join to us!"
+        data-hashtags:twitter="qventio,game,online,io"
+        data-title="Qventio"
+        data-url="https://qvent.io"
+        data-image="assets/share.png"
+      ></div>
+    </div>
+
+    <div class="review">
+      <div class="review__modal hidden">
+        <div>
+          <h4>Thank you for your review</h4>
+          <hr />
+          <button class="review__close">Close</button>
+        </div>
+      </div>
+
+      <p>Review</p>
+      <div class="review__select">
+        <select>
+          <option value="bug" selected>bug</option>
+          <option value="advice">advice</option>
+        </select>
+      </div>
+      <div>
+        <textarea
+          placeholder="bug or advice"
+          name="review"
+          cols="20"
+          rows="8"
+        ></textarea>
+      </div>
+      <div class="review__send flex justify-center">
+        <button>Send</button>
+      </div>
+    </div>
+
+    <!-- <script src="https://yastatic.net/es5-shims/0.0.2/es5-shims.min.js"></script> -->
+    <script src="https://yastatic.net/share2/share.js" async="async"></script>
+  </body>
 </html>

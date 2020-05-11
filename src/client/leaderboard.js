@@ -1,7 +1,7 @@
-import escape from 'lodash/escape';
+import escape from 'lodash/escape'
 
-const leaderboard = document.getElementById('leaderboard');
-const rows = document.querySelectorAll('#leaderboard table tr');
+const leaderboard = document.getElementById('leaderboard')
+const rows = document.querySelectorAll('#leaderboard table tr')
 
 // <td>${data[i].level} - ${me.experience.skill_points}</td>
 
@@ -31,14 +31,13 @@ export function updateLeaderboard(data, me) {
       <td>${i + 1}</td>
       <td>-</td>
       <td>-</td>
-    `;
+    `
   }
 
-  const findMe = data.findIndex(player => player.id === me.id)
+  const findMe = data.findIndex((player) => player.id === me.id)
   if (findMe < 5) {
     rows[6].innerHTML = ''
   } else {
-
     rows[6].innerHTML = `
       <td>${findMe + 1}</td>
       <td>${escape(data[findMe].username.slice(0, 15)) || 'Anonymous'}</td>

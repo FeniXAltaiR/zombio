@@ -13,7 +13,7 @@ class Zombie extends ObjectClass {
           damage: 10,
           hp: 100,
           radius: 25,
-          speed: 285
+          speed: 285,
         },
         normal: {
           name: 'normal',
@@ -21,7 +21,7 @@ class Zombie extends ObjectClass {
           damage: 25,
           hp: 175,
           radius: 25,
-          speed: 315
+          speed: 315,
         },
         hard: {
           name: 'hard',
@@ -29,7 +29,7 @@ class Zombie extends ObjectClass {
           damage: 50,
           hp: 240,
           radius: 25,
-          speed: 360
+          speed: 360,
         },
         boss_easy: {
           name: 'boss_easy',
@@ -37,7 +37,7 @@ class Zombie extends ObjectClass {
           damage: 75,
           hp: 1000,
           radius: 55,
-          speed: 305
+          speed: 305,
         },
         boss_normal: {
           name: 'boss_normal',
@@ -45,7 +45,7 @@ class Zombie extends ObjectClass {
           damage: 100,
           hp: 2000,
           radius: 65,
-          speed: 335
+          speed: 335,
         },
         boss_hard: {
           name: 'boss_hard',
@@ -53,7 +53,7 @@ class Zombie extends ObjectClass {
           damage: 125,
           hp: 3000,
           radius: 80,
-          speed: 365
+          speed: 365,
         },
         boss_legend: {
           name: 'boss_legend',
@@ -61,31 +61,31 @@ class Zombie extends ObjectClass {
           damage: 175,
           hp: 5000,
           radius: 100,
-          speed: 380
-        }
+          speed: 380,
+        },
       },
       active_skills: {
         debuffs: {
           fire: {
             value: false,
-            timeout: null
-          }
+            timeout: null,
+          },
         },
       },
       modes: {
         passive: {
           speed: 75,
-          agressiveDistance: 400
+          agressiveDistance: 400,
         },
         active: {
           speed: 300,
-          agressiveDistance: 400
+          agressiveDistance: 400,
         },
         returning: {
           speed: 75,
-          agressiveDistance: 300
-        }
-      }
+          agressiveDistance: 300,
+        },
+      },
     }
     this.abilities = {
       use_teleport: false,
@@ -99,17 +99,17 @@ class Zombie extends ObjectClass {
             this.radius = 50
             this.damage -= 20
           }, 5000)
-        }
+        },
       },
       boss_normal: {
         teleportation: () => {
           this.abilities.use_teleport = true
-        }
+        },
       },
       boss_hard: {
         createBullets: () => {
           this.abilities.use_create_vampire_bullets = true
-        }
+        },
       },
       boss_legend: {
         increaseSpeed: () => {
@@ -120,8 +120,8 @@ class Zombie extends ObjectClass {
             this.options.modes.active.speed -= 45
             this.radius += 25
           }, 5000)
-        }
-      }
+        },
+      },
     }
     this.use_ability = true
     this.hp = this.options.types[type].hp
@@ -144,8 +144,14 @@ class Zombie extends ObjectClass {
     this.updateSpeed(dt)
 
     // Make sure the zombie stays in bounds
-    this.x = Math.max(0 + Constants.PLAYER_RADIUS, Math.min(Constants.MAP_SIZE - Constants.PLAYER_RADIUS, this.x))
-    this.y = Math.max(0 + Constants.PLAYER_RADIUS, Math.min(Constants.MAP_SIZE - Constants.PLAYER_RADIUS, this.y))
+    this.x = Math.max(
+      0 + Constants.PLAYER_RADIUS,
+      Math.min(Constants.MAP_SIZE - Constants.PLAYER_RADIUS, this.x)
+    )
+    this.y = Math.max(
+      0 + Constants.PLAYER_RADIUS,
+      Math.min(Constants.MAP_SIZE - Constants.PLAYER_RADIUS, this.y)
+    )
 
     if (this.options.active_skills.debuffs.fire.value) {
       this.updateHp(-10 * dt * 5)
@@ -180,7 +186,9 @@ class Zombie extends ObjectClass {
   useActiveSkill() {
     if (
       this.use_ability &&
-      ['boss_easy', 'boss_normal', 'boss_hard', 'boss_legend'].includes(this.type.name) &&
+      ['boss_easy', 'boss_normal', 'boss_hard', 'boss_legend'].includes(
+        this.type.name
+      ) &&
       this.mode === 'active'
     ) {
       const {name: boss_name} = this.type
@@ -245,13 +253,13 @@ class Zombie extends ObjectClass {
 
   serializeForUpdate() {
     return {
-      ...(super.serializeForUpdate()),
+      ...super.serializeForUpdate(),
       direction: this.direction,
       hp: this.hp,
       max_hp: this.type.hp,
       rotate: this.rotate,
       radius: this.radius,
-      icon: `zombie_${this.type.name}.svg`
+      icon: `zombie_${this.type.name}.svg`,
     }
   }
 }

@@ -16,6 +16,6 @@ module.exports = Object.freeze({
     USE_ACTIVE_SKILL: 'active_skill',
     GAME_OVER: 'dead',
     SAVE_ID_PLAYER: 'save_id_player',
-    SEND_REVIEW: 'send_review'
+    SEND_REVIEW: 'send_review',
   },
-});
+})

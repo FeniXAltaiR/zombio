@@ -1,6 +1,12 @@
 // Learn more about this file at:
 // https://victorzhou.com/blog/build-an-io-game-part-1/#6-client-input-%EF%B8%8F
-import { updateDirection, changeRotate, createBullet, levelUp, useActiveSkill } from './networking';
+import {
+  updateDirection,
+  changeRotate,
+  createBullet,
+  levelUp,
+  useActiveSkill,
+} from './networking'
 
 function getDirection(x, y) {
   return Math.atan2(x - window.innerWidth / 2, window.innerHeight / 2 - y)
@@ -29,8 +35,8 @@ function onMouseUpInput(e) {
 }
 
 function onTouchInput(e) {
-  const touch = e.touches[0];
-  const dir = getDirection(touch.clientX, touch.clientY);
+  const touch = e.touches[0]
+  const dir = getDirection(touch.clientX, touch.clientY)
   updateDirection(dir)
 }
 
@@ -39,7 +45,7 @@ const values_keys = {
   87: [0, 1],
   65: [-1, 0],
   83: [0, -1],
-  68: [1, 0]
+  68: [1, 0],
 }
 
 function onKeyDownInput(e) {
@@ -62,7 +68,7 @@ function onKeyDownInput(e) {
     return
   }
 
-  const findKey = keys.find(key => key === e.keyCode)
+  const findKey = keys.find((key) => key === e.keyCode)
   if (!findKey) {
     keys.push(e.keyCode)
   }
@@ -74,15 +80,15 @@ let timeoutOnKeyUpInput = null
 let keysToRemove = []
 function onKeyUpInput(e) {
   clearTimeout(timeoutOnKeyUpInput)
-    if ([65, 68].includes(e.keyCode)) {
-      keysToRemove = keysToRemove.filter(key => ![65, 68].includes(e.keyCode))
-      keysToRemove.push(e.keyCode)
-    } else if ([83, 87].includes(e.keyCode)) {
-      keysToRemove = keysToRemove.filter(key => ![83, 87].includes(e.keyCode))
-      keysToRemove.push(e.keyCode)
-    }
-    keys = keys.filter(key => !keysToRemove.includes(key))
-  
+  if ([65, 68].includes(e.keyCode)) {
+    keysToRemove = keysToRemove.filter((key) => ![65, 68].includes(e.keyCode))
+    keysToRemove.push(e.keyCode)
+  } else if ([83, 87].includes(e.keyCode)) {
+    keysToRemove = keysToRemove.filter((key) => ![83, 87].includes(e.keyCode))
+    keysToRemove.push(e.keyCode)
+  }
+  keys = keys.filter((key) => !keysToRemove.includes(key))
+
   timeoutOnKeyUpInput = setTimeout(() => {
     setDirection()
   }, 20)
@@ -92,7 +98,7 @@ let oldDir = null
 function setDirection() {
   let [x, y] = [0, 0]
 
-  keys.forEach(key => {
+  keys.forEach((key) => {
     const [valueX, valueY] = values_keys[key]
     oldDir = [valueX, valueY]
     x += valueX
@@ -118,36 +124,36 @@ function onMouseContextInput(e) {
   e.preventDefault()
 }
 
-const canvas = document.getElementById('game-canvas');
+const canvas = document.getElementById('game-canvas')
 
 export function startCapturingInput() {
   // Mouse events
-  canvas.addEventListener('mousemove', onMouseMoveInput);
-  canvas.addEventListener('mousedown', onMouseDownInput);
-  canvas.addEventListener('contextmenu', onMouseContextInput);
-  canvas.addEventListener('mouseup', onMouseUpInput);
-  canvas.addEventListener('wheel', onWheelInput);
+  canvas.addEventListener('mousemove', onMouseMoveInput)
+  canvas.addEventListener('mousedown', onMouseDownInput)
+  canvas.addEventListener('contextmenu', onMouseContextInput)
+  canvas.addEventListener('mouseup', onMouseUpInput)
+  canvas.addEventListener('wheel', onWheelInput)
   // Touch events
-  window.addEventListener('touchstart', onTouchInput);
-  window.addEventListener('touchmove', onTouchInput);
+  window.addEventListener('touchstart', onTouchInput)
+  window.addEventListener('touchmove', onTouchInput)
   // Keyboard events
-  window.addEventListener('keydown', onKeyDownInput);
-  window.addEventListener('keyup', onKeyUpInput);
+  window.addEventListener('keydown', onKeyDownInput)
+  window.addEventListener('keyup', onKeyUpInput)
 }
 
 export function stopCapturingInput() {
   // Mouse events
-  canvas.removeEventListener('mousemove', onMouseMoveInput);
-  canvas.removeEventListener('mousedown', onMouseDownInput);
-  canvas.removeEventListener('contextmenu', onMouseContextInput);
-  canvas.removeEventListener('mouseup', onMouseUpInput);
-  canvas.removeEventListener('wheel', onWheelInput);
+  canvas.removeEventListener('mousemove', onMouseMoveInput)
+  canvas.removeEventListener('mousedown', onMouseDownInput)
+  canvas.removeEventListener('contextmenu', onMouseContextInput)
+  canvas.removeEventListener('mouseup', onMouseUpInput)
+  canvas.removeEventListener('wheel', onWheelInput)
   // Touch events
-  window.removeEventListener('touchstart', onTouchInput);
-  window.removeEventListener('touchmove', onTouchInput);
+  window.removeEventListener('touchstart', onTouchInput)
+  window.removeEventListener('touchmove', onTouchInput)
   // Keyboard events
-  window.removeEventListener('keydown', onKeyDownInput);
-  window.removeEventListener('keyup', onKeyUpInput);
+  window.removeEventListener('keydown', onKeyDownInput)
+  window.removeEventListener('keyup', onKeyUpInput)
 
   onMouseUpInput()
 }

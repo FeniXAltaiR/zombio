@@ -3,14 +3,15 @@ const current = experience.querySelector('.experience__current')
 const paragraph = experience.querySelector('.p')
 const expScore = experience.querySelector('.experience__score')
 
-export const updateExpBar = me => {
+export const updateExpBar = (me) => {
   const {currentScore, nextLevel, level} = me.experience
-  const gradient = 'linear-gradient(180deg, #8A2886 0%, #BC77BF 43.75%, #481455 100%)'
+  const gradient =
+    'linear-gradient(180deg, #8A2886 0%, #BC77BF 43.75%, #481455 100%)'
   current.style['background-image'] = `linear-gradient(
     to right,
     #8A2886 0%,
-    #8A2886 ${currentScore * 100/nextLevel}%,
-    #D0CACB ${currentScore * 100/nextLevel}%,
+    #8A2886 ${(currentScore * 100) / nextLevel}%,
+    #D0CACB ${(currentScore * 100) / nextLevel}%,
     #F8F8F8
   )`
 
@@ -21,7 +22,7 @@ export const updateExpBar = me => {
   `
 }
 
-export const setExperienceHidden = hidden => {
+export const setExperienceHidden = (hidden) => {
   if (hidden) {
     // experience.classList.add('hidden');
     experience.style.bottom = '-100px'

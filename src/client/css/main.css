@@ -14,7 +14,8 @@
 @import url('../css/share.css');
 @import url('../css/review.css');
 
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
   overflow: hidden;

@@ -6,13 +6,18 @@
 }
 
 .contact > span {
-  background: linear-gradient(355.31deg, rgba(186, 118, 189, 0.46) 0.11%, rgba(128, 69, 137, 0.780876) 58.14%, #592365 97.77%);
+  background: linear-gradient(
+    355.31deg,
+    rgba(186, 118, 189, 0.46) 0.11%,
+    rgba(128, 69, 137, 0.780876) 58.14%,
+    #592365 97.77%
+  );
   border-radius: 5px;
   padding: 4px 8px;
 }
 
 .contact > span:hover {
-  color: #6D9C00;
+  color: #6d9c00;
   cursor: pointer;
 }
 
@@ -21,7 +26,7 @@
 }
 
 .contact a:hover {
-  color: #6D9C00;
+  color: #6d9c00;
   cursor: pointer;
 }
 
@@ -40,7 +45,7 @@
   left: 50%;
   transform: translateY(-50%) translateX(-50%);
   padding: 15px 20px;
-  background: linear-gradient(180deg, #5F2A6B 0%, #CDABCE 100%);
+  background: linear-gradient(180deg, #5f2a6b 0%, #cdabce 100%);
   border-radius: 5px;
   text-align: center;
 }

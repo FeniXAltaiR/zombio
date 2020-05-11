@@ -12,7 +12,7 @@ class Thing extends ObjectClass {
     return {
       ...super.serializeForUpdate(),
       radius: this.radius,
-      icon: this.options.icon
+      icon: this.options.icon,
     }
   }
 }

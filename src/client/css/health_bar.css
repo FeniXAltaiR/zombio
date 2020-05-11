@@ -5,7 +5,7 @@
   height: 71px;
   width: 71px;
   border-radius: 50%;
-  border: 2px solid #E3D4D4;
+  border: 2px solid #e3d4d4;
   display: -webkit-flex;
   display: -moz-flex;
   display: -ms-flex;
@@ -15,5 +15,5 @@
   align-items: center;
   color: white;
   font-size: 20px;
-  transition: all 1s ease
+  transition: all 1s ease;
 }
