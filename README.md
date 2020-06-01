@@ -1,6 +1,6 @@
 <h1 align="center">Qventio</h1>
 <h4 align="center">
-  <p>Шутер, созданный с помощью Canvas</p>
+  <p>Многопользовательский шутер, созданный с помощью Canvas</p>
   <img src="public/assets/share.png" alt="">
 </h4>
 
