@@ -86,86 +86,19 @@
   <body>
     <canvas id="game-canvas"></canvas>
     <div class="play-menu" class="hidden">
-      <div id="play-menu">
+      <div>
         <h1>Qventio</h1>
         <input type="text" id="username-input" placeholder="Username" />
         <div class="play-menu__controls">
-          <button data-name="skins">Skins</button>
           <button id="play-button">Play</button>
         </div>
         <div class="play-menu__statistic"></div>
       </div>
     </div>
 
-    <div class="guide">
-      <h2>Controls</h2>
-      <div class="guide__item--main guide__item">
-        <img src="assets/guide_mouse.svg" alt="" />
-        <span>Fire</span>
-      </div>
-      <div class="guide__item--main guide__item">
-        <span>WASD - </span>
-        <span>Move</span>
-      </div>
-      <h2>Parameters, effects</h2>
-      <div class="guide__item guide__item--effects">
-        <img src="assets/guide_buffs.svg" alt="" />
-        <span>Positive effects</span>
-      </div>
-      <div class="guide__item guide__item--effects">
-        <img src="assets/guide_debuffs.svg" alt="" />
-        <span>Negative effects</span>
-      </div>
-      <div class="flex justify-space-between">
-        <div class="guide__item">
-          <img src="assets/passive_skills_hp.svg" alt="" />
-          <span>Hp (key 1)</span>
-        </div>
-        <div class="guide__item">
-          <span>Speed (key 2)</span>
-          <img src="assets/passive_skills_speed.svg" alt="" />
-        </div>
-      </div>
-      <div class="flex justify-space-between">
-        <div class="guide__item">
-          <img src="assets/passive_skills_defense.svg" alt="" />
-          <span>Defense (key 3)</span>
-        </div>
-        <div class="guide__item">
-          <span>Cooldown (key 4)</span>
-          <img src="assets/passive_skills_cooldown.svg" alt="" />
-        </div>
-      </div>
-      <div class="flex justify-space-between">
-        <div class="guide__item">
-          <img src="assets/thing_accuracy.svg" alt="" />
-          <span>Accuracy</span>
-        </div>
-        <div class="guide__item">
-          <span>Portal</span>
-          <img src="assets/thing_portal.svg" alt="" />
-        </div>
-      </div>
-    </div>
-
     <div class="weapons select-none"></div>
 
-    <div class="skins">
-      <div class="skins__controls">
-        <div class="skins__radio">
-          <span data-icon="1" class="skins__radio--active"
-            ><img src="assets/player_1.svg" alt=""
-          /></span>
-          <span data-icon="2"><img src="assets/player_2.svg" alt="" /></span>
-          <span data-icon="3"><img src="assets/player_3.svg" alt="" /></span>
-          <span data-icon="4"><img src="assets/player_4.svg" alt="" /></span>
-          <span data-icon="5"><img src="assets/player_5.svg" alt="" /></span>
-          <span data-icon="6"><img src="assets/player_6.svg" alt="" /></span>
-          <span data-icon="7"><img src="assets/player_7.svg" alt="" /></span>
-          <span data-icon="8"><img src="assets/player_8.svg" alt="" /></span>
-        </div>
-      </div>
-    </div>
+
     <div id="leaderboard" class="select-none">
       <table>
         <tr>
@@ -205,6 +138,7 @@
         </tr>
       </table>
     </div>
+
     <div id="disconnect-modal" class="hidden">
       <div>
         <h2>Disconnected from Server</h2>
@@ -346,7 +280,7 @@
     </div>
 
     <!-- Share -->
-    <div class="share">
+    <!-- <div class="share">
       <p>Share link</p>
       <div
         class="ya-share2"
@@ -357,36 +291,7 @@
         data-url="https://qvent.io"
         data-image="assets/share.png"
       ></div>
-    </div>
-
-    <div class="review">
-      <div class="review__modal hidden">
-        <div>
-          <h4>Thank you for your review</h4>
-          <hr />
-          <button class="review__close">Close</button>
-        </div>
-      </div>
-
-      <p>Review</p>
-      <div class="review__select">
-        <select>
-          <option value="bug" selected>bug</option>
-          <option value="advice">advice</option>
-        </select>
-      </div>
-      <div>
-        <textarea
-          placeholder="bug or advice"
-          name="review"
-          cols="20"
-          rows="8"
-        ></textarea>
-      </div>
-      <div class="review__send flex justify-center">
-        <button>Send</button>
-      </div>
-    </div>
+    </div> -->
 
     <!-- <script src="https://yastatic.net/es5-shims/0.0.2/es5-shims.min.js"></script> -->
     <script src="https://yastatic.net/share2/share.js" async="async"></script>

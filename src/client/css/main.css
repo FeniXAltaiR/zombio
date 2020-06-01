@@ -97,11 +97,6 @@ button:focus {
     font-size: 1.75rem;
   }
 
-  #play-menu {
-    padding: 10px 15px;
-    min-width: 280px;
-  }
-
   #disconnect-modal > div {
     padding: 10px;
     min-width: 280px;

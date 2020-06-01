@@ -59,5 +59,6 @@
 }
 
 .contact__modal .contact__btn {
+  cursor: pointer;
   color: white;
 }

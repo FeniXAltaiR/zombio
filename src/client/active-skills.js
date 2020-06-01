@@ -19,11 +19,6 @@ export const updateActiveSkills = (me) => {
     if (me.active_skills[skill_name].value) {
       img.src = `assets/active_skills_${me.active_skills[skill_name].value}.svg`
     }
-    // if (!img && me.active_skills[skill_name].value) {
-    //   const skillImg = document.createElement('img')
-    //   skillImg.src = `assets/active_skills_${me.active_skills[skill_name].value}.svg`
-    //   nodeSkill.appendChild(skillImg)
-    // }
 
     const cooldown = getCooldown(me.active_skills[skill_name])
 

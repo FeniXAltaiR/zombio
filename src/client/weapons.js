@@ -55,33 +55,21 @@ export const updateWeaponsBar = (me) => {
     createBtnWeapon('uzi')
     createBtnWeapon('rifle')
     createBtnWeapon('shotgun')
-    // ['uzi', 'rifle', 'shotgun'].forEach(weapon => {
-    //   createBtnWeapon(weapon)
-    // })
   } else if (first_skill.value === null && level >= 5) {
     createTitle('New Skill!')
     createBtnSkill('speed')
     createBtnSkill('hp')
     createBtnSkill('defense')
-    // ['speed', 'hp', 'defense'].forEach(skill => {
-    //   createBtnSkill(skill)
-    // })
   } else if (['uzi', 'rifle', 'shotgun'].includes(me.weapon) && level >= 7) {
     createTitle('New Weapon!')
     createBtnWeapon('machinegun')
     createBtnWeapon('sniper_rifle')
     createBtnWeapon('auto_shotgun')
-    // ['machinegun', 'sniper_rifle', 'auto_shotgun'].forEach(weapon => {
-    //   createBtnWeapon(weapon)
-    // })
   } else if (second_skill.value === null && level >= 12) {
     createTitle('New Skill!')
     createBtnSkill('teleport')
     createBtnSkill('double_bullets')
     createBtnSkill('fire_bullets')
-    // ['teleport', 'double_bullets', 'fire_bullets'].forEach(skill => {
-    //   createBtnSkill(skill)
-    // })
   } else {
     weapons.innerHTML = ''
   }

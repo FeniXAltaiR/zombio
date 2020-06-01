@@ -1,4 +1,4 @@
-import {connect, play, sendReview} from './networking'
+import {connect, play} from './networking'
 import {startRendering, stopRendering} from './render'
 import {startCapturingInput, stopCapturingInput, clearKeys} from './input'
 import {downloadAssets} from './assets'
@@ -12,20 +12,11 @@ import {setPassiveSkillsBar} from './passive-skills'
 import {setActiveSkillsHidden} from './active-skills'
 import {setWeaponsBar} from './weapons'
 
-// I'm using Bootstrap here for convenience, but I wouldn't recommend actually doing this for a real
-// site. It's heavy and will slow down your site - either only use a subset of Bootstrap, or just
-// write your own CSS.
-import 'bootstrap/dist/css/bootstrap.min.css'
 import './css/main.css'
 
-// const playMenu = document.getElementById('play-menu');
 const playMenu = document.querySelector('.play-menu')
 const playButton = document.getElementById('play-button')
 const usernameInput = document.getElementById('username-input')
-const skins = document.querySelector('button[data-name=skins]')
-const chooseSkin = document.querySelector('.skins')
-// const agreeSkinBtn = document.querySelector('.skins__btn')
-const guide = document.querySelector('.guide')
 
 // contact
 const contact = document.querySelector('.contact')
@@ -42,52 +33,8 @@ contact_btn.onclick = (e) => {
   contact_modal.classList.add('hidden')
 }
 
-// share
-const share = document.querySelector('.share')
-
-// review
-const review = document.querySelector('.review')
-const review_modal = document.querySelector('.review__modal')
-const review_close = document.querySelector('.review__close')
-const review_send = document.querySelector('.review__send')
-
-review_send.onclick = (e) => {
-  const review_select = document.querySelector('.review select')
-  const review_textarea = document.querySelector('.review textarea')
-  const review_str = `${review_select.value}:${review_textarea.value}`
-
-  if (!review_textarea.value) return
-  review_textarea.value = ''
-
-  review_modal.classList.remove('hidden')
-  sendReview(review_str)
-}
-
-review_close.onclick = (e) => {
-  e.stopPropagation()
-  review_modal.classList.add('hidden')
-}
-
-// skins
-document.querySelectorAll('.skins__radio span').forEach((span) => {
-  span.onclick = (e) => {
-    e.stopPropagation()
-    document.querySelectorAll('.skins__radio span').forEach((item) => {
-      item.classList.remove('skins__radio--active')
-    })
-    span.classList.add('skins__radio--active')
-  }
-})
-
 const getSkinValue = () => {
-  const radios = document.querySelectorAll('.skins__radio span')
-  let value
-  radios.forEach((radio) => {
-    if (radio.classList.contains('skins__radio--active')) {
-      value = radio.dataset.icon
-    }
-  })
-  return value
+  return Math.ceil(Math.random() * 8)
 }
 
 const showStatistic = (statistic) => {
@@ -133,11 +80,24 @@ const startGame = () => {
   setPassiveSkillsBar(false)
   setActiveSkillsHidden(false)
   setWeaponsBar(false)
-  chooseSkin.classList.add('hidden')
-  guide.classList.add('hidden')
   contact.classList.add('hidden')
-  share.classList.add('hidden')
-  review.classList.add('hidden')
+}
+
+const onGameOver = statistic => {
+  clearKeys()
+  stopCapturingInput()
+  stopRendering()
+  playMenu.classList.remove('hidden')
+  setLeaderboardHidden(true)
+  setExperienceHidden(true)
+  setEffectsHidden(true)
+  setHealthBarHidden(true)
+  setNotifyHidden(true)
+  setPassiveSkillsBar(true)
+  setActiveSkillsHidden(true)
+  setWeaponsBar(true)
+  showStatistic(statistic)
+  contact.classList.remove('hidden')
 }
 
 Promise.all([connect(onGameOver), downloadAssets()])
@@ -153,29 +113,5 @@ Promise.all([connect(onGameOver), downloadAssets()])
     playButton.onclick = () => {
       startGame()
     }
-
-    skins.onclick = () => {
-      chooseSkin.classList.remove('hidden')
-    }
   })
   .catch(console.error)
-
-function onGameOver(statistic) {
-  clearKeys()
-  stopCapturingInput()
-  stopRendering()
-  playMenu.classList.remove('hidden')
-  setLeaderboardHidden(true)
-  setExperienceHidden(true)
-  setEffectsHidden(true)
-  setHealthBarHidden(true)
-  setNotifyHidden(true)
-  setPassiveSkillsBar(true)
-  setActiveSkillsHidden(true)
-  setWeaponsBar(true)
-  showStatistic(statistic)
-  guide.classList.remove('hidden')
-  contact.classList.remove('hidden')
-  share.classList.remove('hidden')
-  review.classList.remove('hidden')
-}
