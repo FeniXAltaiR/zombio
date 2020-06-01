@@ -3,14 +3,6 @@ const Player = require('./player')
 const Bullet = require('./bullet')
 const Zombie = require('./zombie')
 const Thing = require('./thing')
-const Collisions = require('./collisions')
-
-const {
-  applyCollisionsPlayers,
-  applyCollisionsZombies,
-  applyCollisionsPlayersAndZombies,
-  applyCollisionsPlayersAndThings,
-} = Collisions
 
 const createXpList = () => {
   const list = [0]
