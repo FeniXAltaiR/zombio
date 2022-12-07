@@ -17,7 +17,7 @@
     "cloc": "^2.5.0",
     "copy-webpack-plugin": "^5.0.4",
     "cors": "^2.8.5",
-    "express": "^4.16.4",
+    "express": "^4.18.2",
     "html-webpack-plugin": "^3.2.0",
     "lodash": "^4.17.11",
     "moment": "^2.24.0",
